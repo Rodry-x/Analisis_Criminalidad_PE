@@ -1,0 +1,48 @@
+2026-11-16 20:07:42 | INFO    | ==============================================================================
+2026-11-16 20:07:42 | INFO    | ETL Victimizacion y Confianza PNP 2013-2024
+2026-11-16 20:07:42 | INFO    | Entorno: C:\Users\rodry20x\miniconda3\envs\ciencia-de-datos\python.exe
+2026-11-16 20:07:42 | INFO    | Log: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\etl_victimizacion_20261116_200742.log
+2026-11-16 20:07:42 | INFO    | ==============================================================================
+2026-11-16 20:07:42 | INFO    | Codificacion detectada del archivo crudo: cp1252
+2026-11-16 20:07:42 | INFO    | Copia UTF-8 generada: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Dataset-Procesado\Indicadores-de-Victimizacion-y-confianza-PNP_2013-2024\Victimizacion_Confianza_PNP_2013_2024_utf8.csv
+2026-11-16 20:07:42 | INFO    | Caracteres no ASCII conservados: ÁÍÑÓ
+2026-11-16 20:07:42 | INFO    | Leyendo copia UTF-8: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Dataset-Procesado\Indicadores-de-Victimizacion-y-confianza-PNP_2013-2024\Victimizacion_Confianza_PNP_2013_2024_utf8.csv
+2026-11-16 20:07:42 | INFO    |   Victimización-Percepción-de-Inseguridad-y-Confianza-en-la-PNP_2013-2024.csv     1,592 filas
+2026-11-16 20:07:42 | INFO    | PERIODO es constante ('AÑO') en 1,592 filas: se elimina.
+2026-11-16 20:07:42 | INFO    | Departamentos homologados: 354 filas {'APURÍMAC': 59, 'REGIÓN LIMA': 59, 'SAN MARTÍN': 59, 'ÁNCASH': 59, 'JUNÍN': 59, 'HUÁNUCO': 59}
+2026-11-16 20:07:42 | WARNING | Codigo corregido: 2013 | PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA | cod 18 -> 19 | PASCO
+2026-11-16 20:07:42 | WARNING | Codigo corregido: 2013 | PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA | cod 19 -> 20 | PIURA
+2026-11-16 20:07:42 | WARNING | Codigo corregido: 2013 | PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA | cod 20 -> 7 | PROV. CONST. DEL CALLAO
+2026-11-16 20:07:42 | WARNING | Codigo corregido: 2013 | PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA | cod 15 -> 16 | LORETO
+2026-11-16 20:07:42 | WARNING | Codigo corregido: 2013 | PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA | cod 16 -> 17 | MADRE DE DIOS
+2026-11-16 20:07:42 | WARNING | Codigo corregido: 2013 | PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA | cod 17 -> 18 | MOQUEGUA
+2026-11-16 20:07:42 | INFO    | Filas cargadas: 1,592
+2026-11-16 20:07:42 | INFO    | Dimensiones: 5 indicadores, 27 alcances, 26 departamentos, 58 nacionales
+2026-11-16 20:07:42 | INFO    | Cobertura esperada por anio: 135 filas
+2026-11-16 20:07:42 | WARNING | Anios parciales detectados: [2013]
+2026-11-16 20:07:42 | WARNING | Codigos de ubicacion corregidos desde el departamento: 6
+2026-11-16 20:07:42 | INFO    | Script SQL generado: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Database\04_victimizacion_datamart.sql (0.33 MB)
+2026-11-16 20:07:42 | INFO    | Metricas guardadas en: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\victimizacion_metrics_20261116_200742.json
+2026-11-16 20:07:42 | INFO    | Ejecutando SQL en localhost (base DBVictimizacionConfianzaPNP)...
+2026-11-16 20:07:44 | INFO    | sqlcmd | filas_cargadas suma_valor                               indicadores alcances    departamentos filas_nacionales anio_min anio_max filas_anio_parcial
+2026-11-16 20:07:44 | INFO    | sqlcmd | -------------- ---------------------------------------- ----------- ----------- ------------- ---------------- -------- -------- ------------------
+2026-11-16 20:07:44 | INFO    | sqlcmd |           1592                                  36287.6           5          27            26               58     2013     2024                107
+2026-11-16 20:07:44 | INFO    | sqlcmd | anio_registro filas       indicadores alcances
+2026-11-16 20:07:44 | INFO    | sqlcmd | ------------- ----------- ----------- -----------
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2013         107           4          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2014         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2015         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2016         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2017         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2018         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2019         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2020         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2021         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2022         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2023         135           5          27
+2026-11-16 20:07:44 | INFO    | sqlcmd |          2024         135           5          27
+2026-11-16 20:07:44 | INFO    | Carga completada en 1.89 segundos.
+2026-11-16 20:07:44 | INFO    | ==============================================================================
+2026-11-16 20:07:44 | INFO    | ETL finalizado correctamente.
+2026-11-16 20:07:44 | INFO    | Tabla dm.VictimizacionConfianzaPNP: 1,592 filas cargadas.
+2026-11-16 20:07:44 | INFO    | ==============================================================================

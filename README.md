@@ -317,14 +317,140 @@ anio_registro meses filas
 cualquier análisis o visualización, **filtrar siempre por `unidad_medida` o por
 `variable`**; nunca sumar todo junto.
 
-### Próximos datasets
+## Dataset 4 — Victimización y Confianza en la PNP 2013-2024
 
-Cada dataset tendrá su propio ETL y su script SQL de DataMart:
+**Estado:** ETL implementado y cargado en SQL Server.
 
-```text
-Database/04_victimizacion_datamart.sql
-Pipeline/etl_victimizacion.py
+| Elemento | Valor |
+|---|---|
+| Archivos de origen | 1 CSV (2013–2024) |
+| Codificación original | CP1252 (convertido a UTF-8 con BOM) |
+| Filas cargadas | 1,592 |
+| Base de datos | `DBVictimizacionConfianzaPNP` |
+| Tabla | `dm.VictimizacionConfianzaPNP` |
+| Script SQL | `Database/04_victimizacion_datamart.sql` |
+| Diccionario | `Database/04_victimizacion_diccionario.md` |
+| ETL | `Pipeline/etl_victimizacion.py` |
+
+### Ejecución
+
+```powershell
+# Opción 1: sin activar el entorno (usa conda run)
+.\Pipeline\run_etl_victimizacion.bat
+
+# Opción 2: con el entorno activado
+conda activate ciencia-de-datos
+python Pipeline/etl_victimizacion.py
+
+# Solo generar el .sql, sin cargar en SQL Server
+python Pipeline/etl_victimizacion.py --generate-only
 ```
 
-El DataWarehouse se construirá en una etapa posterior uniendo los datamarts
-limpios.
+Parámetros disponibles:
+
+```text
+--server        Instancia de SQL Server (por defecto: localhost)
+--database      Nombre de la base (por defecto: DBVictimizacionConfianzaPNP)
+--sqlcmd        Ruta explícita a sqlcmd.exe
+--batch-size    Filas por INSERT masivo (por defecto: 1000)
+--generate-only Solo genera el script SQL
+--reuse-utf8    Reutiliza la copia UTF-8 ya generada
+```
+
+### Decisiones sobre columnas del origen
+
+- **`PERIODO` se elimina**: es constante `AÑO` en las 1,592 filas.
+- **`VALOR PERIODO` → `anio_registro`**: es la columna que contiene el año.
+- **`AMBITO_PROY` → `ambito`**: se conserva porque evita confundir el total
+  país con un departamento. En las filas nacionales se guarda
+  `departamento = NULL` y `cod_ubicacion = 0`.
+- **`DEPARTAMENTO`**: se homologa al estilo canónico sin tildes.
+- **`cod_ubicacion`**: se re-deriva del nombre del departamento. Esto corrige
+  6 filas de 2013 (victimización por estafa) cuyo código estaba desalineado;
+  no se descarta ninguna fila.
+
+El dataset es **anual**, así que no tiene `mes_registro`; se agrega
+`fecha_referencia` (01 de enero).
+
+### Grano temporal (anual)
+
+Este dataset no tiene columna de mes: su grano es anual
+(`anio_registro`, `indicador`, `cod_ubicacion`). En la unión del DataWarehouse
+se usará `NULL AS mes_registro`.
+
+### Salidas de cada ejecución
+
+- `Database/04_victimizacion_datamart.sql`
+- `Pipeline/logs/etl_victimizacion_<fecha>.log`
+- `Pipeline/logs/victimizacion_metrics_<fecha>.json`
+- `Pipeline/logs/rechazados_victimizacion_<fecha>.csv` (solo si hay rechazos)
+- `Dataset-Procesado/Indicadores-de-Victimizacion-y-confianza-PNP_2013-2024/Victimizacion_Confianza_PNP_2013_2024_utf8.csv`
+
+### Limpieza aplicada
+
+1. Detección de codificación (CP1252) y copia fiel a UTF-8 con BOM.
+2. `TRIM`, colapso de espacios y mayúsculas en textos.
+3. Eliminación de `PERIODO` (constante) y renombrado de `VALOR PERIODO`.
+4. Homologación de departamentos (`ÁNCASH`, `APURÍMAC`, `HUÁNUCO`, `JUNÍN`,
+   `SAN MARTÍN`, `REGIÓN LIMA`).
+5. Re-derivación de `cod_ubicacion` desde el departamento (6 filas corregidas).
+6. `valor` convertido a `DECIMAL(5,1)` (porcentaje 0–100).
+7. Validación de año (2013–2024), indicador, ámbito, `clasif` y `valor`.
+8. Derivación de `fecha_referencia` y de `es_anio_parcial`
+   (2013 por cobertura incompleta).
+
+### Validación rápida
+
+```sql
+USE DBVictimizacionConfianzaPNP;
+
+SELECT COUNT(*) AS filas, SUM(valor) AS suma_valor
+FROM dm.VictimizacionConfianzaPNP;
+
+SELECT anio_registro, COUNT(*) AS filas,
+       COUNT(DISTINCT indicador) AS indicadores
+FROM dm.VictimizacionConfianzaPNP
+GROUP BY anio_registro
+ORDER BY anio_registro;
+
+SELECT * FROM etl.ControlCarga;
+```
+
+Resultado esperado:
+
+```text
+filas suma_valor
+----- ----------
+1592  36287.6
+```
+
+```text
+anio_registro filas indicadores
+------------- ----- -----------
+2013          107   4          <- parcial
+2014          135   5
+...
+2024          135   5
+```
+
+### Aviso de interpretación
+
+`valor` es un **porcentaje**: no debe sumarse entre indicadores ni entre años.
+Para comparar o graficar, filtrar siempre por `indicador` y por `ambito`. El
+total nacional ya viene calculado en la fila con `ambito = 'NACIONAL'`; no lo
+reconstruyas sumando departamentos.
+
+### Próximos pasos: DataWarehouse
+
+Los cuatro DataMarts están construidos. La siguiente etapa es unirlos en un
+DataWarehouse común. Puntos de enlace disponibles:
+
+| Dimensión | Denuncias | Desaparecidas | Producción | Victimización |
+|---|---|---|---|---|
+| Año | `anio_registro` | `anio_registro` | `anio_registro` | `anio_registro` |
+| Mes | `mes_registro` (1–12) | `mes_registro` (1–12) | `mes_registro` (1–12) | *(sin mes: anual)* |
+| Departamento | `departamento` | `departamento` | — | `departamento` (`NULL` si nacional) |
+| Ubigeo | `ubigeo` | `ubigeo` | — | `cod_ubicacion` (1–25 = prefijo de ubigeo) |
+
+La unión puede hacerse por `anio_registro` (+ `mes_registro` donde exista, o
+`NULL` para Victimización) y por departamento canónico.

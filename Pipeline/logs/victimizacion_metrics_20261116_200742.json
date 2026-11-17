@@ -1,0 +1,102 @@
+{
+  "filas_leidas": 1592,
+  "filas_rechazadas": 0,
+  "filas_agrupadas": 0,
+  "filas_cargadas": 1592,
+  "total_indicadores": 5,
+  "alcances": 27,
+  "esperado_por_anio": 135,
+  "filas_codigo_corregido": 6,
+  "codigos_corregidos": [
+    {
+      "anio_registro": 2013,
+      "indicador": "PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA",
+      "cod_origen": 18,
+      "cod_derivado": 19,
+      "departamento": "PASCO"
+    },
+    {
+      "anio_registro": 2013,
+      "indicador": "PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA",
+      "cod_origen": 19,
+      "cod_derivado": 20,
+      "departamento": "PIURA"
+    },
+    {
+      "anio_registro": 2013,
+      "indicador": "PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA",
+      "cod_origen": 20,
+      "cod_derivado": 7,
+      "departamento": "PROV. CONST. DEL CALLAO"
+    },
+    {
+      "anio_registro": 2013,
+      "indicador": "PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA",
+      "cod_origen": 15,
+      "cod_derivado": 16,
+      "departamento": "LORETO"
+    },
+    {
+      "anio_registro": 2013,
+      "indicador": "PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA",
+      "cod_origen": 16,
+      "cod_derivado": 17,
+      "departamento": "MADRE DE DIOS"
+    },
+    {
+      "anio_registro": 2013,
+      "indicador": "PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA",
+      "cod_origen": 17,
+      "cod_derivado": 18,
+      "departamento": "MOQUEGUA"
+    }
+  ],
+  "departamentos": 26,
+  "ambitos": 2,
+  "filas_nacionales": 58,
+  "anio_min": 2013,
+  "anio_max": 2024,
+  "anios_parciales": [
+    2013
+  ],
+  "filas_anio_parcial": 107,
+  "suma_valor": 36287.6,
+  "departamentos_canonizados": 354,
+  "motivos_rechazo": {
+    "anio_invalido": 0,
+    "clasif_invalido": 0,
+    "valor_invalido": 0,
+    "ambito_invalido": 0,
+    "cod_ubicacion_invalido": 0,
+    "ambito_departamento_incoherente": 0,
+    "texto_requerido_vacio": 0
+  },
+  "dataset": "Victimizacion y Confianza PNP 2013-2024",
+  "archivo": {
+    "archivo": "Victimización-Percepción-de-Inseguridad-y-Confianza-en-la-PNP_2013-2024.csv",
+    "filas": 1592,
+    "sha256": "65c2ca9aa28c60b329d7566c606968d1dee480803fe708d564992363b46fc64d"
+  },
+  "codificacion": {
+    "archivo_crudo": "Dataset-Crudo/Indicadores-de-Victimizacion-y-confianza-PNP_2013-2024/Victimización-Percepción-de-Inseguridad-y-Confianza-en-la-PNP_2013-2024.csv",
+    "codificacion_origen": "cp1252",
+    "archivo_utf8": "Dataset-Procesado/Indicadores-de-Victimizacion-y-confianza-PNP_2013-2024/Victimizacion_Confianza_PNP_2013_2024_utf8.csv",
+    "codificacion_destino": "utf-8-sig",
+    "convertido_en_esta_corrida": true,
+    "caracteres_no_ascii": [
+      "Á",
+      "Í",
+      "Ñ",
+      "Ó"
+    ],
+    "sha256_crudo": "65c2ca9aa28c60b329d7566c606968d1dee480803fe708d564992363b46fc64d",
+    "sha256_utf8": "c630ca8be8dcd00265a231b801a6a39820412aac64701a5e7861fb9eca3d941a",
+    "bytes_crudo": 159784,
+    "bytes_utf8": 163028
+  },
+  "hash_origen": "e2c9be3684d4754395fc5e6d7a247031b63950b8fae7075fdc4b59ee7bb3dcca",
+  "fecha_generacion": "2026-11-16 20:07:42",
+  "script_sql": "Database/04_victimizacion_datamart.sql",
+  "base_datos": "DBVictimizacionConfianzaPNP",
+  "tabla": "dm.VictimizacionConfianzaPNP"
+}
