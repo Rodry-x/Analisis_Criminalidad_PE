@@ -1,0 +1,81 @@
+{
+  "filas_leidas": 39096,
+  "filas_rechazadas": 0,
+  "filas_agrupadas": 0,
+  "filas_cargadas": 39096,
+  "filas_valor_cero": 15458,
+  "total_valor": 2195845317.111756,
+  "variables": 18,
+  "unidades_medida": 9,
+  "dependencias": 53,
+  "dir_reg_fre": 6,
+  "anio_min": 2023,
+  "anio_max": 2026,
+  "anios_parciales": [
+    2026
+  ],
+  "meses_convertidos": {
+    "ENE": 1,
+    "FEB": 2,
+    "MAR": 3,
+    "ABR": 4,
+    "MAY": 5,
+    "JUN": 6,
+    "JUL": 7,
+    "AGO": 8,
+    "SET": 9,
+    "OCT": 10,
+    "NOV": 11,
+    "DIC": 12
+  },
+  "motivos_rechazo": {
+    "anio_invalido": 0,
+    "mes_invalido": 0,
+    "valor_invalido": 0,
+    "texto_vacio": 0
+  },
+  "dataset": "Produccion Policial 2023-2026",
+  "archivos": [
+    {
+      "archivo": "Produccion Policial_2023.csv",
+      "codificacion": "utf-8-sig",
+      "bytes": 549899,
+      "sha256": "d1e55003d57d22f08809f851887a47f57462823469412048f357af6617fc74d1",
+      "convertido": false,
+      "archivo_utf8": null,
+      "filas": 9936
+    },
+    {
+      "archivo": "Produccion Policial_2024.csv",
+      "codificacion": "utf-8-sig",
+      "bytes": 551181,
+      "sha256": "cf3a11f15b40cee235ddfefc4fda9417a5b248852d4b1e3622e2e8ecc62c21a8",
+      "convertido": false,
+      "archivo_utf8": null,
+      "filas": 9936
+    },
+    {
+      "archivo": "Produccion Policial_2025.csv",
+      "codificacion": "utf-8-sig",
+      "bytes": 587024,
+      "sha256": "68ec6c6cc97abc285934402fded068872237c901ac613481e124c4d9f2e08fc7",
+      "convertido": false,
+      "archivo_utf8": null,
+      "filas": 10584
+    },
+    {
+      "archivo": "Produccion Policial_2026.csv",
+      "codificacion": "utf-8-sig",
+      "bytes": 478656,
+      "sha256": "2e836f48f451467a7f5bee1566f72eae1b3a8ad41e7a5475fd1b96c81522ddae",
+      "convertido": false,
+      "archivo_utf8": null,
+      "filas": 8640
+    }
+  ],
+  "hash_origen": "c8dbedecc3e069fbde5154521a6f90a7d7860010d8290fa0266158434b1af46a",
+  "fecha_generacion": "2026-11-16 19:28:18",
+  "script_sql": "Database/03_produccion_policial_datamart.sql",
+  "base_datos": "DBProduccionPolicial",
+  "tabla": "dm.ProduccionPolicial"
+}

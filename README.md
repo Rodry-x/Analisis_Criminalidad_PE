@@ -210,14 +210,119 @@ filas    casos
 77331    142374
 ```
 
+## Dataset 3 — Producción Policial 2023-2026
+
+**Estado:** ETL implementado y cargado en SQL Server.
+
+| Elemento | Valor |
+|---|---|
+| Archivos de origen | 4 CSV (2023–2026) |
+| Codificación original | UTF-8 con BOM (sin conversión necesaria) |
+| Filas cargadas | 39,096 |
+| Base de datos | `DBProduccionPolicial` |
+| Tabla | `dm.ProduccionPolicial` |
+| Script SQL | `Database/03_produccion_policial_datamart.sql` |
+| Diccionario | `Database/03_produccion_policial_diccionario.md` |
+| ETL | `Pipeline/etl_produccion_policial.py` |
+
+### Ejecución
+
+```powershell
+# Opción 1: sin activar el entorno (usa conda run)
+.\Pipeline\run_etl_produccion_policial.bat
+
+# Opción 2: con el entorno activado
+conda activate ciencia-de-datos
+python Pipeline/etl_produccion_policial.py
+
+# Solo generar el .sql, sin cargar en SQL Server
+python Pipeline/etl_produccion_policial.py --generate-only
+```
+
+Parámetros disponibles:
+
+```text
+--server        Instancia de SQL Server (por defecto: localhost)
+--database      Nombre de la base (por defecto: DBProduccionPolicial)
+--sqlcmd        Ruta explícita a sqlcmd.exe
+--batch-size    Filas por INSERT masivo (por defecto: 1000)
+--generate-only Solo genera el script SQL
+```
+
+### Mes como número
+
+El origen trae el mes como abreviatura en español (`ENE`, `FEB`, …, `SET`, …,
+`DIC`). El ETL lo convierte a **número 1–12** para que los tres DataMarts
+tengan la misma clave temporal (`anio_registro`, `mes_registro`) y la unión en
+el DataWarehouse sea directa. La equivalencia completa está en el diccionario.
+
+### Salidas de cada ejecución
+
+- `Database/03_produccion_policial_datamart.sql`
+- `Pipeline/logs/etl_produccion_policial_<fecha>.log`
+- `Pipeline/logs/produccion_policial_metrics_<fecha>.json`
+- `Pipeline/logs/rechazados_produccion_policial_<fecha>.csv` (solo si hay rechazos)
+
+### Limpieza aplicada
+
+1. Detección de codificación por archivo (los CSV ya vienen en UTF-8 con BOM).
+2. `TRIM`, colapso de espacios y mayúsculas en textos.
+3. `MES` convertido de abreviatura a número (1–12).
+4. `VALOR` convertido a `DECIMAL(18,6)`, conservando los ceros (que según el
+   diccionario significan “sin operativos o resultados reportados”).
+5. `unidad_medida` derivada de la variable (`KILOS`, `ENVOLTORIOS`, `SOLES`,
+   `PERSONAS`, `UNIDADES`, etc.) para no mezclar magnitudes.
+6. Homologación de `DIR_REG_FRE` (`Región` → `REGION`).
+7. Validación de año (2023–2026), mes, valor (≥ 0) y textos requeridos.
+8. Agrupación de duplicados por grano
+   `(anio_registro, mes_registro, dependencia, variable)` sumando `valor`.
+9. Derivación de `fecha_hecho` y de `es_anio_parcial` (2026 = 1).
+
+### Validación rápida
+
+```sql
+USE DBProduccionPolicial;
+
+SELECT COUNT(*) AS filas, SUM(valor) AS total_valor
+FROM dm.ProduccionPolicial;
+
+SELECT anio_registro, COUNT(DISTINCT mes_registro) AS meses, COUNT(*) AS filas
+FROM dm.ProduccionPolicial
+GROUP BY anio_registro
+ORDER BY anio_registro;
+
+SELECT * FROM etl.ControlCarga;
+```
+
+Resultado esperado:
+
+```text
+filas    total_valor
+-------- -----------
+39096    2195845317.111756
+```
+
+```text
+anio_registro meses filas
+------------- ----- -----
+2023          12    9936
+2024          12    9936
+2025          12    10584
+2026          10    8640
+```
+
+### Aviso de interpretación
+
+`VALOR` mezcla unidades (kilos, envoltorios, soles, personas, unidades). Para
+cualquier análisis o visualización, **filtrar siempre por `unidad_medida` o por
+`variable`**; nunca sumar todo junto.
+
 ### Próximos datasets
 
 Cada dataset tendrá su propio ETL y su script SQL de DataMart:
 
 ```text
-Database/03_produccion_policial_datamart.sql
 Database/04_victimizacion_datamart.sql
-Pipeline/etl_produccion_policial.py
 Pipeline/etl_victimizacion.py
 ```
 

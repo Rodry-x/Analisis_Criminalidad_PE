@@ -1,0 +1,37 @@
+2026-11-16 19:28:18 | INFO    | ==============================================================================
+2026-11-16 19:28:18 | INFO    | ETL Produccion Policial 2023-2026
+2026-11-16 19:28:18 | INFO    | Entorno: C:\Users\rodry20x\miniconda3\envs\ciencia-de-datos\python.exe
+2026-11-16 19:28:18 | INFO    | Log: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\etl_produccion_policial_20261116_192818.log
+2026-11-16 19:28:18 | INFO    | ==============================================================================
+2026-11-16 19:28:18 | INFO    | Leyendo 4 archivos CSV desde C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Dataset-Crudo\Produccion-Policial_2023-2026
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2023.csv     ya esta en UTF-8 (utf-8-sig)
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2023.csv         9,936 filas
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2024.csv     ya esta en UTF-8 (utf-8-sig)
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2024.csv         9,936 filas
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2025.csv     ya esta en UTF-8 (utf-8-sig)
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2025.csv        10,584 filas
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2026.csv     ya esta en UTF-8 (utf-8-sig)
+2026-11-16 19:28:18 | INFO    |   Produccion Policial_2026.csv         8,640 filas
+2026-11-16 19:28:18 | INFO    | Total de filas leidas: 39,096
+2026-11-16 19:28:18 | INFO    | Meses convertidos a numero: ENE=1, FEB=2, MAR=3, ABR=4, MAY=5, JUN=6, JUL=7, AGO=8, SET=9, OCT=10, NOV=11, DIC=12
+2026-11-16 19:28:19 | INFO    | Filas cargadas: 39,096
+2026-11-16 19:28:19 | INFO    | Dimensiones: 18 variables, 53 dependencias, 6 dir_reg_fre
+2026-11-16 19:28:19 | INFO    | Filas con valor 0 (conservadas): 15,458
+2026-11-16 19:28:19 | WARNING | Anios parciales detectados: [2026]
+2026-11-16 19:28:19 | INFO    | Script SQL generado: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Database\03_produccion_policial_datamart.sql (5.21 MB)
+2026-11-16 19:28:19 | INFO    | Metricas guardadas en: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\produccion_policial_metrics_20261116_192818.json
+2026-11-16 19:28:19 | INFO    | Ejecutando SQL en localhost (base DBProduccionPolicial)...
+2026-11-16 19:28:48 | INFO    | sqlcmd | filas_cargadas total_valor                              variables   unidades_medida dependencias dir_reg_fre filas_valor_cero anio_min anio_max filas_anio_parcial
+2026-11-16 19:28:48 | INFO    | sqlcmd | -------------- ---------------------------------------- ----------- --------------- ------------ ----------- ---------------- -------- -------- ------------------
+2026-11-16 19:28:48 | INFO    | sqlcmd |          39096                        2195845317.111756          18               9           53           6            15458     2023     2026               8640
+2026-11-16 19:28:48 | INFO    | sqlcmd | anio_registro meses       filas
+2026-11-16 19:28:48 | INFO    | sqlcmd | ------------- ----------- -----------
+2026-11-16 19:28:48 | INFO    | sqlcmd |          2023          12        9936
+2026-11-16 19:28:48 | INFO    | sqlcmd |          2024          12        9936
+2026-11-16 19:28:48 | INFO    | sqlcmd |          2025          12       10584
+2026-11-16 19:28:48 | INFO    | sqlcmd |          2026          10        8640
+2026-11-16 19:28:48 | INFO    | Carga completada en 28.27 segundos.
+2026-11-16 19:28:48 | INFO    | ==============================================================================
+2026-11-16 19:28:48 | INFO    | ETL finalizado correctamente.
+2026-11-16 19:28:48 | INFO    | Tabla dm.ProduccionPolicial: 39,096 filas cargadas.
+2026-11-16 19:28:48 | INFO    | ==============================================================================
