@@ -1,0 +1,27 @@
+2026-11-16 19:02:04 | INFO    | ==============================================================================
+2026-11-16 19:02:04 | INFO    | ETL Personas Desaparecidas 2019-2025
+2026-11-16 19:02:04 | INFO    | Entorno: C:\Users\rodry20x\miniconda3\envs\ciencia-de-datos\python.exe
+2026-11-16 19:02:04 | INFO    | Log: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\etl_personas_desaparecidas_20261116_190204.log
+2026-11-16 19:02:04 | INFO    | ==============================================================================
+2026-11-16 19:02:04 | INFO    | Codificacion detectada del archivo crudo: cp1252
+2026-11-16 19:02:04 | INFO    | Copia UTF-8 generada: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Dataset-Procesado\Personas-Desaparecidas_2019-2025\Personas_Desaparecidas_2019_2025_utf8.csv
+2026-11-16 19:02:04 | INFO    | Caracteres no ASCII conservados: ÁÍÑÓÚ
+2026-11-16 19:02:04 | INFO    | Leyendo copia UTF-8: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Dataset-Procesado\Personas-Desaparecidas_2019-2025\Personas_Desaparecidas_2019_2025_utf8.csv
+2026-11-16 19:02:04 | INFO    |   Personas_Desaparecidas_2019_2025.csv          77,331 filas
+2026-11-16 19:02:05 | INFO    | Departamentos homologados: 17,147 filas {'JUNÍN': 4825, 'REGIÓN LIMA': 2997, 'HUÁNUCO': 2753, 'ÁNCASH': 2535, 'SAN MARTÍN': 2084, 'CALLAO': 1953}
+2026-11-16 19:02:05 | INFO    | Homologando ubigeo 150121 (70 filas) -> LIMA METROPOLITANA / LIMA / PUEBLO LIBRE
+2026-11-16 19:02:06 | INFO    | Filas cargadas: 77,331
+2026-11-16 19:02:06 | INFO    | Total de casos: 142,374
+2026-11-16 19:02:06 | INFO    | Dimensiones: 26 deptos, 195 provincias, 1434 distritos, 1549 ubigeos, 60 nacionalidades
+2026-11-16 19:02:06 | INFO    | Valores vacios cargados como NULL: sexo=83, rango_edad=1,197
+2026-11-16 19:02:07 | INFO    | Script SQL generado: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Database\02_personas_desaparecidas_datamart.sql (11.55 MB)
+2026-11-16 19:02:07 | INFO    | Metricas guardadas en: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\personas_desaparecidas_metrics_20261116_190204.json
+2026-11-16 19:02:07 | INFO    | Ejecutando SQL en localhost (base DBPersonasDesaparecidas)...
+2026-11-16 19:03:13 | INFO    | sqlcmd | filas_cargadas total_casos departamentos provincias  distritos   ubigeos     nacionalidades filas_sexo_null filas_rango_edad_null anio_min anio_max filas_anio_parcial
+2026-11-16 19:03:13 | INFO    | sqlcmd | -------------- ----------- ------------- ----------- ----------- ----------- -------------- --------------- --------------------- -------- -------- ------------------
+2026-11-16 19:03:13 | INFO    | sqlcmd |          77331      142374            26         195        1434        1549             60              83                  1197     2019     2025                  0
+2026-11-16 19:03:13 | INFO    | Carga completada en 66.42 segundos.
+2026-11-16 19:03:13 | INFO    | ==============================================================================
+2026-11-16 19:03:13 | INFO    | ETL finalizado correctamente.
+2026-11-16 19:03:13 | INFO    | Tabla dm.PersonasDesaparecidas: 77,331 filas, 142,374 casos.
+2026-11-16 19:03:13 | INFO    | ==============================================================================

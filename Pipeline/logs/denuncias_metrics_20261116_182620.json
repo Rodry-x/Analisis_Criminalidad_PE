@@ -1,0 +1,79 @@
+{
+  "filas_leidas": 378187,
+  "filas_rechazadas": 0,
+  "filas_agrupadas": 0,
+  "filas_cargadas": 378187,
+  "total_denuncias": 7614774,
+  "departamentos": 26,
+  "provincias": 196,
+  "distritos": 1689,
+  "ubigeos": 1840,
+  "modalidades": 7,
+  "anio_min": 2018,
+  "anio_max": 2026,
+  "anios_parciales": [
+    2026
+  ],
+  "ubigeos_homologados": 107,
+  "motivos_rechazo": {
+    "anio_invalido": 0,
+    "mes_invalido": 0,
+    "cantidad_invalida": 0,
+    "ubigeo_invalido": 0,
+    "departamento_ubigeo_incompatible": 0,
+    "texto_vacio": 0
+  },
+  "dataset": "Denuncias Policiales 2018-2026",
+  "archivos": [
+    {
+      "archivo": "Denuncias_Policiales_2018.csv",
+      "filas": 32879,
+      "sha256": "e27de7b2815ad926f1237a69f92e8135e24b65a89522489477137e431776f03d"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2019.csv",
+      "filas": 37877,
+      "sha256": "d1a7e37878f655523bd0c62183edb198ea5a2c03c208d2c8d7fd102cac49a19c"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2020.csv",
+      "filas": 37651,
+      "sha256": "d4f3d189a79421bf5adb318c125680e0a0fb7cdafb7d763d80444bbcfa2e4461"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2021.csv",
+      "filas": 43165,
+      "sha256": "c5af49348825ec72009a8c1d1b82ef8b8c2b8feddba2798d1ca8a3e0b9841e6b"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2022.csv",
+      "filas": 46199,
+      "sha256": "ae1ac8548f6792e7c666fe1db267bba17e035364edc9aa919c27e0c083a7d3a8"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2023.csv",
+      "filas": 48124,
+      "sha256": "72ad79dfa6116e31911a82c3587214b5493aaf7b2672109c2b8dce4aa92fd0c9"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2024.csv",
+      "filas": 48235,
+      "sha256": "9a80c30618b0f3bb14bf136ded875f013aab5ebbe36b9199b59db887666fa31a"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2025.csv",
+      "filas": 46374,
+      "sha256": "35ff6790417203860c07bbd56f477d7fd6350b7fa7097310c81b239d91b50322"
+    },
+    {
+      "archivo": "Denuncias_Policiales_2026.csv",
+      "filas": 37683,
+      "sha256": "d85bc7eacaadaea014cb64cf8a72fb2f664580878a0ae31e0305c503369e726b"
+    }
+  ],
+  "hash_origen": "14bee1d10628e7fad1e4241f62760e4df7e286ada4cb1c7a1ff2f700cae866bf",
+  "fecha_generacion": "2026-11-16 18:26:20",
+  "script_sql": "Database/01_denuncias_policiales_datamart.sql",
+  "base_datos": "DBDenunciasPoliciales",
+  "tabla": "dm.DenunciasPoliciales"
+}

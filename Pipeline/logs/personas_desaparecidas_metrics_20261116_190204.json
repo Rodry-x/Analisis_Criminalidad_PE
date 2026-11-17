@@ -1,0 +1,60 @@
+{
+  "filas_leidas": 77331,
+  "filas_rechazadas": 0,
+  "filas_agrupadas": 0,
+  "filas_cargadas": 77331,
+  "total_casos": 142374,
+  "departamentos": 26,
+  "provincias": 195,
+  "distritos": 1434,
+  "ubigeos": 1549,
+  "nacionalidades": 60,
+  "sexos": 2,
+  "rangos_edad": 6,
+  "filas_sexo_null": 83,
+  "filas_rango_edad_null": 1197,
+  "anio_min": 2019,
+  "anio_max": 2025,
+  "anios_parciales": [],
+  "ubigeos_homologados": 70,
+  "departamentos_canonizados": 17147,
+  "motivos_rechazo": {
+    "anio_invalido": 0,
+    "mes_invalido": 0,
+    "cantidad_invalida": 0,
+    "ubigeo_invalido": 0,
+    "departamento_ubigeo_incompatible": 0,
+    "texto_requerido_vacio": 0,
+    "sexo_invalido": 0,
+    "rango_edad_invalido": 0
+  },
+  "dataset": "Personas Desaparecidas 2019-2025",
+  "archivo": {
+    "archivo": "Personas_Desaparecidas_2019_2025.csv",
+    "filas": 77331,
+    "sha256": "c41ebcced14fdf86bbf17db9f54bb381d73c0464a402f22ac5548a7899ef0e32"
+  },
+  "codificacion": {
+    "archivo_crudo": "Dataset-Crudo/Personas-Desaparecidas_2019-2025/Personas_Desaparecidas_2019_2025.csv",
+    "codificacion_origen": "cp1252",
+    "archivo_utf8": "Dataset-Procesado/Personas-Desaparecidas_2019-2025/Personas_Desaparecidas_2019_2025_utf8.csv",
+    "codificacion_destino": "utf-8-sig",
+    "convertido_en_esta_corrida": true,
+    "caracteres_no_ascii": [
+      "Á",
+      "Í",
+      "Ñ",
+      "Ó",
+      "Ú"
+    ],
+    "sha256_crudo": "c41ebcced14fdf86bbf17db9f54bb381d73c0464a402f22ac5548a7899ef0e32",
+    "sha256_utf8": "e135cd504ebf6bfbacfc653d35515d6d6a8e2b48df9bcac4a85435d9eb4d6c04",
+    "bytes_crudo": 5068176,
+    "bytes_utf8": 5236654
+  },
+  "hash_origen": "cadfc518a533703aef219d7d586e4532e82d68b289f39aef36b5ef694a5b1346",
+  "fecha_generacion": "2026-11-16 19:02:04",
+  "script_sql": "Database/02_personas_desaparecidas_datamart.sql",
+  "base_datos": "DBPersonasDesaparecidas",
+  "tabla": "dm.PersonasDesaparecidas"
+}

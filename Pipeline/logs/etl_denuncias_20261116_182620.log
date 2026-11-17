@@ -1,0 +1,32 @@
+2026-11-16 18:26:20 | INFO    | ==============================================================================
+2026-11-16 18:26:20 | INFO    | ETL Denuncias Policiales 2018-2026
+2026-11-16 18:26:20 | INFO    | Entorno: C:\Users\rodry20x\miniconda3\envs\ciencia-de-datos\python.exe
+2026-11-16 18:26:20 | INFO    | Log: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\etl_denuncias_20261116_182620.log
+2026-11-16 18:26:20 | INFO    | ==============================================================================
+2026-11-16 18:26:20 | INFO    | Leyendo 9 archivos CSV desde C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Dataset-Crudo\Denuncias-Policiales_2018-2026
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2018.csv           32,879 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2019.csv           37,877 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2020.csv           37,651 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2021.csv           43,165 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2022.csv           46,199 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2023.csv           48,124 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2024.csv           48,235 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2025.csv           46,374 filas
+2026-11-16 18:26:20 | INFO    |   Denuncias_Policiales_2026.csv           37,683 filas
+2026-11-16 18:26:20 | INFO    | Total de filas leídas: 378,187
+2026-11-16 18:26:23 | INFO    | Homologando ubigeo 160801 (107 filas) -> LORETO / PUTUMAYO / PUTUMAYO
+2026-11-16 18:26:30 | INFO    | Filas cargadas: 378,187
+2026-11-16 18:26:30 | INFO    | Total de denuncias: 7,614,774
+2026-11-16 18:26:30 | INFO    | Dimensiones: 26 deptos, 196 provincias, 1689 distritos, 7 modalidades
+2026-11-16 18:26:30 | WARNING | Años parciales detectados: [2026]
+2026-11-16 18:26:31 | INFO    | Script SQL generado: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Database\01_denuncias_policiales_datamart.sql (48.67 MB)
+2026-11-16 18:26:31 | INFO    | Métricas guardadas en: C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Pipeline\logs\denuncias_metrics_20261116_182620.json
+2026-11-16 18:26:31 | INFO    | Ejecutando SQL en localhost (base DBDenunciasPoliciales)...
+2026-11-16 18:38:06 | INFO    | sqlcmd | filas_cargadas total_denuncias departamentos provincias  distritos   ubigeos     modalidades anio_min anio_max filas_anio_parcial
+2026-11-16 18:38:06 | INFO    | sqlcmd | -------------- --------------- ------------- ----------- ----------- ----------- ----------- -------- -------- ------------------
+2026-11-16 18:38:06 | INFO    | sqlcmd |         378187         7614774            26         196        1689        1840           7     2018     2026              37683
+2026-11-16 18:38:06 | INFO    | Carga completada en 694.78 segundos.
+2026-11-16 18:38:06 | INFO    | ==============================================================================
+2026-11-16 18:38:06 | INFO    | ETL finalizado correctamente.
+2026-11-16 18:38:06 | INFO    | Tabla dm.DenunciasPoliciales: 378,187 filas, 7,614,774 denuncias.
+2026-11-16 18:38:06 | INFO    | ==============================================================================
