@@ -1,0 +1,1221 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/18/2026 11:50:59 a. m."
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="RODRYPC"
+  DTS:CreatorName="RODRYPC\rodry20x"
+  DTS:DTSID="{DB3D8EB1-3A77-4D9B-A49E-0FDC12F6DC2B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="10250"
+  DTS:ObjectName="10_Dimensiones"
+  DTS:PackageType="5"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{E84AA871-A6CA-40CB-A7AA-A1E7DE299C0D}">
+  <DTS:Property DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager DTS:refId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" DTS:CreationName="OLEDB" DTS:DTSID="{09F0FC66-BAE2-4B1C-A039-41043CEE0822}" DTS:ObjectName="localhost.DW_ProyectoEF">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager DTS:ConnectRetryCount="1" DTS:ConnectRetryInterval="5" DTS:ConnectionString="Data Source=localhost;Initial Catalog=DW_ProyectoEF;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Package-{09F0FC66-BAE2-4B1C-A039-41043CEE0822}localhost.DW_ProyectoEF;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable DTS:refId="Package\DFT Dim Fecha" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{4BEA069E-9441-4C0D-A1F3-B8B210179898}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Fecha" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_fecha" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_fecha, fecha, anio, mes, dia, nombre_mes, trimestre, es_fin_de_semana, anio_mes FROM stg.vw_dim_fecha</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[id_fecha]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[id_fecha]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[id_fecha]" name="id_fecha" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[fecha]" dataType="dbDate" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[fecha]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[fecha]" name="fecha" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[anio]" dataType="i2" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[anio]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[anio]" name="anio" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[mes]" dataType="ui1" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[mes]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[mes]" name="mes" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[dia]" dataType="ui1" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[dia]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[dia]" name="dia" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[nombre_mes]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[nombre_mes]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[nombre_mes]" name="nombre_mes" length="20" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[trimestre]" dataType="ui1" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[trimestre]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[trimestre]" name="trimestre" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[es_fin_de_semana]" dataType="bool" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[es_fin_de_semana]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[es_fin_de_semana]" name="es_fin_de_semana" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[anio_mes]" dataType="str" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[anio_mes]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[anio_mes]" name="anio_mes" length="7" truncationRowDisposition="FailComponent" codePage="1252" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[id_fecha]" dataType="i4" name="id_fecha" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[fecha]" dataType="dbDate" name="fecha" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[anio]" dataType="i2" name="anio" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[mes]" dataType="ui1" name="mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[dia]" dataType="ui1" name="dia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[nombre_mes]" dataType="wstr" length="20" name="nombre_mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[trimestre]" dataType="ui1" name="trimestre" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[es_fin_de_semana]" dataType="bool" name="es_fin_de_semana" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].ExternalColumns[anio_mes]" dataType="str" length="7" name="anio_mes" codePage="1252" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[id_fecha]" dataType="i4" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[id_fecha]" name="id_fecha" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[fecha]" dataType="dbDate" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[fecha]" name="fecha" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[anio]" dataType="i2" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[anio]" name="anio" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[mes]" dataType="ui1" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[mes]" name="mes" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[dia]" dataType="ui1" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[dia]" name="dia" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[nombre_mes]" dataType="wstr" length="20" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[nombre_mes]" name="nombre_mes" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[trimestre]" dataType="ui1" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[trimestre]" name="trimestre" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[es_fin_de_semana]" dataType="bool" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[es_fin_de_semana]" name="es_fin_de_semana" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[anio_mes]" dataType="str" length="7" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[anio_mes]" name="anio_mes" codePage="1252" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Fecha\DST dw dim_fecha" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_fecha" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_fecha]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Fecha\DST dw dim_fecha.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[id_fecha]" cachedDataType="i4" cachedName="id_fecha" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_fecha]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[id_fecha]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[fecha]" cachedDataType="dbDate" cachedName="fecha" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[fecha]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[fecha]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[anio]" cachedDataType="i2" cachedName="anio" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[anio]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[anio]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[mes]" cachedDataType="ui1" cachedName="mes" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[mes]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[mes]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[dia]" cachedDataType="ui1" cachedName="dia" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[dia]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[dia]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[nombre_mes]" cachedDataType="wstr" cachedLength="20" cachedName="nombre_mes" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[nombre_mes]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[nombre_mes]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[trimestre]" cachedDataType="ui1" cachedName="trimestre" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[trimestre]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[trimestre]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[es_fin_de_semana]" cachedDataType="bool" cachedName="es_fin_de_semana" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[es_fin_de_semana]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[es_fin_de_semana]" />
+                    <inputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].Columns[anio_mes]" cachedDataType="str" cachedLength="7" cachedName="anio_mes" externalMetadataColumnId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[anio_mes]" lineageId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB].Columns[anio_mes]" codePage="1252" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_fecha]" dataType="i4" name="id_fecha" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[fecha]" dataType="dbDate" name="fecha" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[anio]" dataType="i2" name="anio" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[mes]" dataType="ui1" name="mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[dia]" dataType="ui1" name="dia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[nombre_mes]" dataType="wstr" length="20" name="nombre_mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[trimestre]" dataType="ui1" name="trimestre" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[es_fin_de_semana]" dataType="bool" name="es_fin_de_semana" />
+                    <externalMetadataColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[anio_mes]" dataType="str" length="7" name="anio_mes" codePage="1252" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Fecha\DST dw dim_fecha.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Fecha\DST dw dim_fecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Fecha\DST dw dim_fecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Fecha\DST dw dim_fecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Fecha.Paths[Flujo DFT Dim Fecha]" endId="Package\DFT Dim Fecha\DST dw dim_fecha.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Fecha" startId="Package\DFT Dim Fecha\SRC stg vw_dim_fecha.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Tiempo" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{F75C00B2-8F77-4893-A47E-8F52A81A31AB}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Tiempo" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_tiempo" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_tiempo, anio, mes, nombre_mes, trimestre, periodo, es_anual, orden FROM stg.vw_dim_tiempo</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[id_tiempo]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_tiempo]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[id_tiempo]" name="id_tiempo" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[anio]" dataType="i2" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[anio]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[anio]" name="anio" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[mes]" dataType="ui1" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[mes]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[mes]" name="mes" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[nombre_mes]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[nombre_mes]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[nombre_mes]" name="nombre_mes" length="20" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[trimestre]" dataType="ui1" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[trimestre]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[trimestre]" name="trimestre" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[periodo]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[periodo]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[periodo]" name="periodo" length="10" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[es_anual]" dataType="bool" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[es_anual]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[es_anual]" name="es_anual" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[orden]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[orden]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[orden]" name="orden" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_tiempo]" dataType="i4" name="id_tiempo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[anio]" dataType="i2" name="anio" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[mes]" dataType="ui1" name="mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[nombre_mes]" dataType="wstr" length="20" name="nombre_mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[trimestre]" dataType="ui1" name="trimestre" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[periodo]" dataType="wstr" length="10" name="periodo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[es_anual]" dataType="bool" name="es_anual" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].ExternalColumns[orden]" dataType="i4" name="orden" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[id_tiempo]" dataType="i4" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[id_tiempo]" name="id_tiempo" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[anio]" dataType="i2" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[anio]" name="anio" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[mes]" dataType="ui1" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[mes]" name="mes" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[nombre_mes]" dataType="wstr" length="20" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[nombre_mes]" name="nombre_mes" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[trimestre]" dataType="ui1" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[trimestre]" name="trimestre" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[periodo]" dataType="wstr" length="10" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[periodo]" name="periodo" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[es_anual]" dataType="bool" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[es_anual]" name="es_anual" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[orden]" dataType="i4" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[orden]" name="orden" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Tiempo\DST dw dim_tiempo" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_tiempo" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_tiempo]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[id_tiempo]" cachedDataType="i4" cachedName="id_tiempo" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_tiempo]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[id_tiempo]" />
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[anio]" cachedDataType="i2" cachedName="anio" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[anio]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[anio]" />
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[mes]" cachedDataType="ui1" cachedName="mes" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[mes]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[mes]" />
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[nombre_mes]" cachedDataType="wstr" cachedLength="20" cachedName="nombre_mes" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[nombre_mes]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[nombre_mes]" />
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[trimestre]" cachedDataType="ui1" cachedName="trimestre" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[trimestre]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[trimestre]" />
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[periodo]" cachedDataType="wstr" cachedLength="10" cachedName="periodo" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[periodo]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[periodo]" />
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[es_anual]" cachedDataType="bool" cachedName="es_anual" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[es_anual]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[es_anual]" />
+                    <inputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].Columns[orden]" cachedDataType="i4" cachedName="orden" externalMetadataColumnId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[orden]" lineageId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB].Columns[orden]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_tiempo]" dataType="i4" name="id_tiempo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[anio]" dataType="i2" name="anio" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[mes]" dataType="ui1" name="mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[nombre_mes]" dataType="wstr" length="20" name="nombre_mes" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[trimestre]" dataType="ui1" name="trimestre" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[periodo]" dataType="wstr" length="10" name="periodo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[es_anual]" dataType="bool" name="es_anual" />
+                    <externalMetadataColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB].ExternalColumns[orden]" dataType="i4" name="orden" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Tiempo.Paths[Flujo DFT Dim Tiempo]" endId="Package\DFT Dim Tiempo\DST dw dim_tiempo.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Tiempo" startId="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Departamento" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{435701BC-5176-44C5-8BA9-7E5B87FA27D8}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Departamento" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_departamento" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_departamento, codigo, departamento, es_nacional, macroregion FROM stg.vw_dim_departamento</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[id_departamento]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" name="id_departamento" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[codigo]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[codigo]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[codigo]" name="codigo" length="6" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[departamento]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[departamento]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[departamento]" name="departamento" length="60" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[es_nacional]" dataType="bool" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[es_nacional]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[es_nacional]" name="es_nacional" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[macroregion]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[macroregion]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[macroregion]" name="macroregion" length="20" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[id_departamento]" dataType="i4" name="id_departamento" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[codigo]" dataType="wstr" length="6" name="codigo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[departamento]" dataType="wstr" length="60" name="departamento" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[es_nacional]" dataType="bool" name="es_nacional" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].ExternalColumns[macroregion]" dataType="wstr" length="20" name="macroregion" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[id_departamento]" dataType="i4" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[id_departamento]" name="id_departamento" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[codigo]" dataType="wstr" length="6" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[codigo]" name="codigo" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[departamento]" dataType="wstr" length="60" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[departamento]" name="departamento" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[es_nacional]" dataType="bool" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[es_nacional]" name="es_nacional" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[macroregion]" dataType="wstr" length="20" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[macroregion]" name="macroregion" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Departamento\DST dw dim_departamento" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_departamento" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_departamento]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Departamento\DST dw dim_departamento.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].Columns[id_departamento]" cachedDataType="i4" cachedName="id_departamento" externalMetadataColumnId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_departamento]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" />
+                    <inputColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].Columns[codigo]" cachedDataType="wstr" cachedLength="6" cachedName="codigo" externalMetadataColumnId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[codigo]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[codigo]" />
+                    <inputColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].Columns[departamento]" cachedDataType="wstr" cachedLength="60" cachedName="departamento" externalMetadataColumnId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[departamento]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[departamento]" />
+                    <inputColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].Columns[es_nacional]" cachedDataType="bool" cachedName="es_nacional" externalMetadataColumnId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[es_nacional]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[es_nacional]" />
+                    <inputColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].Columns[macroregion]" cachedDataType="wstr" cachedLength="20" cachedName="macroregion" externalMetadataColumnId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[macroregion]" lineageId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB].Columns[macroregion]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_departamento]" dataType="i4" name="id_departamento" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[codigo]" dataType="wstr" length="6" name="codigo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[departamento]" dataType="wstr" length="60" name="departamento" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[es_nacional]" dataType="bool" name="es_nacional" />
+                    <externalMetadataColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB].ExternalColumns[macroregion]" dataType="wstr" length="20" name="macroregion" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Departamento\DST dw dim_departamento.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Departamento\DST dw dim_departamento.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Departamento\DST dw dim_departamento.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Departamento\DST dw dim_departamento.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Departamento.Paths[Flujo DFT Dim Departamento]" endId="Package\DFT Dim Departamento\DST dw dim_departamento.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Departamento" startId="Package\DFT Dim Departamento\SRC stg vw_dim_departamento.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Provincia" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{8E14CC93-E4AE-4370-858C-22B9E31DB85D}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Provincia" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_provincia" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_provincia, provincia, id_departamento FROM stg.vw_dim_provincia</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[id_provincia]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].ExternalColumns[id_provincia]" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[id_provincia]" name="id_provincia" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[provincia]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].ExternalColumns[provincia]" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[provincia]" name="provincia" length="100" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].ExternalColumns[id_departamento]" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" name="id_departamento" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].ExternalColumns[id_provincia]" dataType="i4" name="id_provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].ExternalColumns[provincia]" dataType="wstr" length="100" name="provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].ExternalColumns[id_departamento]" dataType="i4" name="id_departamento" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[id_provincia]" dataType="i4" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[id_provincia]" name="id_provincia" />
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[provincia]" dataType="wstr" length="100" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[provincia]" name="provincia" />
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[id_departamento]" dataType="i4" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[id_departamento]" name="id_departamento" />
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Provincia\DST dw dim_provincia" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_provincia" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_provincia]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Provincia\DST dw dim_provincia.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].Columns[id_provincia]" cachedDataType="i4" cachedName="id_provincia" externalMetadataColumnId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_provincia]" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[id_provincia]" />
+                    <inputColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].Columns[provincia]" cachedDataType="wstr" cachedLength="100" cachedName="provincia" externalMetadataColumnId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].ExternalColumns[provincia]" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[provincia]" />
+                    <inputColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].Columns[id_departamento]" cachedDataType="i4" cachedName="id_departamento" externalMetadataColumnId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_departamento]" lineageId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_provincia]" dataType="i4" name="id_provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].ExternalColumns[provincia]" dataType="wstr" length="100" name="provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_departamento]" dataType="i4" name="id_departamento" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Provincia\DST dw dim_provincia.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Provincia\DST dw dim_provincia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Provincia\DST dw dim_provincia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Provincia\DST dw dim_provincia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Provincia.Paths[Flujo DFT Dim Provincia]" endId="Package\DFT Dim Provincia\DST dw dim_provincia.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Provincia" startId="Package\DFT Dim Provincia\SRC stg vw_dim_provincia.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Ubigeo" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{F2C7849A-E162-48E6-93B8-F1C0D8540AF3}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Ubigeo" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_ubigeo" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_ubigeo, ubigeo, distrito, provincia, id_provincia, id_departamento FROM stg.vw_dim_ubigeo</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_ubigeo]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_ubigeo]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_ubigeo]" name="id_ubigeo" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[ubigeo]" dataType="str" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[ubigeo]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[ubigeo]" name="ubigeo" length="6" truncationRowDisposition="FailComponent" codePage="1252" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[distrito]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[distrito]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[distrito]" name="distrito" length="120" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[provincia]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[provincia]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[provincia]" name="provincia" length="100" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_provincia]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_provincia]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_provincia]" name="id_provincia" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_departamento]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" name="id_departamento" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_ubigeo]" dataType="i4" name="id_ubigeo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[ubigeo]" dataType="str" length="6" name="ubigeo" codePage="1252" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[distrito]" dataType="wstr" length="120" name="distrito" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[provincia]" dataType="wstr" length="100" name="provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_provincia]" dataType="i4" name="id_provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_departamento]" dataType="i4" name="id_departamento" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[id_ubigeo]" dataType="i4" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[id_ubigeo]" name="id_ubigeo" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[ubigeo]" dataType="str" length="6" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[ubigeo]" name="ubigeo" codePage="1252" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[distrito]" dataType="wstr" length="120" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[distrito]" name="distrito" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[provincia]" dataType="wstr" length="100" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[provincia]" name="provincia" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[id_provincia]" dataType="i4" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[id_provincia]" name="id_provincia" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[id_departamento]" dataType="i4" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[id_departamento]" name="id_departamento" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_ubigeo" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_ubigeo]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].Columns[id_ubigeo]" cachedDataType="i4" cachedName="id_ubigeo" externalMetadataColumnId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_ubigeo]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_ubigeo]" />
+                    <inputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].Columns[ubigeo]" cachedDataType="str" cachedLength="6" cachedName="ubigeo" externalMetadataColumnId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[ubigeo]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[ubigeo]" codePage="1252" />
+                    <inputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].Columns[distrito]" cachedDataType="wstr" cachedLength="120" cachedName="distrito" externalMetadataColumnId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[distrito]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[distrito]" />
+                    <inputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].Columns[provincia]" cachedDataType="wstr" cachedLength="100" cachedName="provincia" externalMetadataColumnId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[provincia]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[provincia]" />
+                    <inputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].Columns[id_provincia]" cachedDataType="i4" cachedName="id_provincia" externalMetadataColumnId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_provincia]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_provincia]" />
+                    <inputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].Columns[id_departamento]" cachedDataType="i4" cachedName="id_departamento" externalMetadataColumnId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_departamento]" lineageId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB].Columns[id_departamento]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_ubigeo]" dataType="i4" name="id_ubigeo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[ubigeo]" dataType="str" length="6" name="ubigeo" codePage="1252" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[distrito]" dataType="wstr" length="120" name="distrito" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[provincia]" dataType="wstr" length="100" name="provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_provincia]" dataType="i4" name="id_provincia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_departamento]" dataType="i4" name="id_departamento" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Ubigeo.Paths[Flujo DFT Dim Ubigeo]" endId="Package\DFT Dim Ubigeo\DST dw dim_ubigeo.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Ubigeo" startId="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Modalidad" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{B7596299-F97B-40F8-BD50-B1DA4890217C}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Modalidad" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_modalidad" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_modalidad, modalidad FROM stg.vw_dim_modalidad</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].Columns[id_modalidad]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[id_modalidad]" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].Columns[id_modalidad]" name="id_modalidad" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].Columns[modalidad]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[modalidad]" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].Columns[modalidad]" name="modalidad" length="100" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[id_modalidad]" dataType="i4" name="id_modalidad" />
+                    <externalMetadataColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[modalidad]" dataType="wstr" length="100" name="modalidad" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[id_modalidad]" dataType="i4" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[id_modalidad]" name="id_modalidad" />
+                    <outputColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[modalidad]" dataType="wstr" length="100" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[modalidad]" name="modalidad" />
+                    <outputColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Modalidad\DST dw dim_modalidad" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_modalidad" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_modalidad]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB].Columns[id_modalidad]" cachedDataType="i4" cachedName="id_modalidad" externalMetadataColumnId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_modalidad]" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].Columns[id_modalidad]" />
+                    <inputColumn refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB].Columns[modalidad]" cachedDataType="wstr" cachedLength="100" cachedName="modalidad" externalMetadataColumnId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[modalidad]" lineageId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB].Columns[modalidad]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_modalidad]" dataType="i4" name="id_modalidad" />
+                    <externalMetadataColumn refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[modalidad]" dataType="wstr" length="100" name="modalidad" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Modalidad.Paths[Flujo DFT Dim Modalidad]" endId="Package\DFT Dim Modalidad\DST dw dim_modalidad.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Modalidad" startId="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Sexo" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{67D98DCA-F5FA-4BF5-BFEE-C052F5FD908E}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Sexo" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_sexo" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_sexo, sexo, descripcion FROM stg.vw_dim_sexo</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[id_sexo]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_sexo]" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[id_sexo]" name="id_sexo" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[sexo]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].ExternalColumns[sexo]" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[sexo]" name="sexo" length="20" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[descripcion]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].ExternalColumns[descripcion]" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[descripcion]" name="descripcion" length="40" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].ExternalColumns[id_sexo]" dataType="i4" name="id_sexo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].ExternalColumns[sexo]" dataType="wstr" length="20" name="sexo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].ExternalColumns[descripcion]" dataType="wstr" length="40" name="descripcion" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[id_sexo]" dataType="i4" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[id_sexo]" name="id_sexo" />
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[sexo]" dataType="wstr" length="20" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[sexo]" name="sexo" />
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[descripcion]" dataType="wstr" length="40" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[descripcion]" name="descripcion" />
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Sexo\DST dw dim_sexo" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_sexo" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_sexo]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Sexo\DST dw dim_sexo.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].Columns[id_sexo]" cachedDataType="i4" cachedName="id_sexo" externalMetadataColumnId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_sexo]" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[id_sexo]" />
+                    <inputColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].Columns[sexo]" cachedDataType="wstr" cachedLength="20" cachedName="sexo" externalMetadataColumnId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].ExternalColumns[sexo]" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[sexo]" />
+                    <inputColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].Columns[descripcion]" cachedDataType="wstr" cachedLength="40" cachedName="descripcion" externalMetadataColumnId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].ExternalColumns[descripcion]" lineageId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB].Columns[descripcion]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_sexo]" dataType="i4" name="id_sexo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].ExternalColumns[sexo]" dataType="wstr" length="20" name="sexo" />
+                    <externalMetadataColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB].ExternalColumns[descripcion]" dataType="wstr" length="40" name="descripcion" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Sexo\DST dw dim_sexo.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Sexo\DST dw dim_sexo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Sexo\DST dw dim_sexo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Sexo\DST dw dim_sexo.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Sexo.Paths[Flujo DFT Dim Sexo]" endId="Package\DFT Dim Sexo\DST dw dim_sexo.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Sexo" startId="Package\DFT Dim Sexo\SRC stg vw_dim_sexo.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Rango Edad" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{A7262230-169F-4AF3-89E9-A9FBC00BFC0A}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Rango Edad" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_rango_edad" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_rango_edad, rango_edad FROM stg.vw_dim_rango_edad</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].Columns[id_rango_edad]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].ExternalColumns[id_rango_edad]" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].Columns[id_rango_edad]" name="id_rango_edad" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].Columns[rango_edad]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].ExternalColumns[rango_edad]" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].Columns[rango_edad]" name="rango_edad" length="30" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].ExternalColumns[id_rango_edad]" dataType="i4" name="id_rango_edad" />
+                    <externalMetadataColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].ExternalColumns[rango_edad]" dataType="wstr" length="30" name="rango_edad" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[id_rango_edad]" dataType="i4" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[id_rango_edad]" name="id_rango_edad" />
+                    <outputColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[rango_edad]" dataType="wstr" length="30" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[rango_edad]" name="rango_edad" />
+                    <outputColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_rango_edad" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_rango_edad]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB].Columns[id_rango_edad]" cachedDataType="i4" cachedName="id_rango_edad" externalMetadataColumnId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_rango_edad]" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].Columns[id_rango_edad]" />
+                    <inputColumn refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB].Columns[rango_edad]" cachedDataType="wstr" cachedLength="30" cachedName="rango_edad" externalMetadataColumnId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB].ExternalColumns[rango_edad]" lineageId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB].Columns[rango_edad]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_rango_edad]" dataType="i4" name="id_rango_edad" />
+                    <externalMetadataColumn refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB].ExternalColumns[rango_edad]" dataType="wstr" length="30" name="rango_edad" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Rango Edad.Paths[Flujo DFT Dim Rango Edad]" endId="Package\DFT Dim Rango Edad\DST dw dim_rango_edad.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Rango Edad" startId="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Nacionalidad" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{6BEF5329-E846-4601-9B87-0CE3F753002A}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Nacionalidad" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_nacionalidad" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_nacionalidad, nacionalidad FROM stg.vw_dim_nacionalidad</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].Columns[id_nacionalidad]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[id_nacionalidad]" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].Columns[id_nacionalidad]" name="id_nacionalidad" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].Columns[nacionalidad]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[nacionalidad]" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].Columns[nacionalidad]" name="nacionalidad" length="100" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[id_nacionalidad]" dataType="i4" name="id_nacionalidad" />
+                    <externalMetadataColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].ExternalColumns[nacionalidad]" dataType="wstr" length="100" name="nacionalidad" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[id_nacionalidad]" dataType="i4" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[id_nacionalidad]" name="id_nacionalidad" />
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[nacionalidad]" dataType="wstr" length="100" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[nacionalidad]" name="nacionalidad" />
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_nacionalidad" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_nacionalidad]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB].Columns[id_nacionalidad]" cachedDataType="i4" cachedName="id_nacionalidad" externalMetadataColumnId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_nacionalidad]" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].Columns[id_nacionalidad]" />
+                    <inputColumn refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB].Columns[nacionalidad]" cachedDataType="wstr" cachedLength="100" cachedName="nacionalidad" externalMetadataColumnId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[nacionalidad]" lineageId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB].Columns[nacionalidad]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_nacionalidad]" dataType="i4" name="id_nacionalidad" />
+                    <externalMetadataColumn refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB].ExternalColumns[nacionalidad]" dataType="wstr" length="100" name="nacionalidad" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Nacionalidad.Paths[Flujo DFT Dim Nacionalidad]" endId="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Nacionalidad" startId="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Variable" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{9D3F458A-04B6-49BE-90BA-5ECE40B89B2D}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Variable" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Variable\SRC stg vw_dim_variable" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_variable" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_variable, variable, unidad_medida FROM stg.vw_dim_variable</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[id_variable]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].ExternalColumns[id_variable]" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[id_variable]" name="id_variable" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[variable]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].ExternalColumns[variable]" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[variable]" name="variable" length="100" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[unidad_medida]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].ExternalColumns[unidad_medida]" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[unidad_medida]" name="unidad_medida" length="30" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].ExternalColumns[id_variable]" dataType="i4" name="id_variable" />
+                    <externalMetadataColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].ExternalColumns[variable]" dataType="wstr" length="100" name="variable" />
+                    <externalMetadataColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].ExternalColumns[unidad_medida]" dataType="wstr" length="30" name="unidad_medida" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[id_variable]" dataType="i4" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[id_variable]" name="id_variable" />
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[variable]" dataType="wstr" length="100" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[variable]" name="variable" />
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[unidad_medida]" dataType="wstr" length="30" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[unidad_medida]" name="unidad_medida" />
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Variable\DST dw dim_variable" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_variable" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_variable]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Variable\DST dw dim_variable.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].Columns[id_variable]" cachedDataType="i4" cachedName="id_variable" externalMetadataColumnId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_variable]" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[id_variable]" />
+                    <inputColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].Columns[variable]" cachedDataType="wstr" cachedLength="100" cachedName="variable" externalMetadataColumnId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].ExternalColumns[variable]" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[variable]" />
+                    <inputColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].Columns[unidad_medida]" cachedDataType="wstr" cachedLength="30" cachedName="unidad_medida" externalMetadataColumnId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].ExternalColumns[unidad_medida]" lineageId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB].Columns[unidad_medida]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_variable]" dataType="i4" name="id_variable" />
+                    <externalMetadataColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].ExternalColumns[variable]" dataType="wstr" length="100" name="variable" />
+                    <externalMetadataColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB].ExternalColumns[unidad_medida]" dataType="wstr" length="30" name="unidad_medida" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Variable\DST dw dim_variable.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Variable\DST dw dim_variable.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Variable\DST dw dim_variable.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Variable\DST dw dim_variable.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Variable.Paths[Flujo DFT Dim Variable]" endId="Package\DFT Dim Variable\DST dw dim_variable.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Variable" startId="Package\DFT Dim Variable\SRC stg vw_dim_variable.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Dependencia" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{111D9A8B-8FA9-4454-9451-04E890405743}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Dependencia" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_dependencia" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_dependencia, dependencia, dir_reg_fre FROM stg.vw_dim_dependencia</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[id_dependencia]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].ExternalColumns[id_dependencia]" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[id_dependencia]" name="id_dependencia" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[dependencia]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].ExternalColumns[dependencia]" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[dependencia]" name="dependencia" length="200" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[dir_reg_fre]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].ExternalColumns[dir_reg_fre]" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[dir_reg_fre]" name="dir_reg_fre" length="30" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].ExternalColumns[id_dependencia]" dataType="i4" name="id_dependencia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].ExternalColumns[dependencia]" dataType="wstr" length="200" name="dependencia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].ExternalColumns[dir_reg_fre]" dataType="wstr" length="30" name="dir_reg_fre" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[id_dependencia]" dataType="i4" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[id_dependencia]" name="id_dependencia" />
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[dependencia]" dataType="wstr" length="200" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[dependencia]" name="dependencia" />
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[dir_reg_fre]" dataType="wstr" length="30" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[dir_reg_fre]" name="dir_reg_fre" />
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Dependencia\DST dw dim_dependencia" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_dependencia" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_dependencia]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].Columns[id_dependencia]" cachedDataType="i4" cachedName="id_dependencia" externalMetadataColumnId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_dependencia]" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[id_dependencia]" />
+                    <inputColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].Columns[dependencia]" cachedDataType="wstr" cachedLength="200" cachedName="dependencia" externalMetadataColumnId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].ExternalColumns[dependencia]" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[dependencia]" />
+                    <inputColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].Columns[dir_reg_fre]" cachedDataType="wstr" cachedLength="30" cachedName="dir_reg_fre" externalMetadataColumnId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].ExternalColumns[dir_reg_fre]" lineageId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB].Columns[dir_reg_fre]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_dependencia]" dataType="i4" name="id_dependencia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].ExternalColumns[dependencia]" dataType="wstr" length="200" name="dependencia" />
+                    <externalMetadataColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB].ExternalColumns[dir_reg_fre]" dataType="wstr" length="30" name="dir_reg_fre" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Dependencia.Paths[Flujo DFT Dim Dependencia]" endId="Package\DFT Dim Dependencia\DST dw dim_dependencia.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Dependencia" startId="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\DFT Dim Indicador" DTS:CreationName="Microsoft.Pipeline" DTS:Description="Tarea Flujo de datos" DTS:DTSID="{C49A7B10-9FB7-4763-86FF-D55BBEFEF544}" DTS:ExecutableType="Microsoft.Pipeline" DTS:LocaleID="-1" DTS:ObjectName="DFT Dim Indicador" DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador" componentClassID="Microsoft.OLEDBSource" contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7" description="Origen de OLE DB" name="SRC stg vw_dim_indicador" usesDispositions="true" version="7">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset"></property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand" UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_indicador, indicador, unidad FROM stg.vw_dim_indicador</property>
+                <property dataType="System.String" name="SqlCommandVariable"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">2</property>
+                <property dataType="System.String" name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB]" name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[id_indicador]" dataType="i4" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].ExternalColumns[id_indicador]" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[id_indicador]" name="id_indicador" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[indicador]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].ExternalColumns[indicador]" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[indicador]" name="indicador" length="200" truncationRowDisposition="FailComponent" />
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[unidad]" dataType="wstr" errorOrTruncationOperation="Conversion" errorRowDisposition="FailComponent" externalMetadataColumnId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].ExternalColumns[unidad]" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[unidad]" name="unidad" length="10" truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].ExternalColumns[id_indicador]" dataType="i4" name="id_indicador" />
+                    <externalMetadataColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].ExternalColumns[indicador]" dataType="wstr" length="200" name="indicador" />
+                    <externalMetadataColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].ExternalColumns[unidad]" dataType="wstr" length="10" name="unidad" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB]" isErrorOut="true" name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[id_indicador]" dataType="i4" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[id_indicador]" name="id_indicador" />
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[indicador]" dataType="wstr" length="200" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[indicador]" name="indicador" />
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[unidad]" dataType="wstr" length="10" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[unidad]" name="unidad" />
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component refId="Package\DFT Dim Indicador\DST dw dim_indicador" componentClassID="Microsoft.OLEDBDestination" contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4" description="Destino de OLE DB" name="DST dw dim_indicador" usesDispositions="true" version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dw].[dim_indicador]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">0</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions"></property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection refId="Package\DFT Dim Indicador\DST dw dim_indicador.Connections[OleDbConnection]" connectionManagerID="Package.ConnectionManagers[localhost.DW_ProyectoEF]" connectionManagerRefId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" description="La conexion de tiempo de ejecucion OLE DB usada para obtener acceso a la base de datos." name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB]" errorOrTruncationOperation="Insertar" errorRowDisposition="FailComponent" hasSideEffects="true" name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].Columns[id_indicador]" cachedDataType="i4" cachedName="id_indicador" externalMetadataColumnId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_indicador]" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[id_indicador]" />
+                    <inputColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].Columns[indicador]" cachedDataType="wstr" cachedLength="200" cachedName="indicador" externalMetadataColumnId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].ExternalColumns[indicador]" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[indicador]" />
+                    <inputColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].Columns[unidad]" cachedDataType="wstr" cachedLength="10" cachedName="unidad" externalMetadataColumnId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].ExternalColumns[unidad]" lineageId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB].Columns[unidad]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].ExternalColumns[id_indicador]" dataType="i4" name="id_indicador" />
+                    <externalMetadataColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].ExternalColumns[indicador]" dataType="wstr" length="200" name="indicador" />
+                    <externalMetadataColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB].ExternalColumns[unidad]" dataType="wstr" length="10" name="unidad" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\DFT Dim Indicador\DST dw dim_indicador.Outputs[Salida de error de destino de OLE DB]" exclusionGroup="1" isErrorOut="true" name="Salida de error de destino de OLE DB" synchronousInputId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" dataType="i4" lineageId="Package\DFT Dim Indicador\DST dw dim_indicador.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]" name="ErrorCode" specialFlags="1" />
+                    <outputColumn refId="Package\DFT Dim Indicador\DST dw dim_indicador.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" dataType="i4" lineageId="Package\DFT Dim Indicador\DST dw dim_indicador.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]" name="ErrorColumn" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\DFT Dim Indicador.Paths[Flujo DFT Dim Indicador]" endId="Package\DFT Dim Indicador\DST dw dim_indicador.Inputs[Entrada de destino de OLE DB]" name="Flujo DFT Dim Indicador" startId="Package\DFT Dim Indicador\SRC stg vw_dim_indicador.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 1]" DTS:CreationName="" DTS:DTSID="{32CD79B5-711A-4724-815C-771626E16237}" DTS:From="Package\DFT Dim Fecha" DTS:LogicalAnd="True" DTS:ObjectName="Paso 1" DTS:To="Package\DFT Dim Tiempo" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 2]" DTS:CreationName="" DTS:DTSID="{C6ACA2D6-617A-43BC-89E0-C2F021F5E992}" DTS:From="Package\DFT Dim Tiempo" DTS:LogicalAnd="True" DTS:ObjectName="Paso 2" DTS:To="Package\DFT Dim Departamento" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 3]" DTS:CreationName="" DTS:DTSID="{4C335F15-1BAA-4E24-BA4B-675CC187DB19}" DTS:From="Package\DFT Dim Departamento" DTS:LogicalAnd="True" DTS:ObjectName="Paso 3" DTS:To="Package\DFT Dim Provincia" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 4]" DTS:CreationName="" DTS:DTSID="{8598C553-35DD-4859-8F5B-B756B6FDF786}" DTS:From="Package\DFT Dim Provincia" DTS:LogicalAnd="True" DTS:ObjectName="Paso 4" DTS:To="Package\DFT Dim Ubigeo" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 5]" DTS:CreationName="" DTS:DTSID="{8793E5B0-D4C3-4824-8C60-9C64F068DC0C}" DTS:From="Package\DFT Dim Ubigeo" DTS:LogicalAnd="True" DTS:ObjectName="Paso 5" DTS:To="Package\DFT Dim Modalidad" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 6]" DTS:CreationName="" DTS:DTSID="{A5CBE870-B628-4892-8BEB-E52BC11E9F75}" DTS:From="Package\DFT Dim Modalidad" DTS:LogicalAnd="True" DTS:ObjectName="Paso 6" DTS:To="Package\DFT Dim Sexo" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 7]" DTS:CreationName="" DTS:DTSID="{BDEE109C-277A-480B-82D7-7E07143EEF69}" DTS:From="Package\DFT Dim Sexo" DTS:LogicalAnd="True" DTS:ObjectName="Paso 7" DTS:To="Package\DFT Dim Rango Edad" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 8]" DTS:CreationName="" DTS:DTSID="{17B45EE9-77E6-4FC3-A16D-A703966C2482}" DTS:From="Package\DFT Dim Rango Edad" DTS:LogicalAnd="True" DTS:ObjectName="Paso 8" DTS:To="Package\DFT Dim Nacionalidad" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 9]" DTS:CreationName="" DTS:DTSID="{72F0503B-974E-4B29-8506-F9E710119896}" DTS:From="Package\DFT Dim Nacionalidad" DTS:LogicalAnd="True" DTS:ObjectName="Paso 9" DTS:To="Package\DFT Dim Variable" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 10]" DTS:CreationName="" DTS:DTSID="{8663D7BF-E628-4CB6-A38D-FA4708E4897F}" DTS:From="Package\DFT Dim Variable" DTS:LogicalAnd="True" DTS:ObjectName="Paso 10" DTS:To="Package\DFT Dim Dependencia" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 11]" DTS:CreationName="" DTS:DTSID="{B018EC13-D4D7-42E2-8EFA-8D1BD7E601DD}" DTS:From="Package\DFT Dim Dependencia" DTS:LogicalAnd="True" DTS:ObjectName="Paso 11" DTS:To="Package\DFT Dim Indicador" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

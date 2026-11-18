@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/18/2026 11:50:59 a. m."
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="RODRYPC"
+  DTS:CreatorName="RODRYPC\rodry20x"
+  DTS:DTSID="{22CBF155-DD9A-4332-B31E-36EE452CDD07}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="10250"
+  DTS:ObjectName="00_Orquestador"
+  DTS:PackageType="5"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{0E00E8F0-4BBD-40D6-A9E8-0822296EA9DC}">
+  <DTS:Property DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager DTS:refId="Package.ConnectionManagers[localhost.DW_ProyectoEF]" DTS:CreationName="OLEDB" DTS:DTSID="{09F0FC66-BAE2-4B1C-A039-41043CEE0822}" DTS:ObjectName="localhost.DW_ProyectoEF">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager DTS:ConnectRetryCount="1" DTS:ConnectRetryInterval="5" DTS:ConnectionString="Data Source=localhost;Initial Catalog=DW_ProyectoEF;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Package-{09F0FC66-BAE2-4B1C-A039-41043CEE0822}localhost.DW_ProyectoEF;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable DTS:refId="Package\ETL 10_Dimensiones" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Ejecuta el paquete 10_Dimensiones.dtsx" DTS:DTSID="{9FEAB115-00BC-4974-8271-09E4549D96B5}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="ETL 10_Dimensiones" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; (C) Microsoft Corporation; All rights reserved.;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" SQLTask:Connection="{09F0FC66-BAE2-4B1C-A039-41043CEE0822}" SQLTask:SqlStatementSource="EXEC etl.sp_EjecutarPaqueteSSIS @RutaPaquete = N'C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Source\Proyecto_EF_SSIS\10_Dimensiones.dtsx'" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\ETL 20_FactDenuncias" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Ejecuta el paquete 20_FactDenuncias.dtsx" DTS:DTSID="{DBD8FF21-6A85-4D94-A8E0-362CFE67B4DC}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="ETL 20_FactDenuncias" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; (C) Microsoft Corporation; All rights reserved.;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" SQLTask:Connection="{09F0FC66-BAE2-4B1C-A039-41043CEE0822}" SQLTask:SqlStatementSource="EXEC etl.sp_EjecutarPaqueteSSIS @RutaPaquete = N'C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Source\Proyecto_EF_SSIS\20_FactDenuncias.dtsx'" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\ETL 30_FactDesaparecidos" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Ejecuta el paquete 30_FactDesaparecidos.dtsx" DTS:DTSID="{F4EB70BD-BE4A-4A72-82FE-C8FDC094E48A}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="ETL 30_FactDesaparecidos" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; (C) Microsoft Corporation; All rights reserved.;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" SQLTask:Connection="{09F0FC66-BAE2-4B1C-A039-41043CEE0822}" SQLTask:SqlStatementSource="EXEC etl.sp_EjecutarPaqueteSSIS @RutaPaquete = N'C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Source\Proyecto_EF_SSIS\30_FactDesaparecidos.dtsx'" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\ETL 40_FactProduccion" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Ejecuta el paquete 40_FactProduccion.dtsx" DTS:DTSID="{CEADC6AD-2F41-4557-B5DF-5B27E51C3178}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="ETL 40_FactProduccion" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; (C) Microsoft Corporation; All rights reserved.;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" SQLTask:Connection="{09F0FC66-BAE2-4B1C-A039-41043CEE0822}" SQLTask:SqlStatementSource="EXEC etl.sp_EjecutarPaqueteSSIS @RutaPaquete = N'C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Source\Proyecto_EF_SSIS\40_FactProduccion.dtsx'" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable DTS:refId="Package\ETL 50_FactVictimizacion" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Ejecuta el paquete 50_FactVictimizacion.dtsx" DTS:DTSID="{ECFC662F-0ABA-4DFB-AB8F-08B7B22B8506}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="ETL 50_FactVictimizacion" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; (C) Microsoft Corporation; All rights reserved.;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" SQLTask:Connection="{09F0FC66-BAE2-4B1C-A039-41043CEE0822}" SQLTask:SqlStatementSource="EXEC etl.sp_EjecutarPaqueteSSIS @RutaPaquete = N'C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final\Source\Proyecto_EF_SSIS\50_FactVictimizacion.dtsx'" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 1]" DTS:CreationName="" DTS:DTSID="{6DF72205-D25C-4143-A86A-0F40B3B1952E}" DTS:From="Package\ETL 10_Dimensiones" DTS:LogicalAnd="True" DTS:ObjectName="Paso 1" DTS:To="Package\ETL 20_FactDenuncias" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 2]" DTS:CreationName="" DTS:DTSID="{89118D6E-5828-47A1-A00F-F5FE676339C2}" DTS:From="Package\ETL 20_FactDenuncias" DTS:LogicalAnd="True" DTS:ObjectName="Paso 2" DTS:To="Package\ETL 30_FactDesaparecidos" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 3]" DTS:CreationName="" DTS:DTSID="{F6517429-BAB6-40F9-8EE4-51B161C1141A}" DTS:From="Package\ETL 30_FactDesaparecidos" DTS:LogicalAnd="True" DTS:ObjectName="Paso 3" DTS:To="Package\ETL 40_FactProduccion" />
+    <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 4]" DTS:CreationName="" DTS:DTSID="{F1C7FDE1-376C-4D3C-B7A6-AB00520C5876}" DTS:From="Package\ETL 40_FactProduccion" DTS:LogicalAnd="True" DTS:ObjectName="Paso 4" DTS:To="Package\ETL 50_FactVictimizacion" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

@@ -15,6 +15,7 @@ Dataset-Crudo/                 Datasets originales y diccionarios de datos
 Dataset-Procesado/             Copias limpias y convertidas (UTF-8)
 Database/                      Scripts SQL y diccionarios de los datamarts
 Pipeline/                      Scripts ETL y logs de ejecución
+Source/                        Proyecto SSIS para Visual Studio 2026
 Documentacion/                 Informe y documentación del proyecto
 ```
 
@@ -440,17 +441,146 @@ Para comparar o graficar, filtrar siempre por `indicador` y por `ambito`. El
 total nacional ya viene calculado en la fila con `ambito = 'NACIONAL'`; no lo
 reconstruyas sumando departamentos.
 
-### Próximos pasos: DataWarehouse
+## DataWarehouse `DW_ProyectoEF`
 
-Los cuatro DataMarts están construidos. La siguiente etapa es unirlos en un
-DataWarehouse común. Puntos de enlace disponibles:
+**Estado:** estructura creada, cargada por SSIS y validada.
 
-| Dimensión | Denuncias | Desaparecidas | Producción | Victimización |
-|---|---|---|---|---|
-| Año | `anio_registro` | `anio_registro` | `anio_registro` | `anio_registro` |
-| Mes | `mes_registro` (1–12) | `mes_registro` (1–12) | `mes_registro` (1–12) | *(sin mes: anual)* |
-| Departamento | `departamento` | `departamento` | — | `departamento` (`NULL` si nacional) |
-| Ubigeo | `ubigeo` | `ubigeo` | — | `cod_ubicacion` (1–25 = prefijo de ubigeo) |
+Modelo de **constelación**: 4 tablas de hecho y dimensiones conformadas. Los
+DataMarts siguen limpios y Planos; todo el modelado dimensional vive en el DW.
 
-La unión puede hacerse por `anio_registro` (+ `mes_registro` donde exista, o
-`NULL` para Victimización) y por departamento canónico.
+| Capa | Contenido |
+|---|---|
+| `stg` | 16 vistas que leen los 4 DataMarts y resuelven claves y reglas Lima |
+| `dw` | 12 dimensiones + 4 hechos (+ `dim_poblacion`, vacía a propósito) |
+| `etl` | `ControlCargaDW` |
+
+Scripts:
+
+- `Database/05_datawarehouse_ddl.sql` — crea la base, esquemas, tablas y vistas.
+- `Database/06_dw_validacion.sql` — conteos, claves huérfanas, sumas, control
+  de carga y muestra de las 5 preguntas guía.
+
+### Hechos y dimensiones
+
+| Hecho | Filas | Dimensiones conformadas |
+|---|---:|---|
+| `dw.fact_denuncias` | 378,187 | tiempo, fecha, ubigeo, modalidad |
+| `dw.fact_desaparecidos` | 77,331 | tiempo, fecha, ubigeo, sexo, rango de edad, nacionalidad |
+| `dw.fact_produccion` | 39,096 | tiempo, fecha, variable (con unidad), dependencia |
+| `dw.fact_victimizacion` | 1,592 | tiempo, departamento, indicador |
+
+Decisiones del modelo:
+
+- `es_anio_parcial` se guarda **en cada hecho** (el mismo año puede ser parcial
+  en un dataset y completo en otro).
+- `dim_variable` incluye `unidad_medida`: nunca se suman kilos con soles.
+- Regla Lima: `1501 → LIMA METROPOLITANA`, `15xx → REGION LIMA`,
+  `07 → PROV. CONST. DEL CALLAO`.
+- Conflicto de nombres de ubigeo entre D1 y D2: gana el nombre del Dataset 1.
+- `dim_poblacion` está vacía a propósito; las medidas de tasa por habitante
+  quedarán en BLANK hasta cargar la proyección del INEI.
+
+## Proyecto SSIS — `Source/Proyecto_EF_SSIS`
+
+**Estado:** 6 paquetes `.dtsx` válidos, ejecutados y validados con `dtexec`.
+
+```text
+Source/
+  Proyecto_EF_SSIS.slnx                 Solución (abrir en Visual Studio 2026)
+  Proyecto_EF_SSIS/
+    Proyecto_EF_SSIS.dtproj             Proyecto SSIS (Deployment Model: Project)
+    Project.params
+    00_Orquestador.dtsx                 5 tareas Execute SQL en cadena (llaman a etl.sp_EjecutarPaqueteSSIS)
+    10_Dimensiones.dtsx                 12 Data Flows visibles, encadenados (respeta FKs)
+    20_FactDenuncias.dtsx                1 Data Flow
+    30_FactDesaparecidos.dtsx            1 Data Flow
+    40_FactProduccion.dtsx               1 Data Flow
+    50_FactVictimizacion.dtsx            1 Data Flow
+```
+
+Cada paquete muestra en el diseñador el flujo visual:
+
+```text
+OLE DB Source (vista stg.vw_*)  ──►  OLE DB Destination (tabla dw.*)
+connection manager: localhost.DW_ProyectoEF (MSOLEDBSQL, Windows Auth)
+```
+
+En `10_Dimensiones.dtsx` los 12 Data Flows están unidos por restricciones de
+precedencia en este orden: `fecha → tiempo → departamento → provincia → ubigeo
+→ modalidad → sexo → rango_edad → nacionalidad → variable → dependencia →
+indicador`. El orden Importa porque `dim_provincia` referencia a
+`dim_departamento` y `dim_ubigeo` referencia a ambos; sin las precedencias SSIS
+los ejecutaría en paralelo y podría insertar un hijo antes que su padre.
+
+### Cómo abrirlo
+
+1. Abrir `Source/Proyecto_EF_SSIS.slnx` con **Visual Studio 2026**.
+2. En el Explorador de soluciones aparece `Proyecto_EF_SSIS` y, dentro,
+   los 6 paquetes.
+3. Doble clic en cualquier `.dtsx` para ver el Data Flow en el lienzo.
+
+### Cómo ejecutarlo
+
+En orden (el orquestador hace exactamente esto en cadena):
+
+```powershell
+$dtexec = 'C:\Program Files\Microsoft SQL Server\170\DTS\Binn\DTExec.exe'
+$dir    = 'Source\Proyecto_EF_SSIS'
+
+& $dtexec /f "$dir\10_Dimensiones.dtsx"
+& $dtexec /f "$dir\20_FactDenuncias.dtsx"
+& $dtexec /f "$dir\30_FactDesaparecidos.dtsx"
+& $dtexec /f "$dir\40_FactProduccion.dtsx"
+& $dtexec /f "$dir\50_FactVictimizacion.dtsx"
+
+sqlcmd -S localhost -E -C -f 65001 -i Database\06_dw_validacion.sql
+```
+
+O ejecutar el orquestador (un solo paquete, carga los 5 en orden):
+
+```powershell
+& $dtexec /f "$dir\00_Orquestador.dtsx"
+```
+
+El orquestador llama a `etl.sp_EjecutarPaqueteSSIS` (creado por
+`Database/05_datawarehouse_ddl.sql`). Ese procedimiento habilita `xp_cmdshell`,
+lanza `dtexec`, **captura su salida** y lanza un error si no aparece
+`DTSER_SUCCESS`. Así, si un paquete hijo falla, el Execute SQL Task falla y las
+precedencias detienen la cadena. Con `xp_cmdshell ... , no_output` el orquestador
+había devuelto éxito aunque no cargara nada; eso ya no ocurre.
+
+Requisito de entorno para el orquestador: la cuenta de servicio
+`NT SERVICE\MSSQLSERVER` debe poder leer los `.dtsx`. En este equipo se concedió
+con:
+
+```powershell
+$base = 'C:\Users\rodry20x\Documents\Clases-UPN\Ciclo_2026-2\BigDATA\EF_Final'
+icacls "$base\Source\Proyecto_EF_SSIS" /grant 'NT SERVICE\MSSQLSERVER:(OI)(CI)(RX)'
+# además de permiso de traversal (RX) en las carpetas padre hasta C:\Users\rodry20x\Documents
+```
+
+Si se ejecuta `dtexec` directamente desde PowerShell (como en el bloque anterior),
+no se necesita ese permiso porque el proceso corre con el usuario actual.
+
+> Nota: los paquetes usan carga rápida con `INSERT`. Si se vuelven a ejecutar
+> sin vaciar primero los hechos, se duplican las filas. Para una recarga
+> completa, ejecutar de nuevo `Database/05_datawarehouse_ddl.sql` y luego SSIS.
+
+### Resultado de la validación
+
+```text
+D1 Denuncias       378187 = 378187   OK
+D2 Desaparecidos    77331 =  77331   OK
+D3 Produccion       39096 =  39096   OK
+D4 Victimizacion     1592 =   1592   OK
+Claves huérfanas: 0 en las 11 relaciones verificadas
+Sumas: 7,614,774 / 142,374 / 2,195,845,317.1 / 36,287.6 (idénticas al origen)
+```
+
+## Siguiente etapa: SSAS y Power BI
+
+1. Crear `ModeloProyectoEF` (tabular) sobre las tablas `dw.*`.
+2. Definir medidas: total de denuncias, tasa por 100 mil habitantes
+   (requiere cargar `dw.dim_poblacion`), modalidad líder, confianza PNP.
+3. Conectar Power BI Desktop al modelo SSAS (Analysis Services) para que el
+   informe consuma el cubo, no las tablas directamente.
