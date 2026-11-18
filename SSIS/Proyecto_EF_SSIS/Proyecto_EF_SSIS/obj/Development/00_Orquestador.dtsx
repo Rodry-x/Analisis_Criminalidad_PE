@@ -1,0 +1,542 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/18/2026 6:28:59 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="RODRYPC"
+  DTS:CreatorName="RODRYPC\rodry20x"
+  DTS:DTSID="{5769862C-A987-4D57-ABC7-5145D83DACE5}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="10250"
+  DTS:ObjectName="00_Orquestador"
+  DTS:PackageType="5"
+  DTS:VersionBuild="5"
+  DTS:VersionGUID="{B3E016F6-B2DC-4E0D-B93D-AA808B6D8501}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_DW_ProyectoEF]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9F1CCF9B-BF0F-47A8-B2EE-F4D39829C561}"
+      DTS:ObjectName="CM_DW_ProyectoEF">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DW_ProyectoEF;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-00_Orquestador-{9F1CCF9B-BF0F-47A8-B2EE-F4D39829C561}(localdb)\MSSQLLocalDB.DW_ProyectoEF;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EPT - 10_Dimensiones"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:Description="Tarea Ejecutar paquete"
+      DTS:DTSID="{1603754A-9380-4A3C-8A74-393DC3ADFEDD}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT - 10_Dimensiones"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>10_Dimensiones.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT - 20_FactDenuncias"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:Description="Tarea Ejecutar paquete"
+      DTS:DTSID="{E4E55FBB-0CE9-4D82-AFBD-AC95ED1BA426}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT - 20_FactDenuncias"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>20_FactDenuncias.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT - 30_FactDesaparecidos"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:Description="Tarea Ejecutar paquete"
+      DTS:DTSID="{A70E790A-6BA3-4712-BE44-7BF62B7A9501}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT - 30_FactDesaparecidos"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>30_FactDesaparecidos.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT - 40_FactProduccion"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:Description="Tarea Ejecutar paquete"
+      DTS:DTSID="{5434B06E-CDD1-4C7A-B568-D8239EAB29D3}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT - 40_FactProduccion"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>40_FactProduccion.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT - 50_FactVictimizacion"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:Description="Tarea Ejecutar paquete"
+      DTS:DTSID="{0261AA46-B470-4D54-B987-52CF892CBBD7}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT - 50_FactVictimizacion"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>50_FactVictimizacion.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Auditoria y Validacion Post-Carga"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{9213631E-4131-48C7-9B98-F663BD2A1464}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Auditoria y Validacion Post-Carga"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9F1CCF9B-BF0F-47A8-B2EE-F4D39829C561}"
+          SQLTask:SqlStatementSource="SET NOCOUNT ON;&#xA;SET XACT_ABORT ON;&#xA;SET ANSI_NULLS ON;&#xA;SET QUOTED_IDENTIFIER ON;&#xA;&#xA;DECLARE @id_carga INT;&#xA;DECLARE @detalle  NVARCHAR(MAX);&#xA;&#xA;INSERT INTO etl.ControlCargaDW (&#xA;    proceso, origen, tabla_destino, filas_origen, filas_cargadas, claves_huerfanas, control_suma, estado, detalle&#xA;)&#xA;VALUES (&#xA;    N'SSIS_00_Orquestador',&#xA;    N'stg.vw_* (D1-D4)',&#xA;    N'DW_ProyectoEF (12 dim + 4 fact)',&#xA;    NULL,&#xA;    0,&#xA;    0,&#xA;    NULL,&#xA;    N'EN_PROCESO',&#xA;    N'Inicio de auditoria y validacion post-carga desde Proyecto_EF_SSIS.'&#xA;);&#xA;SET @id_carga = CAST(SCOPE_IDENTITY() AS INT);&#xA;&#xA;BEGIN TRY&#xA;    -- 1. Conteos exactos de las 12 dimensiones (THROW 51000)&#xA;    DECLARE @cnt_dim_depto INT = (SELECT COUNT(*) FROM dw.dim_departamento);&#xA;    DECLARE @cnt_dim_prov  INT = (SELECT COUNT(*) FROM dw.dim_provincia);&#xA;    DECLARE @cnt_dim_ubig  INT = (SELECT COUNT(*) FROM dw.dim_ubigeo);&#xA;    DECLARE @cnt_dim_tiem  INT = (SELECT COUNT(*) FROM dw.dim_tiempo);&#xA;    DECLARE @cnt_dim_fech  INT = (SELECT COUNT(*) FROM dw.dim_fecha);&#xA;    DECLARE @cnt_dim_mod   INT = (SELECT COUNT(*) FROM dw.dim_modalidad);&#xA;    DECLARE @cnt_dim_sexo  INT = (SELECT COUNT(*) FROM dw.dim_sexo);&#xA;    DECLARE @cnt_dim_edad  INT = (SELECT COUNT(*) FROM dw.dim_rango_edad);&#xA;    DECLARE @cnt_dim_nac   INT = (SELECT COUNT(*) FROM dw.dim_nacionalidad);&#xA;    DECLARE @cnt_dim_var   INT = (SELECT COUNT(*) FROM dw.dim_variable);&#xA;    DECLARE @cnt_dim_dep   INT = (SELECT COUNT(*) FROM dw.dim_dependencia);&#xA;    DECLARE @cnt_dim_ind   INT = (SELECT COUNT(*) FROM dw.dim_indicador);&#xA;&#xA;    IF @cnt_dim_depto &lt;&gt; 27   THROW 51000, N'Validacion fallida: dw.dim_departamento debe tener 27 filas.', 1;&#xA;    IF @cnt_dim_prov  &lt;&gt; 196  THROW 51000, N'Validacion fallida: dw.dim_provincia debe tener 196 filas.', 1;&#xA;    IF @cnt_dim_ubig  &lt;&gt; 1847 THROW 51000, N'Validacion fallida: dw.dim_ubigeo debe tener 1847 filas.', 1;&#xA;    IF @cnt_dim_tiem  &lt;&gt; 182  THROW 51000, N'Validacion fallida: dw.dim_tiempo debe tener 182 filas.', 1;&#xA;    IF @cnt_dim_fech  &lt;&gt; 5113 THROW 51000, N'Validacion fallida: dw.dim_fecha debe tener 5113 filas.', 1;&#xA;    IF @cnt_dim_mod   &lt;&gt; 7    THROW 51000, N'Validacion fallida: dw.dim_modalidad debe tener 7 filas.', 1;&#xA;    IF @cnt_dim_sexo  &lt;&gt; 3    THROW 51000, N'Validacion fallida: dw.dim_sexo debe tener 3 filas.', 1;&#xA;    IF @cnt_dim_edad  &lt;&gt; 7    THROW 51000, N'Validacion fallida: dw.dim_rango_edad debe tener 7 filas.', 1;&#xA;    IF @cnt_dim_nac   &lt;&gt; 60   THROW 51000, N'Validacion fallida: dw.dim_nacionalidad debe tener 60 filas.', 1;&#xA;    IF @cnt_dim_var   &lt;&gt; 18   THROW 51000, N'Validacion fallida: dw.dim_variable debe tener 18 filas.', 1;&#xA;    IF @cnt_dim_dep   &lt;&gt; 53   THROW 51000, N'Validacion fallida: dw.dim_dependencia debe tener 53 filas.', 1;&#xA;    IF @cnt_dim_ind   &lt;&gt; 5    THROW 51000, N'Validacion fallida: dw.dim_indicador debe tener 5 filas.', 1;&#xA;&#xA;    -- 2. Reglas deterministicas de resolucion geografica (THROW 51001)&#xA;    IF NOT EXISTS (SELECT 1 FROM dw.dim_provincia WHERE cod_provincia = '1608' AND provincia = N'PUTUMAYO')&#xA;        THROW 51001, N'Validacion fallida: cod_provincia 1608 debe resolverse como PUTUMAYO.', 1;&#xA;    IF NOT EXISTS (SELECT 1 FROM dw.dim_ubigeo WHERE ubigeo = '010201' AND distrito = N'BAGUA')&#xA;        THROW 51001, N'Validacion fallida: ubigeo 010201 debe resolverse como BAGUA (prioridad D1).', 1;&#xA;    IF NOT EXISTS (SELECT 1 FROM dw.dim_ubigeo WHERE ubigeo = '010206' AND distrito = N'LA PECA')&#xA;        THROW 51001, N'Validacion fallida: ubigeo 010206 debe resolverse como LA PECA (prioridad D1).', 1;&#xA;    IF NOT EXISTS (SELECT 1 FROM dw.dim_ubigeo WHERE ubigeo = '150144')&#xA;        THROW 51001, N'Validacion fallida: ubigeo 150144 (solo D2) debe existir en dw.dim_ubigeo.', 1;&#xA;&#xA;    -- 3. Cero claves huerfanas en las 20 relaciones FK: 3 dims + 17 hechos (THROW 51002)&#xA;    DECLARE @huerfanas INT = 0;&#xA;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.dim_provincia AS p LEFT JOIN dw.dim_departamento AS d ON d.id_departamento = p.id_departamento WHERE d.id_departamento IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.dim_ubigeo AS u LEFT JOIN dw.dim_provincia AS p ON p.id_provincia = u.id_provincia WHERE p.id_provincia IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.dim_ubigeo AS u LEFT JOIN dw.dim_departamento AS d ON d.id_departamento = u.id_departamento WHERE d.id_departamento IS NULL;&#xA;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_denuncias AS f LEFT JOIN dw.dim_tiempo AS t ON t.id_tiempo = f.id_tiempo WHERE t.id_tiempo IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_denuncias AS f LEFT JOIN dw.dim_fecha AS fe ON fe.id_fecha = f.id_fecha WHERE fe.id_fecha IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_denuncias AS f LEFT JOIN dw.dim_ubigeo AS u ON u.id_ubigeo = f.id_ubigeo WHERE u.id_ubigeo IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_denuncias AS f LEFT JOIN dw.dim_modalidad AS m ON m.id_modalidad = f.id_modalidad WHERE m.id_modalidad IS NULL;&#xA;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_desaparecidos AS f LEFT JOIN dw.dim_tiempo AS t ON t.id_tiempo = f.id_tiempo WHERE t.id_tiempo IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_desaparecidos AS f LEFT JOIN dw.dim_fecha AS fe ON fe.id_fecha = f.id_fecha WHERE fe.id_fecha IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_desaparecidos AS f LEFT JOIN dw.dim_ubigeo AS u ON u.id_ubigeo = f.id_ubigeo WHERE u.id_ubigeo IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_desaparecidos AS f LEFT JOIN dw.dim_sexo AS s ON s.id_sexo = f.id_sexo WHERE s.id_sexo IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_desaparecidos AS f LEFT JOIN dw.dim_rango_edad AS r ON r.id_rango_edad = f.id_rango_edad WHERE r.id_rango_edad IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_desaparecidos AS f LEFT JOIN dw.dim_nacionalidad AS n ON n.id_nacionalidad = f.id_nacionalidad WHERE n.id_nacionalidad IS NULL;&#xA;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_produccion AS f LEFT JOIN dw.dim_tiempo AS t ON t.id_tiempo = f.id_tiempo WHERE t.id_tiempo IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_produccion AS f LEFT JOIN dw.dim_fecha AS fe ON fe.id_fecha = f.id_fecha WHERE fe.id_fecha IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_produccion AS f LEFT JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE v.id_variable IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_produccion AS f LEFT JOIN dw.dim_dependencia AS dep ON dep.id_dependencia = f.id_dependencia WHERE dep.id_dependencia IS NULL;&#xA;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_victimizacion AS f LEFT JOIN dw.dim_tiempo AS t ON t.id_tiempo = f.id_tiempo WHERE t.id_tiempo IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_victimizacion AS f LEFT JOIN dw.dim_departamento AS d ON d.id_departamento = f.id_departamento WHERE d.id_departamento IS NULL;&#xA;    SELECT @huerfanas = @huerfanas + COUNT(*) FROM dw.fact_victimizacion AS f LEFT JOIN dw.dim_indicador AS i ON i.id_indicador = f.id_indicador WHERE i.id_indicador IS NULL;&#xA;&#xA;    IF @huerfanas &lt;&gt; 0&#xA;        THROW 51002, N'Validacion fallida: existen claves huerfanas en el modelo dimensional.', 1;&#xA;&#xA;    -- 4. Cero duplicados por grano en las 4 tablas de hechos (THROW 51003)&#xA;    DECLARE @dup_den INT = (SELECT COUNT(*) FROM (SELECT 1 AS x FROM dw.fact_denuncias GROUP BY id_tiempo, id_ubigeo, id_modalidad HAVING COUNT(*) &gt; 1) AS d);&#xA;    DECLARE @dup_des INT = (SELECT COUNT(*) FROM (SELECT 1 AS x FROM dw.fact_desaparecidos GROUP BY id_tiempo, id_ubigeo, id_sexo, id_rango_edad, id_nacionalidad HAVING COUNT(*) &gt; 1) AS d);&#xA;    DECLARE @dup_pro INT = (SELECT COUNT(*) FROM (SELECT 1 AS x FROM dw.fact_produccion GROUP BY id_tiempo, id_variable, id_dependencia HAVING COUNT(*) &gt; 1) AS d);&#xA;    DECLARE @dup_vic INT = (SELECT COUNT(*) FROM (SELECT 1 AS x FROM dw.fact_victimizacion GROUP BY id_tiempo, id_departamento, id_indicador HAVING COUNT(*) &gt; 1) AS d);&#xA;&#xA;    IF (@dup_den + @dup_des + @dup_pro + @dup_vic) &lt;&gt; 0&#xA;        THROW 51003, N'Validacion fallida: se detectaron duplicados de grano en tablas de hechos.', 1;&#xA;&#xA;    -- 5. Reconciliacion exacta contra DataMarts origen D1-D4 (THROW 51004..51007)&#xA;    DECLARE @src_cnt_d1 INT, @src_sum_d1 BIGINT;&#xA;    DECLARE @src_cnt_d2 INT, @src_sum_d2 BIGINT;&#xA;    DECLARE @src_cnt_d3 INT, @src_sum_d3 DECIMAL(38,6);&#xA;    DECLARE @src_cnt_d4 INT, @src_sum_d4 DECIMAL(38,6);&#xA;&#xA;    SELECT @src_cnt_d1 = COUNT(*), @src_sum_d1 = SUM(CAST(cantidad AS BIGINT))&#xA;    FROM DBDenunciasPoliciales.dm.DenunciasPoliciales;&#xA;&#xA;    SELECT @src_cnt_d2 = COUNT(*), @src_sum_d2 = SUM(CAST(cantidad AS BIGINT))&#xA;    FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas;&#xA;&#xA;    SELECT @src_cnt_d3 = COUNT(*), @src_sum_d3 = SUM(CAST(valor AS DECIMAL(38,6)))&#xA;    FROM DBProduccionPolicial.dm.ProduccionPolicial;&#xA;&#xA;    SELECT @src_cnt_d4 = COUNT(*), @src_sum_d4 = SUM(CAST(valor AS DECIMAL(38,6)))&#xA;    FROM DBVictimizacionConfianzaPNP.dm.VictimizacionConfianzaPNP;&#xA;&#xA;    DECLARE @dw_cnt_d1 INT, @dw_sum_d1 BIGINT, @dw_par_d1 INT;&#xA;    DECLARE @dw_cnt_d2 INT, @dw_sum_d2 BIGINT, @dw_par_d2 INT;&#xA;    DECLARE @dw_cnt_d3 INT, @dw_sum_d3 DECIMAL(38,6), @dw_par_d3 INT, @dw_ceros_d3 INT;&#xA;    DECLARE @dw_cnt_d4 INT, @dw_sum_d4 DECIMAL(38,6), @dw_par_d4 INT, @dw_nac_d4 INT;&#xA;&#xA;    SELECT @dw_cnt_d1 = COUNT(*), @dw_sum_d1 = SUM(CAST(cantidad AS BIGINT)), @dw_par_d1 = SUM(CASE WHEN es_anio_parcial = 1 THEN 1 ELSE 0 END)&#xA;    FROM dw.fact_denuncias;&#xA;&#xA;    SELECT @dw_cnt_d2 = COUNT(*), @dw_sum_d2 = SUM(CAST(cantidad AS BIGINT)), @dw_par_d2 = SUM(CASE WHEN es_anio_parcial = 1 THEN 1 ELSE 0 END)&#xA;    FROM dw.fact_desaparecidos;&#xA;&#xA;    SELECT @dw_cnt_d3 = COUNT(*), @dw_sum_d3 = SUM(CAST(valor AS DECIMAL(38,6))), @dw_par_d3 = SUM(CASE WHEN es_anio_parcial = 1 THEN 1 ELSE 0 END), @dw_ceros_d3 = SUM(CASE WHEN valor = 0 THEN 1 ELSE 0 END)&#xA;    FROM dw.fact_produccion;&#xA;&#xA;    SELECT @dw_cnt_d4 = COUNT(*), @dw_sum_d4 = SUM(CAST(valor AS DECIMAL(38,6))), @dw_par_d4 = SUM(CASE WHEN es_anio_parcial = 1 THEN 1 ELSE 0 END), @dw_nac_d4 = SUM(CASE WHEN ambito = N'NACIONAL' THEN 1 ELSE 0 END)&#xA;    FROM dw.fact_victimizacion;&#xA;&#xA;    IF @dw_cnt_d1 &lt;&gt; 378187 OR @dw_cnt_d1 &lt;&gt; @src_cnt_d1 OR @dw_sum_d1 &lt;&gt; 7614774 OR @dw_sum_d1 &lt;&gt; @src_sum_d1 OR @dw_par_d1 &lt;&gt; 37683&#xA;        THROW 51004, N'Validacion fallida: reconciliacion de dw.fact_denuncias vs DBDenunciasPoliciales.', 1;&#xA;&#xA;    IF @dw_cnt_d2 &lt;&gt; 77331 OR @dw_cnt_d2 &lt;&gt; @src_cnt_d2 OR @dw_sum_d2 &lt;&gt; 142374 OR @dw_sum_d2 &lt;&gt; @src_sum_d2 OR @dw_par_d2 &lt;&gt; 0&#xA;        THROW 51005, N'Validacion fallida: reconciliacion de dw.fact_desaparecidos vs DBPersonasDesaparecidas.', 1;&#xA;&#xA;    IF @dw_cnt_d3 &lt;&gt; 39096 OR @dw_cnt_d3 &lt;&gt; @src_cnt_d3 OR @dw_sum_d3 &lt;&gt; 2195845317.111756 OR @dw_sum_d3 &lt;&gt; @src_sum_d3 OR @dw_ceros_d3 &lt;&gt; 15458 OR @dw_par_d3 &lt;&gt; 8640&#xA;        THROW 51006, N'Validacion fallida: reconciliacion de dw.fact_produccion vs DBProduccionPolicial.', 1;&#xA;&#xA;    IF @dw_cnt_d4 &lt;&gt; 1592 OR @dw_cnt_d4 &lt;&gt; @src_cnt_d4 OR @dw_sum_d4 &lt;&gt; 36287.6 OR @dw_sum_d4 &lt;&gt; @src_sum_d4 OR @dw_par_d4 &lt;&gt; 107 OR @dw_nac_d4 &lt;&gt; 58&#xA;        THROW 51007, N'Validacion fallida: reconciliacion de dw.fact_victimizacion vs DBVictimizacionConfianzaPNP.', 1;&#xA;&#xA;    -- 6. Aserciones analiticas de las 5 preguntas guia Q1-Q5 (THROW 51008..51017)&#xA;    DECLARE @q1_2018_2025 BIGINT = (&#xA;        SELECT SUM(CAST(f.cantidad AS BIGINT))&#xA;        FROM dw.fact_denuncias AS f&#xA;        INNER JOIN dw.dim_tiempo AS t ON t.id_tiempo = f.id_tiempo&#xA;        WHERE f.es_anio_parcial = 0 AND t.anio BETWEEN 2018 AND 2025&#xA;    );&#xA;    DECLARE @q1_2026_parcial BIGINT = (&#xA;        SELECT SUM(CAST(f.cantidad AS BIGINT))&#xA;        FROM dw.fact_denuncias AS f&#xA;        WHERE f.es_anio_parcial = 1&#xA;    );&#xA;    IF @q1_2018_2025 &lt;&gt; 6866606 OR @q1_2026_parcial &lt;&gt; 748168&#xA;        THROW 51008, N'Validacion Q1 fallida: denuncias 2018-2025 deben sumar 6,866,606 y 2026 parcial 748,168.', 1;&#xA;&#xA;    DECLARE @q2_u18_rows INT, @q2_u18_sum BIGINT;&#xA;    SELECT @q2_u18_rows = COUNT(*), @q2_u18_sum = SUM(CAST(f.cantidad AS BIGINT))&#xA;    FROM dw.fact_desaparecidos AS f&#xA;    INNER JOIN dw.dim_rango_edad AS re ON re.id_rango_edad = f.id_rango_edad&#xA;    WHERE re.es_menor_18 = 1;&#xA;&#xA;    DECLARE @q2_sexo_ni_rows INT, @q2_sexo_ni_sum BIGINT;&#xA;    SELECT @q2_sexo_ni_rows = COUNT(*), @q2_sexo_ni_sum = SUM(CAST(f.cantidad AS BIGINT))&#xA;    FROM dw.fact_desaparecidos AS f&#xA;    INNER JOIN dw.dim_sexo AS s ON s.id_sexo = f.id_sexo&#xA;    WHERE s.codigo_sexo = N'NO INFORMADO';&#xA;&#xA;    DECLARE @q2_edad_ni_rows INT, @q2_edad_ni_sum BIGINT;&#xA;    SELECT @q2_edad_ni_rows = COUNT(*), @q2_edad_ni_sum = SUM(CAST(f.cantidad AS BIGINT))&#xA;    FROM dw.fact_desaparecidos AS f&#xA;    INNER JOIN dw.dim_rango_edad AS re ON re.id_rango_edad = f.id_rango_edad&#xA;    WHERE re.rango_edad = N'NO INFORMADO';&#xA;&#xA;    IF @q2_u18_rows &lt;&gt; 37611 OR @q2_u18_sum &lt;&gt; 81262&#xA;        THROW 51009, N'Validacion Q2 fallida: menores de 18 deben sumar 81,262 casos en 37,611 filas.', 1;&#xA;    IF @q2_sexo_ni_rows &lt;&gt; 83 OR @q2_sexo_ni_sum &lt;&gt; 90&#xA;        THROW 51010, N'Validacion Q2 fallida: sexo NO INFORMADO debe tener 83 filas y 90 casos.', 1;&#xA;    IF @q2_edad_ni_rows &lt;&gt; 1197 OR @q2_edad_ni_sum &lt;&gt; 1357&#xA;        THROW 51011, N'Validacion Q2 fallida: rango_edad NO INFORMADO debe tener 1,197 filas y 1,357 casos.', 1;&#xA;&#xA;    DECLARE @q3_kilos      DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'KILOS');&#xA;    DECLARE @q3_soles      DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'SOLES');&#xA;    DECLARE @q3_soles_val  DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'SOLES (VALORIZACION)');&#xA;    DECLARE @q3_operativos DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'OPERATIVOS');&#xA;    DECLARE @q3_env_sing   DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'ENVOLTORIO');&#xA;    DECLARE @q3_env_plur   DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'ENVOLTORIOS');&#xA;    DECLARE @q3_personas   DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'PERSONAS');&#xA;    DECLARE @q3_unidades   DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'UNIDADES');&#xA;    DECLARE @q3_papeletas  DECIMAL(38,6) = (SELECT SUM(f.valor) FROM dw.fact_produccion AS f INNER JOIN dw.dim_variable AS v ON v.id_variable = f.id_variable WHERE f.es_anio_parcial = 0 AND v.unidad_medida = N'PAPELETAS');&#xA;&#xA;    IF @q3_kilos &lt;&gt; 518794.548573&#xA;        THROW 51012, N'Validacion Q3 fallida: KILOS 2023-2025 debe ser 518794.548573.', 1;&#xA;    IF @q3_soles &lt;&gt; 53874929.712000 OR @q3_soles_val &lt;&gt; 1631816149.014000&#xA;        THROW 51013, N'Validacion Q3 fallida: SOLES (53874929.712000) y SOLES (VALORIZACION) (1631816149.014000) deben mantenerse separados.', 1;&#xA;    IF @q3_operativos &lt;&gt; 3503958.000000&#xA;        THROW 51014, N'Validacion Q3 fallida: OPERATIVOS 2023-2025 debe ser 3503958.000000.', 1;&#xA;    IF @q3_env_sing &lt;&gt; 444589.000000 OR @q3_env_plur &lt;&gt; 6623509.000000 OR @q3_personas &lt;&gt; 1254351.000000 OR @q3_unidades &lt;&gt; 78120.000000 OR @q3_papeletas &lt;&gt; 3289357.000000&#xA;        THROW 51015, N'Validacion Q3 fallida: ENVOLTORIO, ENVOLTORIOS, PERSONAS, UNIDADES y PAPELETAS deben reconciliar exactamente por separado.', 1;&#xA;&#xA;    DECLARE @q4_rows INT = (&#xA;        SELECT COUNT(*)&#xA;        FROM dw.fact_victimizacion AS f&#xA;        INNER JOIN dw.dim_departamento AS d ON d.id_departamento = f.id_departamento&#xA;        WHERE f.es_anio_parcial = 0 AND d.ambito = N'DEPARTAMENTO'&#xA;    );&#xA;    DECLARE @q4_invalid INT = (&#xA;        SELECT COUNT(*)&#xA;        FROM dw.fact_victimizacion AS f&#xA;        INNER JOIN dw.dim_tiempo AS t ON t.id_tiempo = f.id_tiempo&#xA;        INNER JOIN dw.dim_departamento AS d ON d.id_departamento = f.id_departamento&#xA;        WHERE f.es_anio_parcial = 0 AND d.ambito = N'DEPARTAMENTO'&#xA;          AND (t.anio = 2013 OR f.ambito = N'NACIONAL' OR d.es_nacional = 1)&#xA;    );&#xA;    IF @q4_rows &lt;&gt; 1430 OR @q4_invalid &lt;&gt; 0&#xA;        THROW 51016, N'Validacion Q4 fallida: debe haber exactamente 1,430 filas departamentales completas (2014-2024) sin filas nacionales ni de 2013.', 1;&#xA;&#xA;    DECLARE @q5_dept_cnt INT = (SELECT COUNT(DISTINCT d.id_departamento) FROM dw.dim_departamento AS d WHERE d.ambito = N'DEPARTAMENTO');&#xA;    DECLARE @q5_vic_2025 INT = (SELECT COUNT(*) FROM dw.fact_victimizacion AS f INNER JOIN dw.dim_tiempo AS t ON t.id_tiempo = f.id_tiempo WHERE t.anio = 2025);&#xA;    IF @q5_dept_cnt &lt;&gt; 26 OR @q5_vic_2025 &lt;&gt; 0&#xA;        THROW 51017, N'Validacion Q5 fallida: deben existir 26 departamentos y 0 filas de victimizacion en 2025.', 1;&#xA;&#xA;    -- 7. Registro de auditoria por hecho y cierre EXITOSO en etl.ControlCargaDW&#xA;    INSERT INTO etl.ControlCargaDW (proceso, origen, tabla_destino, filas_origen, filas_cargadas, claves_huerfanas, control_suma, fecha_fin, estado, detalle)&#xA;    VALUES&#xA;        (N'SSIS_20_FactDenuncias',     N'stg.vw_fact_denuncias',     N'dw.fact_denuncias',     @src_cnt_d1, @dw_cnt_d1, 0, CAST(@dw_sum_d1 AS DECIMAL(38,6)), SYSDATETIME(), N'EXITOSO', N'Carga SSIS reconciliada D1 (378,187 filas; 7,614,774 denuncias; 37,683 parciales 2026).'),&#xA;        (N'SSIS_30_FactDesaparecidos', N'stg.vw_fact_desaparecidos', N'dw.fact_desaparecidos', @src_cnt_d2, @dw_cnt_d2, 0, CAST(@dw_sum_d2 AS DECIMAL(38,6)), SYSDATETIME(), N'EXITOSO', N'Carga SSIS reconciliada D2 (77,331 filas; 142,374 casos; 0 parciales).'),&#xA;        (N'SSIS_40_FactProduccion',    N'stg.vw_fact_produccion',    N'dw.fact_produccion',    @src_cnt_d3, @dw_cnt_d3, 0, @dw_sum_d3,                      SYSDATETIME(), N'EXITOSO', N'Carga SSIS reconciliada D3 (39,096 filas incl. 15,458 ceros; 8,640 parciales 2026).'),&#xA;        (N'SSIS_50_FactVictimizacion', N'stg.vw_fact_victimizacion', N'dw.fact_victimizacion', @src_cnt_d4, @dw_cnt_d4, 0, @dw_sum_d4,                      SYSDATETIME(), N'EXITOSO', N'Carga SSIS reconciliada D4 (1,592 filas incl. 58 NACIONAL y 107 parciales 2013).');&#xA;&#xA;    SET @detalle = CONCAT(&#xA;        N'Orquestador SSIS EXITOSO. Dims=12 (27/196/1847/182/5113/7/3/7/60/18/53/5). ',&#xA;        N'Facts: denuncias=', @dw_cnt_d1, N' (', @dw_sum_d1, N'), ',&#xA;        N'desaparecidos=', @dw_cnt_d2, N' (', @dw_sum_d2, N'), ',&#xA;        N'produccion=', @dw_cnt_d3, N' (', @dw_sum_d3, N'), ',&#xA;        N'victimizacion=', @dw_cnt_d4, N' (', @dw_sum_d4, N'). Huerfanas=0.'&#xA;    );&#xA;&#xA;    UPDATE etl.ControlCargaDW&#xA;    SET filas_origen     = @src_cnt_d1 + @src_cnt_d2 + @src_cnt_d3 + @src_cnt_d4,&#xA;        filas_cargadas   = @dw_cnt_d1 + @dw_cnt_d2 + @dw_cnt_d3 + @dw_cnt_d4,&#xA;        claves_huerfanas = 0,&#xA;        fecha_fin        = SYSDATETIME(),&#xA;        estado           = N'EXITOSO',&#xA;        detalle          = @detalle&#xA;    WHERE id_carga_dw = @id_carga;&#xA;END TRY&#xA;BEGIN CATCH&#xA;    IF XACT_STATE() &lt;&gt; 0&#xA;        ROLLBACK TRANSACTION;&#xA;&#xA;    UPDATE etl.ControlCargaDW&#xA;    SET fecha_fin = SYSDATETIME(),&#xA;        estado    = N'FALLIDO',&#xA;        detalle   = LEFT(ERROR_MESSAGE(), 4000)&#xA;    WHERE id_carga_dw = @id_carga;&#xA;&#xA;    THROW;&#xA;END CATCH;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Limpieza Previa DW"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{00942FEC-1F73-4F20-9EE9-7824F8828A38}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Limpieza Previa DW"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9F1CCF9B-BF0F-47A8-B2EE-F4D39829C561}"
+          SQLTask:SqlStatementSource="SET NOCOUNT ON;&#xA;SET XACT_ABORT ON;&#xA;&#xA;-- 1. Limpieza segura para FKs: TRUNCATE solo en hechos, DELETE en orden inverso en dims&#xA;TRUNCATE TABLE dw.fact_denuncias;&#xA;TRUNCATE TABLE dw.fact_desaparecidos;&#xA;TRUNCATE TABLE dw.fact_produccion;&#xA;TRUNCATE TABLE dw.fact_victimizacion;&#xA;&#xA;DELETE FROM dw.dim_ubigeo;&#xA;DELETE FROM dw.dim_provincia;&#xA;DELETE FROM dw.dim_departamento;&#xA;DELETE FROM dw.dim_tiempo;&#xA;DELETE FROM dw.dim_fecha;&#xA;DELETE FROM dw.dim_modalidad;&#xA;DELETE FROM dw.dim_sexo;&#xA;DELETE FROM dw.dim_rango_edad;&#xA;DELETE FROM dw.dim_nacionalidad;&#xA;DELETE FROM dw.dim_variable;&#xA;DELETE FROM dw.dim_dependencia;&#xA;DELETE FROM dw.dim_indicador;&#xA;&#xA;-- 2. Reseed controlado (solo si la tabla ya tuvo inserciones previas)&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_departamento') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_departamento', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_provincia') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_provincia', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_ubigeo') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_ubigeo', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_tiempo') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_tiempo', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_fecha') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_fecha', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_modalidad') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_modalidad', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_sexo') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_sexo', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_rango_edad') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_rango_edad', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_nacionalidad') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_nacionalidad', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_variable') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_variable', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_dependencia') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_dependencia', RESEED, 0) WITH NO_INFOMSGS;&#xA;IF EXISTS (SELECT 1 FROM sys.identity_columns WHERE object_id = OBJECT_ID(N'dw.dim_indicador') AND last_value IS NOT NULL)&#xA;    DBCC CHECKIDENT ('dw.dim_indicador', RESEED, 0) WITH NO_INFOMSGS;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción]"
+      DTS:CreationName=""
+      DTS:DTSID="{F14C32A7-4F9C-4E21-B600-ED0414CE6D14}"
+      DTS:From="Package\SQL - Limpieza Previa DW"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción"
+      DTS:To="Package\EPT - 10_Dimensiones" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{62E4F174-6D9E-4352-94BC-CF9D31805A55}"
+      DTS:From="Package\EPT - 10_Dimensiones"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 1"
+      DTS:To="Package\EPT - 20_FactDenuncias" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{ABB15DAD-F40A-471C-AD13-B95930FD901E}"
+      DTS:From="Package\EPT - 10_Dimensiones"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 2"
+      DTS:To="Package\EPT - 30_FactDesaparecidos" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{78B13077-57DC-430A-9768-93B94975C8D6}"
+      DTS:From="Package\EPT - 10_Dimensiones"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 3"
+      DTS:To="Package\EPT - 40_FactProduccion" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{F23E0396-205D-4BE3-AB0F-9F81540C6D39}"
+      DTS:From="Package\EPT - 10_Dimensiones"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 4"
+      DTS:To="Package\EPT - 50_FactVictimizacion" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{7001937E-DEBB-4C50-99DB-99EFDD882140}"
+      DTS:From="Package\EPT - 20_FactDenuncias"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 5"
+      DTS:To="Package\SQL - Auditoria y Validacion Post-Carga" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 6]"
+      DTS:CreationName=""
+      DTS:DTSID="{96DC75DD-7345-45D6-B064-7EC5B411357B}"
+      DTS:From="Package\EPT - 30_FactDesaparecidos"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 6"
+      DTS:To="Package\SQL - Auditoria y Validacion Post-Carga" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 7]"
+      DTS:CreationName=""
+      DTS:DTSID="{8343A527-FABF-4E47-A4A0-3D5FDB4580B0}"
+      DTS:From="Package\EPT - 40_FactProduccion"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 7"
+      DTS:To="Package\SQL - Auditoria y Validacion Post-Carga" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 8]"
+      DTS:CreationName=""
+      DTS:DTSID="{A7A15E6B-8109-4F20-A873-981F3B3F2077}"
+      DTS:From="Package\EPT - 50_FactVictimizacion"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 8"
+      DTS:To="Package\SQL - Auditoria y Validacion Post-Carga" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--Esta sección CDATA contiene la información de diseño del paquete. Esta sección incluye información como, por ejemplo, las coordenadas (x,y), el ancho y el alto.-->
+<!--Si edita manualmente esta sección y comete un error, puede eliminarlo. -->
+<!--El paquete podrá cargarse normalmente, pero se perderá la información de diseño anterior y el diseñador reorganizará los elementos automáticamente en la superficie de diseño.-->
+<Objects
+  Version="8">
+  <!--Cada uno de los nodos siguientes contiene propiedades que no afectan al comportamiento en tiempo de ejecución.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="200.8,41.6"
+          Id="Package\SQL - Limpieza Previa DW"
+          TopLeft="365.000000776989,31.3529411489885" />
+        <NodeLayout
+          Size="184,41.6"
+          Id="Package\EPT - 10_Dimensiones"
+          TopLeft="355.714286471508,122.352941069223" />
+        <NodeLayout
+          Size="192.8,41.6"
+          Id="Package\EPT - 20_FactDenuncias"
+          TopLeft="15.7142857477373,230.176470386477" />
+        <NodeLayout
+          Size="212,41.6"
+          Id="Package\EPT - 30_FactDesaparecidos"
+          TopLeft="253.571429111216,232.470588031525" />
+        <NodeLayout
+          Size="195.2,41.6"
+          Id="Package\EPT - 40_FactProduccion"
+          TopLeft="492.857143906306,232.470588031525" />
+        <NodeLayout
+          Size="204.8,41.6"
+          Id="Package\EPT - 50_FactVictimizacion"
+          TopLeft="713.571430090435,229.411764504794" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción]"
+          TopLeft="465.400000776989,72.9529411489885">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-17.6857143054808,49.3999999202349"
+              Start="0,0"
+              End="-17.6857143054808,41.8999999202349">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.6999999601175" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.6999999601175"
+                    Point2="0,24.6999999601175"
+                    Point3="-4,24.6999999601175" />
+                  <mssgle:LineSegment
+                    End="-13.6857143054808,24.6999999601175" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-13.6857143054808,24.6999999601175"
+                    Point2="-17.6857143054808,24.6999999601175"
+                    Point3="-17.6857143054808,28.6999999601175" />
+                  <mssgle:LineSegment
+                    End="-17.6857143054808,41.8999999202349" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 1]"
+          TopLeft="371.238095894963,163.952941069223">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-259.123810147226,66.2235293172531"
+              Start="0,0"
+              End="-259.123810147226,58.7235293172531">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.8319472233698" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.8319472233698"
+                    Point2="0,26.8319472233698"
+                    Point3="-4,26.8319472233698" />
+                  <mssgle:LineSegment
+                    End="-255.123810147226,26.8319472233698" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-255.123810147226,26.8319472233698"
+                    Point2="-259.123810147226,26.8319472233698"
+                    Point3="-259.123810147226,30.8319472233698" />
+                  <mssgle:LineSegment
+                    End="-259.123810147226,58.7235293172531" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 2]"
+          TopLeft="398.309524415454,163.952941069223">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,68.5176469623012"
+              Start="0,0"
+              End="0,61.0176469623012">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,61.0176469623012" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 3]"
+          TopLeft="478.171429356021,163.952941069223">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="112.285714550286,68.5176469623012"
+              Start="0,0"
+              End="112.285714550286,61.0176469623012">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.3411764180475" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,37.3411764180475"
+                    Point2="0,41.3411764180475"
+                    Point3="4,41.3411764180475" />
+                  <mssgle:LineSegment
+                    End="108.285714550286,41.3411764180475" />
+                  <mssgle:CubicBezierSegment
+                    Point1="108.285714550286,41.3411764180475"
+                    Point2="112.285714550286,41.3411764180475"
+                    Point3="112.285714550286,45.3411764180475" />
+                  <mssgle:LineSegment
+                    End="112.285714550286,61.0176469623012" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 4]"
+          TopLeft="525.514286524727,163.952941069223">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="290.457143565708,65.4588234355706"
+              Start="0,0"
+              End="290.457143565708,57.9588234355706">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.5578191972131" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.5578191972131"
+                    Point2="0,19.5578191972131"
+                    Point3="4,19.5578191972131" />
+                  <mssgle:LineSegment
+                    End="286.457143565708,19.5578191972131" />
+                  <mssgle:CubicBezierSegment
+                    Point1="286.457143565708,19.5578191972131"
+                    Point2="290.457143565708,19.5578191972131"
+                    Point3="290.457143565708,23.5578191972131" />
+                  <mssgle:LineSegment
+                    End="290.457143565708,57.9588234355706" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="264,41.6"
+          Id="Package\SQL - Auditoria y Validacion Post-Carga"
+          TopLeft="324.285714976033,357.117646745796" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 5]"
+          TopLeft="112.114285747737,271.776470386477">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="232.742857562522,85.3411763593193"
+              Start="0,0"
+              End="232.742857562522,77.8411763593193">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38.6705881796597" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,38.6705881796597"
+                    Point2="0,42.6705881796597"
+                    Point3="4,42.6705881796597" />
+                  <mssgle:LineSegment
+                    End="228.742857562522,42.6705881796597" />
+                  <mssgle:CubicBezierSegment
+                    Point1="228.742857562522,42.6705881796597"
+                    Point2="232.742857562522,42.6705881796597"
+                    Point3="232.742857562522,46.6705881796597" />
+                  <mssgle:LineSegment
+                    End="232.742857562522,77.8411763593193" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 6]"
+          TopLeft="390.690476723421,274.070588031525">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,83.0470587142712"
+              Start="0,0"
+              End="0,75.5470587142712">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,75.5470587142712" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 7]"
+          TopLeft="518.585715013286,274.070588031525">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,83.0470587142712"
+              Start="0,0"
+              End="0,75.5470587142712">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,75.5470587142712" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 8]"
+          TopLeft="815.971430090435,271.011764504794">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-254.314286482152,86.1058822410018"
+              Start="0,0"
+              End="-254.314286482152,78.6058822410018">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.1862744550029" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.1862744550029"
+                    Point2="0,33.1862744550029"
+                    Point3="-4,33.1862744550029" />
+                  <mssgle:LineSegment
+                    End="-250.314286482152,33.1862744550029" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-250.314286482152,33.1862744550029"
+                    Point2="-254.314286482152,33.1862744550029"
+                    Point3="-254.314286482152,37.1862744550029" />
+                  <mssgle:LineSegment
+                    End="-254.314286482152,78.6058822410018" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
