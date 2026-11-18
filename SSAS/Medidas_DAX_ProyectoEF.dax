@@ -1,0 +1,450 @@
+// =============================================================================
+// Proyecto   : Modelo_DW_ProyectoEF (SSAS Tabular - Compatibility Level 1600/1700)
+// Origen     : DW_ProyectoEF (localhost, SQL Server 2025, Autenticacion Windows)
+// Archivo    : SSAS/Medidas_DAX_ProyectoEF.dax
+// Proposito  : Medidas DAX completas para las Preguntas Guia Q1-Q5
+// Instruccion: Copiar cada definicion "Nombre := ..." en la cuadricula de medidas
+//              de la tabla destino indicada y configurar Display Folder y Format.
+// =============================================================================
+
+
+// =============================================================================
+// Q1: DENUNCIAS POLICIALES (2018-2025)
+// Tabla destino : fact_denuncias
+// Display Folder: Q1 - Denuncias
+// Regla clave   : Excluir 2026 (fact_denuncias[es_anio_parcial] = FALSE()).
+//                 Baseline 2018-2025 = 6,866,606 denuncias (2026 excluido = 748,168).
+// =============================================================================
+
+// Tabla: fact_denuncias | Carpeta: Q1 - Denuncias | Formato: #,##0
+Total Denuncias :=
+CALCULATE (
+    SUM ( fact_denuncias[cantidad] ),
+    fact_denuncias[es_anio_parcial] = FALSE ()
+)
+
+// Tabla: fact_denuncias | Carpeta: Q1 - Denuncias | Formato: #,##0
+// Rank 1..7 sobre las modalidades delictivas; BLANK en fila Total o anos sin datos.
+Ranking Modalidad :=
+IF (
+    ISINSCOPE ( dim_modalidad[modalidad] ) && NOT ISBLANK ( [Total Denuncias] ),
+    RANKX (
+        ALL ( dim_modalidad ),
+        [Total Denuncias],
+        ,
+        DESC,
+        SKIP
+    )
+)
+
+// Tabla: fact_denuncias | Carpeta: Q1 - Denuncias | Formato: 0.00%
+% Participacion Modalidad :=
+DIVIDE (
+    [Total Denuncias],
+    CALCULATE (
+        [Total Denuncias],
+        ALL ( dim_modalidad )
+    )
+)
+
+// Tabla: fact_denuncias | Carpeta: Q1 - Denuncias | Formato: #,##0
+// Comparativo YoY seguro sin usar dim_fecha (no relacionada con dim_tiempo).
+// Preserva mes/trimestre/periodo mediante TREATAS y evita -100% en 2026 parcial.
+Denuncias Anio Anterior :=
+VAR AnioActual =
+    SELECTEDVALUE ( dim_tiempo[anio] )
+VAR MesesActuales =
+    VALUES ( dim_tiempo[mes_numero] )
+VAR ValorActual =
+    [Total Denuncias]
+RETURN
+    IF (
+        NOT ISBLANK ( AnioActual ) && NOT ISBLANK ( ValorActual ),
+        CALCULATE (
+            [Total Denuncias],
+            ALL ( dim_tiempo ),
+            dim_tiempo[anio] = AnioActual - 1,
+            TREATAS ( MesesActuales, dim_tiempo[mes_numero] )
+        )
+    )
+
+// Tabla: fact_denuncias | Carpeta: Q1 - Denuncias | Formato: +0.00%;-0.00%;0.00%
+Variacion YoY Denuncias % :=
+VAR Actual =
+    [Total Denuncias]
+VAR Anterior =
+    [Denuncias Anio Anterior]
+RETURN
+    IF (
+        NOT ISBLANK ( Actual ) && NOT ISBLANK ( Anterior ),
+        DIVIDE ( Actual - Anterior, Anterior )
+    )
+
+// Tabla: fact_denuncias | Carpeta: Q1 - Denuncias | Formato: #,##0.00
+// Promedio exacto a nivel de mes (promedio entre anios), trimestre, anio y total global.
+Promedio Mensual Denuncias :=
+CALCULATE (
+    AVERAGEX (
+        VALUES ( dim_tiempo[periodo_label] ),
+        [Total Denuncias]
+    ),
+    KEEPFILTERS ( dim_tiempo[es_anual] = FALSE () )
+)
+
+// Tabla: fact_denuncias | Carpeta: Q1 - Denuncias | Formato: 0.00%
+// Peso porcentual de cada mes/trimestre dentro del periodo seleccionado.
+% Estacionalidad Mensual :=
+DIVIDE (
+    CALCULATE (
+        [Total Denuncias],
+        KEEPFILTERS ( dim_tiempo[es_anual] = FALSE () )
+    ),
+    CALCULATE (
+        [Total Denuncias],
+        REMOVEFILTERS (
+            dim_tiempo[mes_numero],
+            dim_tiempo[mes_nombre],
+            dim_tiempo[mes_corto],
+            dim_tiempo[trimestre],
+            dim_tiempo[trimestre_nombre],
+            dim_tiempo[periodo_label]
+        ),
+        KEEPFILTERS ( dim_tiempo[es_anual] = FALSE () )
+    )
+)
+
+
+// =============================================================================
+// Q2: PERSONAS DESAPARECIDAS (2019-2025)
+// Tabla destino : fact_desaparecidos
+// Display Folder: Q2 - Desaparecidos
+// Regla clave   : Baseline 2019-2025 = 142,374 casos (0 filas parciales).
+//                 Menores de 18 ('0-5 AÑOS', '6-11 AÑOS', '12-17 AÑOS') = 81,262 (57.08%).
+//                 Sentinela dim_sexo/dim_rango_edad = "NO INFORMADO" (90 y 1,357; union = 1,447).
+//                 Sentinela dim_nacionalidad = "NO INDICA" (3 casos).
+// =============================================================================
+
+// Tabla: fact_desaparecidos | Carpeta: Q2 - Desaparecidos | Formato: #,##0
+Total Desaparecidos :=
+CALCULATE (
+    SUM ( fact_desaparecidos[cantidad] ),
+    fact_desaparecidos[es_anio_parcial] = FALSE ()
+)
+
+// Tabla: fact_desaparecidos | Carpeta: Q2 - Desaparecidos | Formato: #,##0
+// Incluye rangos '0-5 AÑOS', '6-11 AÑOS' y '12-17 AÑOS' (es_menor_18 = TRUE()).
+Total Desaparecidos Menores 18 :=
+CALCULATE (
+    [Total Desaparecidos],
+    KEEPFILTERS ( dim_rango_edad[es_menor_18] = TRUE () )
+)
+
+// Tabla: fact_desaparecidos | Carpeta: Q2 - Desaparecidos | Formato: 0.00%
+% Desaparecidos Menores 18 :=
+DIVIDE (
+    [Total Desaparecidos Menores 18],
+    [Total Desaparecidos]
+)
+
+// Tabla: fact_desaparecidos | Carpeta: Q2 - Desaparecidos | Formato: #,##0
+Desaparecidos Sexo No Informado :=
+CALCULATE (
+    [Total Desaparecidos],
+    KEEPFILTERS ( dim_sexo[codigo_sexo] = "NO INFORMADO" )
+)
+
+// Tabla: fact_desaparecidos | Carpeta: Q2 - Desaparecidos | Formato: #,##0
+Desaparecidos Edad No Informada :=
+CALCULATE (
+    [Total Desaparecidos],
+    KEEPFILTERS ( dim_rango_edad[rango_edad] = "NO INFORMADO" )
+)
+
+// Tabla: fact_desaparecidos | Carpeta: Q2 - Desaparecidos | Formato: #,##0
+// Union de casos con sexo o rango de edad "NO INFORMADO" (1,447 casos; interseccion = 0).
+Desaparecidos No Informado :=
+CALCULATE (
+    [Total Desaparecidos],
+    FILTER (
+        fact_desaparecidos,
+        RELATED ( dim_sexo[codigo_sexo] ) = "NO INFORMADO"
+            || RELATED ( dim_rango_edad[rango_edad] ) = "NO INFORMADO"
+    )
+)
+
+// Tabla: fact_desaparecidos | Carpeta: Q2 - Desaparecidos | Formato: 0.00%
+// Participacion dentro de la matriz cruzada sexo x rango_edad (F + 12-17 AÑOS = 41.36%).
+% Participacion Perfil Desaparecidos :=
+DIVIDE (
+    [Total Desaparecidos],
+    CALCULATE (
+        [Total Desaparecidos],
+        ALL ( dim_sexo ),
+        ALL ( dim_rango_edad )
+    )
+)
+
+
+// =============================================================================
+// Q3: PRODUCCION POLICIAL (2023-2025)
+// Tabla destino : fact_produccion
+// Display Folder: Q3 - Produccion Policial
+// Regla clave   : Excluir 2026 (es_anio_parcial = FALSE()) y NUNCA sumar magnitudes
+//                 de distinta unidad_medida. Ojo literal exacto:
+//                 "INTERVENCION EXTRAJEROS (LEY MIGRATORIA)" (sin 'N' en origen).
+//                 "UNIDADES" agrupa armas y estructuras criminales; filtrar por variable.
+// =============================================================================
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: #,##0
+// Baseline 2023-2025 = 3,503,958.
+Operativos Policiales :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS ( dim_variable[variable] = "OPERATIVOS" )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: #,##0
+// Baseline 2023-2025 = 1,061,639 (suma de las 3 variables DETENIDOS*).
+Total Detenidos :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS (
+        dim_variable[variable] IN {
+            "DETENIDOS DIVERSOS DELITOS (EXTRANJEROS)",
+            "DETENIDOS DIVERSOS DELITOS (PERUANOS)",
+            "DETENIDOS POR REQUISITORIADO"
+        }
+    )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: #,##0
+// Baseline 2023-2025 = 192,712. Literal exacto de DBProduccionPolicial: "EXTRAJEROS" (sic).
+Intervenciones Extranjeros :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS ( dim_variable[variable] = "INTERVENCION EXTRAJEROS (LEY MIGRATORIA)" )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: #,##0
+// Baseline 2023-2025 = 38,152.
+Bandas Desarticuladas :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS ( dim_variable[variable] = "BANDAS CRIMINALES DESARTICULADAS" )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: #,##0
+// Baseline 2023-2025 = 651.
+Organizaciones Criminales Desarticuladas :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS ( dim_variable[variable] = "ORGANIZACIONES CRIMINALES DESARTICULADAS" )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: #,##0.######
+// Baseline 2023-2025 = 518,794.548573 kg (requiere tipo Double, nunca Currency).
+Kilos de Droga Incautada :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS ( dim_variable[unidad_medida] = "KILOS" )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: "S/ "#,##0.00
+// Baseline 2023-2025 = 53,874,929.712 soles.
+Dinero Incautado Soles :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS ( dim_variable[variable] = "DINERO INCAUTADO (SOLES)" )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: "S/ "#,##0.00
+// Baseline 2023-2025 = 1,631,816,149.014 soles (valorizacion).
+Contrabando Valorizacion Soles :=
+CALCULATE (
+    SUM ( fact_produccion[valor] ),
+    fact_produccion[es_anio_parcial] = FALSE (),
+    KEEPFILTERS ( dim_variable[variable] = "CONTRABANDO (VALORIZACION)" )
+)
+
+// Tabla: fact_produccion | Carpeta: Q3 - Produccion Policial | Formato: #,##0.00
+// Medida generica segura: solo calcula si hay exactamente una unidad_medida en contexto.
+// Nota: al visualizar unidad_medida = "UNIDADES", segmentar tambien por variable o categoria_variable.
+Valor Produccion Unitario :=
+IF (
+    HASONEVALUE ( dim_variable[unidad_medida] ),
+    CALCULATE (
+        SUM ( fact_produccion[valor] ),
+        fact_produccion[es_anio_parcial] = FALSE ()
+    ),
+    BLANK ()
+)
+
+
+// =============================================================================
+// Q4: VICTIMIZACION Y CONFIANZA EN LA PNP (2014-2024)
+// Tabla destino : fact_victimizacion
+// Display Folder: Q4 - Victimizacion y Confianza
+// Regla clave   : Excluir 2013 (es_anio_parcial = FALSE()), filtrar ambito = "DEPARTAMENTO"
+//                 y es_nacional = FALSE(). NUNCA sumar porcentajes (usar AVERAGE).
+//                 valor esta en escala 0..100: usar formato 0.00"%" (no 0.00%).
+// =============================================================================
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: 0.00"%"
+// Baseline 2014-2024 (26 deptos) = 49.58% (PUNO lidera con 66.60%).
+Percepcion Inseguridad Promedio % :=
+CALCULATE (
+    AVERAGE ( fact_victimizacion[valor] ),
+    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),
+    KEEPFILTERS ( dim_departamento[ambito] = "DEPARTAMENTO" ),
+    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),
+    dim_indicador[indicador] = "PORCENTAJE DE PERCEPCIÓN DE INSEGURIDAD AL CAMINAR SOLO(A) DE NOCHE EN SU ZONA O BARRIO"
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: 0.00"%"
+// Baseline 2014-2024 (26 deptos) = 19.39% (PUNO menor confianza con 6.69%).
+Confianza PNP Promedio % :=
+CALCULATE (
+    AVERAGE ( fact_victimizacion[valor] ),
+    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),
+    KEEPFILTERS ( dim_departamento[ambito] = "DEPARTAMENTO" ),
+    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),
+    dim_indicador[indicador] = "PORCENTAJE DE CONFIANZA EN LA PNP"
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: 0.00"%"
+// Baseline 2014-2024 (26 deptos) = 23.43%.
+Victimizacion General Promedio % :=
+CALCULATE (
+    AVERAGE ( fact_victimizacion[valor] ),
+    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),
+    KEEPFILTERS ( dim_departamento[ambito] = "DEPARTAMENTO" ),
+    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),
+    dim_indicador[indicador] = "PORCENTAJE DE VICTIMIZACIÓN"
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: 0.00"%"
+// Baseline 2014-2024 (26 deptos) = 14.02%.
+Victimizacion Robo Promedio % :=
+CALCULATE (
+    AVERAGE ( fact_victimizacion[valor] ),
+    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),
+    KEEPFILTERS ( dim_departamento[ambito] = "DEPARTAMENTO" ),
+    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),
+    dim_indicador[indicador] = "PORCENTAJE DE VICTIMIZACIÓN POR EL DELITO DE ROBO E INTENTO DE ROBO DE DINERO, CARTERA Y CELULAR"
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: 0.00"%"
+// Baseline 2014-2024 (26 deptos) = 4.68%.
+Victimizacion Estafa Promedio % :=
+CALCULATE (
+    AVERAGE ( fact_victimizacion[valor] ),
+    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),
+    KEEPFILTERS ( dim_departamento[ambito] = "DEPARTAMENTO" ),
+    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),
+    dim_indicador[indicador] = "PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA"
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: 0.00"%"
+// Medida generica protegida por HASONEVALUE(dim_indicador[indicador]) para no promediar
+// indicadores distintos entre si.
+Indicador % Promedio :=
+IF (
+    HASONEVALUE ( dim_indicador[indicador] ),
+    CALCULATE (
+        AVERAGE ( fact_victimizacion[valor] ),
+        KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),
+        KEEPFILTERS ( dim_departamento[ambito] = "DEPARTAMENTO" ),
+        KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () )
+    ),
+    BLANK ()
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: #,##0
+// Ranking descendente (1 = mayor percepcion de inseguridad) excluyendo fila NACIONAL.
+Ranking Inseguridad Dept :=
+IF (
+    ISINSCOPE ( dim_departamento[departamento] )
+        && NOT ISBLANK ( [Percepcion Inseguridad Promedio %] ),
+    RANKX (
+        FILTER (
+            ALL ( dim_departamento ),
+            dim_departamento[ambito] = "DEPARTAMENTO"
+                && dim_departamento[es_nacional] = FALSE ()
+        ),
+        [Percepcion Inseguridad Promedio %],
+        ,
+        DESC,
+        SKIP
+    )
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: #,##0
+// Ranking ascendente (1 = menor confianza en la PNP). Filtrar NACIONAL evita que BLANK()
+// ocupe el puesto #1 en orden ASC.
+Ranking Menor Confianza Dept :=
+IF (
+    ISINSCOPE ( dim_departamento[departamento] )
+        && NOT ISBLANK ( [Confianza PNP Promedio %] ),
+    RANKX (
+        FILTER (
+            ALL ( dim_departamento ),
+            dim_departamento[ambito] = "DEPARTAMENTO"
+                && dim_departamento[es_nacional] = FALSE ()
+        ),
+        [Confianza PNP Promedio %],
+        ,
+        ASC,
+        SKIP
+    )
+)
+
+// Tabla: fact_victimizacion | Carpeta: Q4 - Victimizacion y Confianza | Formato: 0.00"%"
+// Referencia oficial NACIONAL (2014-2024: Inseguridad 54.54%, Confianza PNP 20.19%).
+Valor Nacional Referencia % :=
+IF (
+    HASONEVALUE ( dim_indicador[indicador] ),
+    CALCULATE (
+        AVERAGE ( fact_victimizacion[valor] ),
+        REMOVEFILTERS ( dim_departamento ),
+        dim_departamento[ambito] = "NACIONAL",
+        dim_departamento[es_nacional] = TRUE (),
+        KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () )
+    ),
+    BLANK ()
+)
+
+
+// =============================================================================
+// Q5: COMPARATIVA CRUZADA POR DEPARTAMENTO Y ANIO (2019-2025)
+// Tabla destino : fact_denuncias (reutiliza medidas de Q2 y Q4 ya definidas arriba)
+// Display Folder: Q5 - Analisis Cruzado
+// Regla clave   : Acotar denuncias a 2019-2025 (6,095,133) para alinear con desaparecidos
+//                 (142,374 -> ratio 42.81). En 2025, fact_victimizacion no tiene filas y
+//                 devuelve BLANK() naturalmente (NUNCA forzar a 0).
+//                 Medidas reutilizadas en Q5: [Total Desaparecidos],
+//                 [Percepcion Inseguridad Promedio %], [Confianza PNP Promedio %].
+// =============================================================================
+
+// Tabla: fact_denuncias | Carpeta: Q5 - Analisis Cruzado | Formato: #,##0
+// Baseline 2019-2025 = 6,095,133 denuncias (excluye 2018 = 771,473 y 2026 parcial = 748,168).
+Total Denuncias (2019-2025) :=
+CALCULATE (
+    SUM ( fact_denuncias[cantidad] ),
+    KEEPFILTERS ( fact_denuncias[es_anio_parcial] = FALSE () ),
+    KEEPFILTERS ( dim_tiempo[anio] >= 2019 && dim_tiempo[anio] <= 2025 )
+)
+
+// Tabla: fact_denuncias | Carpeta: Q5 - Analisis Cruzado | Formato: #,##0.00
+// Baseline 2019-2025 nacional = 42.81 denuncias por cada persona desaparecida.
+Denuncias vs Desaparecidos Ratio :=
+DIVIDE (
+    [Total Denuncias (2019-2025)],
+    [Total Desaparecidos]
+)

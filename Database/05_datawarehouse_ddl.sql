@@ -1,628 +1,1265 @@
 /* ============================================================================
    DataWarehouse: DW_ProyectoEF
    ----------------------------------------------------------------------------
-   Modelo de constelacion (4 tablas de hecho + dimensiones conformadas).
+   Modelo en constelacion (4 tablas de hecho + 12 dimensiones conformadas).
 
    Capas:
-     stg  -> vistas de preparacion. Leen los 4 DataMarts y resuelven las claves.
-     dw   -> dimensiones y hechos que carga SSIS.
-     etl  -> control de carga.
+     dw   -> 12 dimensiones conformadas/especificas y 4 tablas de hechos.
+     stg  -> 16 vistas de preparacion (12 dim + 4 fact) sobre los 4 DataMarts.
+     etl  -> tabla de auditoria y control de carga (etl.ControlCargaDW).
+
+   DataMarts origen:
+     1. DBDenunciasPoliciales.dm.DenunciasPoliciales         (2018-2026)
+     2. DBPersonasDesaparecidas.dm.PersonasDesaparecidas     (2019-2025)
+     3. DBProduccionPolicial.dm.ProduccionPolicial           (2023-2026)
+     4. DBVictimizacionConfianzaPNP.dm.VictimizacionConfianzaPNP (2013-2024)
 
    Preguntas guia que soporta este modelo:
-     1. ¿Donde conviene ubicar mi negocio desde el punto de vista de seguridad?
-     2. ¿Como evolucionan las denuncias y que modalidades lideran?
-     3. ¿Donde y en que perfil se concentran las desapariciones?
-     4. ¿Como evoluciona la confianza en la PNP y que departamentos tienen
-        peor percepcion?
-     5. ¿Que dependencias/variables concentran la produccion policial?
+     Q1. Denuncias (2018-2025): modalidades recurrentes, evolucion anual/mensual
+         y estacionalidad, excluyendo 2026 mediante es_anio_parcial = 0.
+     Q2. Desaparecidos (2019-2025): perfil por sexo y rango de edad, incluyendo
+         bandera es_menor_18 y sentinela 'NO INFORMADO'.
+     Q3. Produccion Policial (2023-2025): operativos, detenidos, bandas, drogas
+         y dinero incautado separados estrictamente por unidad_medida.
+     Q4. Victimizacion y Confianza PNP (2014-2024): percepcion de inseguridad y
+         confianza filtrando ambito = 'DEPARTAMENTO' y promediando porcentajes.
+     Q5. Cruzada (2019-2025): comparacion por departamento y anio entre
+         denuncias, personas desaparecidas y victimizacion/confianza.
 
-   Este script crea SOLO la estructura. Los datos los carga SSIS.
+   Nota: Este script crea exclusivamente la estructura (0 filas precargadas).
+         La carga y validacion se ejecutan en Database/06_dw_validacion.sql
+         o mediante el proyecto SSIS Proyecto_EF_SSIS.
    ============================================================================ */
 
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-IF DB_ID(N'DW_ProyectoEF') IS NULL
+USE [master];
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+IF DB_ID(N'DW_ProyectoEF') IS NOT NULL
 BEGIN
-    PRINT N'Creando base de datos DW_ProyectoEF...';
-    CREATE DATABASE DW_ProyectoEF;
+    PRINT N'Eliminando base de datos DW_ProyectoEF existente para recreacion limpia...';
+    ALTER DATABASE [DW_ProyectoEF] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE [DW_ProyectoEF];
 END
-ELSE
-    PRINT N'La base de datos DW_ProyectoEF ya existe.';
 GO
 
-USE DW_ProyectoEF;
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-IF SCHEMA_ID(N'dw') IS NULL  EXEC(N'CREATE SCHEMA dw');
-IF SCHEMA_ID(N'stg') IS NULL EXEC(N'CREATE SCHEMA stg');
-IF SCHEMA_ID(N'etl') IS NULL EXEC(N'CREATE SCHEMA etl');
+PRINT N'Creando base de datos DW_ProyectoEF...';
+CREATE DATABASE [DW_ProyectoEF];
 GO
 
-/* ---------------------------------------------------------------------------
-   DIMENSIONES
-   --------------------------------------------------------------------------- */
-
-/* Se borran primero los hechos y despues las dimensiones por las FOREIGN KEY. */
-IF OBJECT_ID(N'dw.fact_denuncias', N'U') IS NOT NULL DROP TABLE dw.fact_denuncias;
-IF OBJECT_ID(N'dw.fact_desaparecidos', N'U') IS NOT NULL DROP TABLE dw.fact_desaparecidos;
-IF OBJECT_ID(N'dw.fact_produccion', N'U') IS NOT NULL DROP TABLE dw.fact_produccion;
-IF OBJECT_ID(N'dw.fact_victimizacion', N'U') IS NOT NULL DROP TABLE dw.fact_victimizacion;
-IF OBJECT_ID(N'dw.dim_poblacion', N'U') IS NOT NULL DROP TABLE dw.dim_poblacion;
-IF OBJECT_ID(N'dw.dim_ubigeo', N'U') IS NOT NULL DROP TABLE dw.dim_ubigeo;
-IF OBJECT_ID(N'dw.dim_provincia', N'U') IS NOT NULL DROP TABLE dw.dim_provincia;
-IF OBJECT_ID(N'dw.dim_fecha', N'U') IS NOT NULL DROP TABLE dw.dim_fecha;
-IF OBJECT_ID(N'dw.dim_tiempo', N'U') IS NOT NULL DROP TABLE dw.dim_tiempo;
-IF OBJECT_ID(N'dw.dim_departamento', N'U') IS NOT NULL DROP TABLE dw.dim_departamento;
-IF OBJECT_ID(N'dw.dim_modalidad', N'U') IS NOT NULL DROP TABLE dw.dim_modalidad;
-IF OBJECT_ID(N'dw.dim_sexo', N'U') IS NOT NULL DROP TABLE dw.dim_sexo;
-IF OBJECT_ID(N'dw.dim_rango_edad', N'U') IS NOT NULL DROP TABLE dw.dim_rango_edad;
-IF OBJECT_ID(N'dw.dim_nacionalidad', N'U') IS NOT NULL DROP TABLE dw.dim_nacionalidad;
-IF OBJECT_ID(N'dw.dim_variable', N'U') IS NOT NULL DROP TABLE dw.dim_variable;
-IF OBJECT_ID(N'dw.dim_dependencia', N'U') IS NOT NULL DROP TABLE dw.dim_dependencia;
-IF OBJECT_ID(N'dw.dim_indicador', N'U') IS NOT NULL DROP TABLE dw.dim_indicador;
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-CREATE TABLE dw.dim_fecha (
-    id_fecha         INT NOT NULL,
-    fecha            DATE NOT NULL,
-    anio             SMALLINT NOT NULL,
-    mes              TINYINT NOT NULL,
-    dia              TINYINT NOT NULL,
-    nombre_mes       NVARCHAR(20) NOT NULL,
-    trimestre        TINYINT NOT NULL,
-    es_fin_de_semana BIT NOT NULL,
-    anio_mes         CHAR(7) NOT NULL,
-    CONSTRAINT PK_dim_fecha PRIMARY KEY CLUSTERED (id_fecha)
-);
+USE [DW_ProyectoEF];
 GO
 
-CREATE TABLE dw.dim_tiempo (
-    id_tiempo   INT NOT NULL,
-    anio        SMALLINT NOT NULL,
-    mes         TINYINT NOT NULL,
-    nombre_mes  NVARCHAR(20) NOT NULL,
-    trimestre   TINYINT NOT NULL,
-    periodo     NVARCHAR(10) NOT NULL,
-    es_anual    BIT NOT NULL,
-    orden       INT NOT NULL,
-    CONSTRAINT PK_dim_tiempo PRIMARY KEY CLUSTERED (id_tiempo)
-);
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-CREATE TABLE dw.dim_departamento (
-    id_departamento INT NOT NULL,
-    codigo          NVARCHAR(6) NOT NULL,
-    departamento    NVARCHAR(60) NOT NULL,
-    es_nacional     BIT NOT NULL,
-    macroregion     NVARCHAR(20) NOT NULL,
-    CONSTRAINT PK_dim_departamento PRIMARY KEY CLUSTERED (id_departamento)
-);
+/* ============================================================================
+   1. ESQUEMAS (stg, dw, etl)
+   ============================================================================ */
+
+IF SCHEMA_ID(N'stg') IS NULL
+    EXEC(N'CREATE SCHEMA stg');
+IF SCHEMA_ID(N'dw') IS NULL
+    EXEC(N'CREATE SCHEMA dw');
+IF SCHEMA_ID(N'etl') IS NULL
+    EXEC(N'CREATE SCHEMA etl');
 GO
 
-CREATE TABLE dw.dim_provincia (
-    id_provincia    INT NOT NULL,
-    provincia       NVARCHAR(100) NOT NULL,
-    id_departamento INT NOT NULL,
-    CONSTRAINT PK_dim_provincia PRIMARY KEY CLUSTERED (id_provincia),
-    CONSTRAINT FK_provincia_departamento FOREIGN KEY (id_departamento)
-        REFERENCES dw.dim_departamento (id_departamento)
-);
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-CREATE TABLE dw.dim_ubigeo (
-    id_ubigeo       INT NOT NULL,
-    ubigeo          CHAR(6) NOT NULL,
-    distrito        NVARCHAR(120) NOT NULL,
-    provincia       NVARCHAR(100) NOT NULL,
-    id_provincia    INT NOT NULL,
-    id_departamento INT NOT NULL,
-    CONSTRAINT PK_dim_ubigeo PRIMARY KEY CLUSTERED (id_ubigeo),
-    CONSTRAINT FK_ubigeo_provincia FOREIGN KEY (id_provincia)
-        REFERENCES dw.dim_provincia (id_provincia),
-    CONSTRAINT FK_ubigeo_departamento FOREIGN KEY (id_departamento)
-        REFERENCES dw.dim_departamento (id_departamento)
-);
-GO
-
-CREATE TABLE dw.dim_modalidad (
-    id_modalidad INT NOT NULL,
-    modalidad    NVARCHAR(100) NOT NULL,
-    CONSTRAINT PK_dim_modalidad PRIMARY KEY CLUSTERED (id_modalidad)
-);
-GO
-
-CREATE TABLE dw.dim_sexo (
-    id_sexo     INT NOT NULL,
-    sexo        NVARCHAR(20) NOT NULL,
-    descripcion NVARCHAR(40) NOT NULL,
-    CONSTRAINT PK_dim_sexo PRIMARY KEY CLUSTERED (id_sexo)
-);
-GO
-
-CREATE TABLE dw.dim_rango_edad (
-    id_rango_edad INT NOT NULL,
-    rango_edad    NVARCHAR(30) NOT NULL,
-    CONSTRAINT PK_dim_rango_edad PRIMARY KEY CLUSTERED (id_rango_edad)
-);
-GO
-
-CREATE TABLE dw.dim_nacionalidad (
-    id_nacionalidad INT NOT NULL,
-    nacionalidad    NVARCHAR(100) NOT NULL,
-    CONSTRAINT PK_dim_nacionalidad PRIMARY KEY CLUSTERED (id_nacionalidad)
-);
-GO
-
-CREATE TABLE dw.dim_variable (
-    id_variable    INT NOT NULL,
-    variable       NVARCHAR(100) NOT NULL,
-    unidad_medida  NVARCHAR(30) NOT NULL,
-    CONSTRAINT PK_dim_variable PRIMARY KEY CLUSTERED (id_variable)
-);
-GO
-
-CREATE TABLE dw.dim_dependencia (
-    id_dependencia INT NOT NULL,
-    dependencia    NVARCHAR(200) NOT NULL,
-    dir_reg_fre    NVARCHAR(30) NOT NULL,
-    CONSTRAINT PK_dim_dependencia PRIMARY KEY CLUSTERED (id_dependencia)
-);
-GO
-
-CREATE TABLE dw.dim_indicador (
-    id_indicador INT NOT NULL,
-    indicador    NVARCHAR(200) NOT NULL,
-    unidad       NVARCHAR(10) NOT NULL,
-    CONSTRAINT PK_dim_indicador PRIMARY KEY CLUSTERED (id_indicador)
-);
-GO
-
-/* ---------------------------------------------------------------------------
-   TABLAS DE HECHO
-   --------------------------------------------------------------------------- */
-
-CREATE TABLE dw.fact_denuncias (
-    id_fact_denuncia BIGINT IDENTITY(1,1) NOT NULL,
-    id_tiempo        INT NOT NULL,
-    id_fecha_hecho   INT NOT NULL,
-    id_ubigeo        INT NOT NULL,
-    id_modalidad     INT NOT NULL,
-    cantidad         INT NOT NULL,
-    es_anio_parcial  BIT NOT NULL,
-    CONSTRAINT PK_fact_denuncias PRIMARY KEY CLUSTERED (id_fact_denuncia),
-    CONSTRAINT FK_fd_tiempo FOREIGN KEY (id_tiempo) REFERENCES dw.dim_tiempo (id_tiempo),
-    CONSTRAINT FK_fd_fecha FOREIGN KEY (id_fecha_hecho) REFERENCES dw.dim_fecha (id_fecha),
-    CONSTRAINT FK_fd_ubigeo FOREIGN KEY (id_ubigeo) REFERENCES dw.dim_ubigeo (id_ubigeo),
-    CONSTRAINT FK_fd_modalidad FOREIGN KEY (id_modalidad) REFERENCES dw.dim_modalidad (id_modalidad)
-);
-GO
-
-CREATE TABLE dw.fact_desaparecidos (
-    id_fact_desaparicion BIGINT IDENTITY(1,1) NOT NULL,
-    id_tiempo            INT NOT NULL,
-    id_fecha_hecho       INT NOT NULL,
-    id_ubigeo            INT NOT NULL,
-    id_sexo              INT NOT NULL,
-    id_rango_edad        INT NOT NULL,
-    id_nacionalidad      INT NOT NULL,
-    cantidad             INT NOT NULL,
-    es_anio_parcial      BIT NOT NULL,
-    CONSTRAINT PK_fact_desaparecidos PRIMARY KEY CLUSTERED (id_fact_desaparicion),
-    CONSTRAINT FK_fdes_tiempo FOREIGN KEY (id_tiempo) REFERENCES dw.dim_tiempo (id_tiempo),
-    CONSTRAINT FK_fdes_fecha FOREIGN KEY (id_fecha_hecho) REFERENCES dw.dim_fecha (id_fecha),
-    CONSTRAINT FK_fdes_ubigeo FOREIGN KEY (id_ubigeo) REFERENCES dw.dim_ubigeo (id_ubigeo),
-    CONSTRAINT FK_fdes_sexo FOREIGN KEY (id_sexo) REFERENCES dw.dim_sexo (id_sexo),
-    CONSTRAINT FK_fdes_rango FOREIGN KEY (id_rango_edad) REFERENCES dw.dim_rango_edad (id_rango_edad),
-    CONSTRAINT FK_fdes_nacionalidad FOREIGN KEY (id_nacionalidad) REFERENCES dw.dim_nacionalidad (id_nacionalidad)
-);
-GO
-
-CREATE TABLE dw.fact_produccion (
-    id_fact_produccion BIGINT IDENTITY(1,1) NOT NULL,
-    id_tiempo          INT NOT NULL,
-    id_fecha_hecho     INT NOT NULL,
-    id_variable        INT NOT NULL,
-    id_dependencia     INT NOT NULL,
-    valor              DECIMAL(18,6) NOT NULL,
-    es_anio_parcial    BIT NOT NULL,
-    CONSTRAINT PK_fact_produccion PRIMARY KEY CLUSTERED (id_fact_produccion),
-    CONSTRAINT FK_fp_tiempo FOREIGN KEY (id_tiempo) REFERENCES dw.dim_tiempo (id_tiempo),
-    CONSTRAINT FK_fp_fecha FOREIGN KEY (id_fecha_hecho) REFERENCES dw.dim_fecha (id_fecha),
-    CONSTRAINT FK_fp_variable FOREIGN KEY (id_variable) REFERENCES dw.dim_variable (id_variable),
-    CONSTRAINT FK_fp_dependencia FOREIGN KEY (id_dependencia) REFERENCES dw.dim_dependencia (id_dependencia)
-);
-GO
-
-CREATE TABLE dw.fact_victimizacion (
-    id_fact_victimizacion BIGINT IDENTITY(1,1) NOT NULL,
-    id_tiempo             INT NOT NULL,
-    id_departamento       INT NOT NULL,
-    id_indicador          INT NOT NULL,
-    valor                 DECIMAL(5,1) NOT NULL,
-    clasif                SMALLINT NOT NULL,
-    es_anio_parcial       BIT NOT NULL,
-    CONSTRAINT PK_fact_victimizacion PRIMARY KEY CLUSTERED (id_fact_victimizacion),
-    CONSTRAINT FK_fv_tiempo FOREIGN KEY (id_tiempo) REFERENCES dw.dim_tiempo (id_tiempo),
-    CONSTRAINT FK_fv_departamento FOREIGN KEY (id_departamento) REFERENCES dw.dim_departamento (id_departamento),
-    CONSTRAINT FK_fv_indicador FOREIGN KEY (id_indicador) REFERENCES dw.dim_indicador (id_indicador)
-);
-GO
-
-/* Tabla opcional para tasas por habitante. Se deja vacia: requiere la
-   proyeccion de poblacion del INEI por ubigeo. Las medidas de tasa del modelo
-   SSAS quedaran en BLANK hasta que se cargue. */
-CREATE TABLE dw.dim_poblacion (
-    id_ubigeo INT NOT NULL,
-    anio      SMALLINT NOT NULL,
-    poblacion INT NOT NULL,
-    fuente    NVARCHAR(100) NOT NULL,
-    CONSTRAINT PK_dim_poblacion PRIMARY KEY CLUSTERED (id_ubigeo, anio),
-    CONSTRAINT FK_poblacion_ubigeo FOREIGN KEY (id_ubigeo) REFERENCES dw.dim_ubigeo (id_ubigeo)
-);
-GO
-
-IF OBJECT_ID(N'etl.ControlCargaDW', N'U') IS NOT NULL DROP TABLE etl.ControlCargaDW;
-GO
+/* ============================================================================
+   2. TABLA DE CONTROL ETL (etl.ControlCargaDW)
+   ============================================================================ */
 
 CREATE TABLE etl.ControlCargaDW (
-    id_carga   INT IDENTITY(1,1) NOT NULL,
-    paquete    NVARCHAR(100) NOT NULL,
-    tabla      NVARCHAR(100) NOT NULL,
-    filas      INT NOT NULL,
-    fecha_inicio DATETIME2(0) NOT NULL,
-    fecha_fin    DATETIME2(0) NOT NULL,
-    estado     NVARCHAR(20) NOT NULL,
-    detalle    NVARCHAR(MAX) NULL,
-    CONSTRAINT PK_ControlCargaDW PRIMARY KEY CLUSTERED (id_carga)
+    id_carga_dw      INT IDENTITY(1,1) NOT NULL,
+    proceso          NVARCHAR(100)     NOT NULL,
+    origen           NVARCHAR(150)     NOT NULL,
+    tabla_destino    NVARCHAR(128)     NOT NULL,
+    filas_origen     INT               NULL,
+    filas_cargadas   INT               NOT NULL,
+    claves_huerfanas INT               NOT NULL CONSTRAINT DF_ControlCargaDW_claves_huerfanas DEFAULT (0),
+    control_suma     DECIMAL(38,6)     NULL,
+    fecha_inicio     DATETIME2(0)      NOT NULL CONSTRAINT DF_ControlCargaDW_fecha_inicio     DEFAULT (SYSDATETIME()),
+    fecha_fin        DATETIME2(0)      NULL,
+    estado           NVARCHAR(20)      NOT NULL,
+    detalle          NVARCHAR(MAX)     NULL,
+    CONSTRAINT PK_ControlCargaDW PRIMARY KEY CLUSTERED (id_carga_dw),
+    CONSTRAINT CK_ControlCargaDW_estado CHECK (estado IN (N'EN_PROCESO', N'EXITOSO', N'FALLIDO'))
 );
 GO
 
-PRINT N'Estructura creada. Generando vistas de preparacion...';
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-/* ---------------------------------------------------------------------------
-   VISTAS stg: fecha y tiempo
-   --------------------------------------------------------------------------- */
-
-CREATE OR ALTER VIEW stg.vw_dim_fecha AS
-WITH n AS (
-    SELECT TOP (6000) ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS k
-    FROM sys.all_objects a CROSS JOIN sys.all_objects b
-), fechas AS (
-    SELECT DATEADD(DAY, k, CONVERT(DATE, '20130101')) AS fecha
-    FROM n
-    WHERE k <= DATEDIFF(DAY, CONVERT(DATE, '20130101'), CONVERT(DATE, '20261231'))
-)
-SELECT
-    YEAR(fecha) * 10000 + MONTH(fecha) * 100 + DAY(fecha) AS id_fecha,
-    fecha,
-    CONVERT(SMALLINT, YEAR(fecha)) AS anio,
-    CONVERT(TINYINT, MONTH(fecha)) AS mes,
-    CONVERT(TINYINT, DAY(fecha)) AS dia,
-    CASE MONTH(fecha)
-        WHEN 1 THEN N'ENERO' WHEN 2 THEN N'FEBRERO' WHEN 3 THEN N'MARZO'
-        WHEN 4 THEN N'ABRIL' WHEN 5 THEN N'MAYO' WHEN 6 THEN N'JUNIO'
-        WHEN 7 THEN N'JULIO' WHEN 8 THEN N'AGOSTO' WHEN 9 THEN N'SETIEMBRE'
-        WHEN 10 THEN N'OCTUBRE' WHEN 11 THEN N'NOVIEMBRE' ELSE N'DICIEMBRE'
-    END AS nombre_mes,
-    CONVERT(TINYINT, DATEPART(QUARTER, fecha)) AS trimestre,
-    CONVERT(BIT, CASE WHEN DATEPART(WEEKDAY, fecha) IN (1, 7) THEN 1 ELSE 0 END) AS es_fin_de_semana,
-    CONVERT(CHAR(4), YEAR(fecha)) + '-' + RIGHT('0' + CONVERT(CHAR(2), MONTH(fecha)), 2) AS anio_mes
-FROM fechas
-UNION ALL
-SELECT 0, CONVERT(DATE, '19000101'), 1900, 1, 1, N'NO ESPECIFICADO', 0, 0, '1900-01';
+CREATE NONCLUSTERED INDEX IX_ControlCargaDW_fecha_inicio
+    ON etl.ControlCargaDW (fecha_inicio DESC)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
 GO
 
-CREATE OR ALTER VIEW stg.vw_dim_tiempo AS
-WITH n AS (
-    SELECT TOP (200) ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS k
-    FROM sys.all_objects a CROSS JOIN sys.all_objects b
-), anios AS (
-    SELECT 2013 + k AS anio FROM n WHERE k <= 13
-), meses AS (
-    SELECT 0 AS mes UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
-    UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
-    UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11
-    UNION ALL SELECT 12
-)
-SELECT
-    anio * 100 + meses.mes AS id_tiempo,
-    CONVERT(SMALLINT, anio) AS anio,
-    CONVERT(TINYINT, meses.mes) AS mes,
-    CASE WHEN meses.mes = 0 THEN N'ANUAL' ELSE
-        CASE meses.mes
-            WHEN 1 THEN N'ENERO' WHEN 2 THEN N'FEBRERO' WHEN 3 THEN N'MARZO'
-            WHEN 4 THEN N'ABRIL' WHEN 5 THEN N'MAYO' WHEN 6 THEN N'JUNIO'
-            WHEN 7 THEN N'JULIO' WHEN 8 THEN N'AGOSTO' WHEN 9 THEN N'SETIEMBRE'
-            WHEN 10 THEN N'OCTUBRE' WHEN 11 THEN N'NOVIEMBRE' ELSE N'DICIEMBRE'
-        END
-    END AS nombre_mes,
-    CONVERT(TINYINT, CASE WHEN meses.mes = 0 THEN 0 ELSE ((meses.mes - 1) / 3) + 1 END) AS trimestre,
-    CONVERT(NVARCHAR(10), CASE WHEN meses.mes = 0 THEN N'ANUAL'
-        ELSE CONVERT(NVARCHAR(4), anio) + N'-' + RIGHT(N'0' + CONVERT(NVARCHAR(2), meses.mes), 2) END) AS periodo,
-    CONVERT(BIT, CASE WHEN meses.mes = 0 THEN 1 ELSE 0 END) AS es_anual,
-    anio * 13 + meses.mes AS orden
-FROM anios CROSS JOIN meses;
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-/* ---------------------------------------------------------------------------
-   VISTAS stg: geografia
-   Regla Lima: 1501 -> LIMA METROPOLITANA, resto de 15xx -> REGION LIMA,
-   Callao (07) se mantiene como provincia constitucional.
-   --------------------------------------------------------------------------- */
+/* ============================================================================
+   3. DIMENSIONES CONFORMADAS Y ESPECIFICAS (12 tablas dw.dim_*)
+   ============================================================================ */
 
-CREATE OR ALTER VIEW stg.vw_dim_departamento AS
-SELECT * FROM (VALUES
-    (0,   N'0',    N'NACIONAL',                  CONVERT(BIT,1), N'NACIONAL'),
-    (1,   N'1',    N'AMAZONAS',                  CONVERT(BIT,0), N'SELVA'),
-    (2,   N'2',    N'ANCASH',                    CONVERT(BIT,0), N'SIERRA'),
-    (3,   N'3',    N'APURIMAC',                  CONVERT(BIT,0), N'SIERRA'),
-    (4,   N'4',    N'AREQUIPA',                  CONVERT(BIT,0), N'COSTA'),
-    (5,   N'5',    N'AYACUCHO',                  CONVERT(BIT,0), N'SIERRA'),
-    (6,   N'6',    N'CAJAMARCA',                 CONVERT(BIT,0), N'SIERRA'),
-    (7,   N'7',    N'PROV. CONST. DEL CALLAO',   CONVERT(BIT,0), N'COSTA'),
-    (8,   N'8',    N'CUSCO',                     CONVERT(BIT,0), N'SIERRA'),
-    (9,   N'9',    N'HUANCAVELICA',              CONVERT(BIT,0), N'SIERRA'),
-    (10,  N'10',   N'HUANUCO',                   CONVERT(BIT,0), N'SIERRA'),
-    (11,  N'11',   N'ICA',                       CONVERT(BIT,0), N'COSTA'),
-    (12,  N'12',   N'JUNIN',                     CONVERT(BIT,0), N'SIERRA'),
-    (13,  N'13',   N'LA LIBERTAD',               CONVERT(BIT,0), N'COSTA'),
-    (14,  N'14',   N'LAMBAYEQUE',                CONVERT(BIT,0), N'COSTA'),
-    (16,  N'16',   N'LORETO',                    CONVERT(BIT,0), N'SELVA'),
-    (17,  N'17',   N'MADRE DE DIOS',             CONVERT(BIT,0), N'SELVA'),
-    (18,  N'18',   N'MOQUEGUA',                  CONVERT(BIT,0), N'COSTA'),
-    (19,  N'19',   N'PASCO',                     CONVERT(BIT,0), N'SIERRA'),
-    (20,  N'20',   N'PIURA',                     CONVERT(BIT,0), N'COSTA'),
-    (21,  N'21',   N'PUNO',                      CONVERT(BIT,0), N'SIERRA'),
-    (22,  N'22',   N'SAN MARTIN',                CONVERT(BIT,0), N'SELVA'),
-    (23,  N'23',   N'TACNA',                     CONVERT(BIT,0), N'COSTA'),
-    (24,  N'24',   N'TUMBES',                    CONVERT(BIT,0), N'COSTA'),
-    (25,  N'25',   N'UCAYALI',                   CONVERT(BIT,0), N'SELVA'),
-    (1501,N'1501', N'LIMA METROPOLITANA',        CONVERT(BIT,0), N'COSTA'),
-    (1599,N'1599', N'REGION LIMA',               CONVERT(BIT,0), N'COSTA')
-) AS v(id_departamento, codigo, departamento, es_nacional, macroregion);
+-- 3.1 dw.dim_departamento (27 filas: 26 departamentos + sentinela 0 = NACIONAL)
+CREATE TABLE dw.dim_departamento (
+    id_departamento INT IDENTITY(1,1) NOT NULL,
+    cod_ubicacion   INT               NOT NULL,
+    departamento    NVARCHAR(60)      NOT NULL,
+    ambito          NVARCHAR(15)      NOT NULL,
+    es_nacional     BIT               NOT NULL,
+    macroregion     NVARCHAR(20)      NOT NULL,
+    CONSTRAINT PK_dim_departamento PRIMARY KEY CLUSTERED (id_departamento),
+    CONSTRAINT UQ_dim_departamento_cod_ubicacion UNIQUE NONCLUSTERED (cod_ubicacion)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT UQ_dim_departamento_departamento UNIQUE NONCLUSTERED (departamento)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT CK_dim_departamento_ambito CHECK (ambito IN (N'NACIONAL', N'DEPARTAMENTO')),
+    CONSTRAINT CK_dim_departamento_macroregion CHECK (macroregion IN (N'NACIONAL', N'COSTA', N'SIERRA', N'SELVA')),
+    CONSTRAINT CK_dim_departamento_coherencia CHECK (
+        (ambito = N'NACIONAL' AND es_nacional = 1 AND cod_ubicacion = 0 AND departamento = N'NACIONAL' AND macroregion = N'NACIONAL')
+        OR
+        (ambito = N'DEPARTAMENTO' AND es_nacional = 0 AND cod_ubicacion > 0 AND departamento <> N'NACIONAL' AND macroregion IN (N'COSTA', N'SIERRA', N'SELVA'))
+    )
+);
 GO
 
-CREATE OR ALTER VIEW stg.vw_dim_provincia AS
-WITH u AS (
-    SELECT CONVERT(INT, LEFT(ubigeo, 4)) AS id_provincia, provincia
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.2 dw.dim_provincia (196 filas; 1608 -> PUTUMAYO)
+CREATE TABLE dw.dim_provincia (
+    id_provincia    INT IDENTITY(1,1) NOT NULL,
+    id_departamento INT               NOT NULL,
+    cod_provincia   CHAR(4)           NOT NULL,
+    provincia       NVARCHAR(100)     NOT NULL,
+    CONSTRAINT PK_dim_provincia PRIMARY KEY CLUSTERED (id_provincia),
+    CONSTRAINT FK_dim_provincia_departamento FOREIGN KEY (id_departamento)
+        REFERENCES dw.dim_departamento (id_departamento),
+    CONSTRAINT UQ_dim_provincia_cod_provincia UNIQUE NONCLUSTERED (cod_provincia)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT CK_dim_provincia_cod CHECK (cod_provincia LIKE '[0-9][0-9][0-9][0-9]')
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE NONCLUSTERED INDEX IX_dim_provincia_departamento
+    ON dw.dim_provincia (id_departamento)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.3 dw.dim_ubigeo (1,847 filas: union D1 + D2; prioridad D1 en 010201 y 010206)
+CREATE TABLE dw.dim_ubigeo (
+    id_ubigeo       INT IDENTITY(1,1) NOT NULL,
+    id_provincia    INT               NOT NULL,
+    id_departamento INT               NOT NULL,
+    ubigeo          CHAR(6)           NOT NULL,
+    distrito        NVARCHAR(120)     NOT NULL,
+    CONSTRAINT PK_dim_ubigeo PRIMARY KEY CLUSTERED (id_ubigeo),
+    CONSTRAINT FK_dim_ubigeo_provincia FOREIGN KEY (id_provincia)
+        REFERENCES dw.dim_provincia (id_provincia),
+    CONSTRAINT FK_dim_ubigeo_departamento FOREIGN KEY (id_departamento)
+        REFERENCES dw.dim_departamento (id_departamento),
+    CONSTRAINT UQ_dim_ubigeo_ubigeo UNIQUE NONCLUSTERED (ubigeo)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT CK_dim_ubigeo_ubigeo CHECK (ubigeo LIKE '[0-9][0-9][0-9][0-9][0-9][0-9]')
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE NONCLUSTERED INDEX IX_dim_ubigeo_provincia
+    ON dw.dim_ubigeo (id_provincia)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_dim_ubigeo_departamento
+    ON dw.dim_ubigeo (id_departamento)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.4 dw.dim_tiempo (182 filas: 2013..2026 x mes 0..12; sin es_anio_parcial)
+CREATE TABLE dw.dim_tiempo (
+    id_tiempo        INT IDENTITY(1,1) NOT NULL,
+    anio             SMALLINT          NOT NULL,
+    mes_numero       TINYINT           NOT NULL,
+    mes_nombre       NVARCHAR(20)      NOT NULL,
+    mes_corto        NVARCHAR(10)      NOT NULL,
+    trimestre        TINYINT           NOT NULL,
+    trimestre_nombre NVARCHAR(10)      NOT NULL,
+    es_anual         BIT               NOT NULL,
+    periodo_label    NVARCHAR(15)      NOT NULL,
+    CONSTRAINT PK_dim_tiempo PRIMARY KEY CLUSTERED (id_tiempo),
+    CONSTRAINT UQ_dim_tiempo_anio_mes UNIQUE NONCLUSTERED (anio, mes_numero)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT CK_dim_tiempo_anio CHECK (anio BETWEEN 2013 AND 2100),
+    CONSTRAINT CK_dim_tiempo_mes CHECK (mes_numero BETWEEN 0 AND 12),
+    CONSTRAINT CK_dim_tiempo_trimestre_coherencia CHECK (
+        (mes_numero = 0 AND trimestre = 0 AND es_anual = 1 AND mes_nombre = N'ANUAL' AND mes_corto = N'ANUAL' AND trimestre_nombre = N'ANUAL')
+        OR
+        (mes_numero BETWEEN 1 AND 12 AND trimestre BETWEEN 1 AND 4 AND es_anual = 0)
+    )
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.5 dw.dim_fecha (5,113 filas diarias continuas: 2013-01-01 .. 2026-12-31)
+CREATE TABLE dw.dim_fecha (
+    id_fecha          INT IDENTITY(1,1) NOT NULL,
+    fecha             DATE              NOT NULL,
+    anio              SMALLINT          NOT NULL,
+    mes               TINYINT           NOT NULL,
+    dia               TINYINT           NOT NULL,
+    mes_nombre        NVARCHAR(20)      NOT NULL,
+    trimestre         TINYINT           NOT NULL,
+    trimestre_nombre  NVARCHAR(10)      NOT NULL,
+    es_primer_dia_mes BIT               NOT NULL,
+    CONSTRAINT PK_dim_fecha PRIMARY KEY CLUSTERED (id_fecha),
+    CONSTRAINT UQ_dim_fecha_fecha UNIQUE NONCLUSTERED (fecha)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT CK_dim_fecha_anio CHECK (anio BETWEEN 2013 AND 2100),
+    CONSTRAINT CK_dim_fecha_mes CHECK (mes BETWEEN 1 AND 12),
+    CONSTRAINT CK_dim_fecha_dia CHECK (dia BETWEEN 1 AND 31),
+    CONSTRAINT CK_dim_fecha_trimestre CHECK (trimestre BETWEEN 1 AND 4)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.6 dw.dim_modalidad (7 filas)
+CREATE TABLE dw.dim_modalidad (
+    id_modalidad INT IDENTITY(1,1) NOT NULL,
+    modalidad    NVARCHAR(100)     NOT NULL,
+    CONSTRAINT PK_dim_modalidad PRIMARY KEY CLUSTERED (id_modalidad),
+    CONSTRAINT UQ_dim_modalidad_modalidad UNIQUE NONCLUSTERED (modalidad)
+        WITH (FILLFACTOR = 90)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.7 dw.dim_sexo (3 filas: F, M, NO INFORMADO)
+CREATE TABLE dw.dim_sexo (
+    id_sexo          INT IDENTITY(1,1) NOT NULL,
+    codigo_sexo      NVARCHAR(15)      NOT NULL,
+    sexo_descripcion NVARCHAR(30)      NOT NULL,
+    CONSTRAINT PK_dim_sexo PRIMARY KEY CLUSTERED (id_sexo),
+    CONSTRAINT UQ_dim_sexo_codigo UNIQUE NONCLUSTERED (codigo_sexo)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT CK_dim_sexo_codigo CHECK (codigo_sexo IN (N'F', N'M', N'NO INFORMADO'))
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.8 dw.dim_rango_edad (7 filas con es_menor_18 y orden_edad 1..7)
+CREATE TABLE dw.dim_rango_edad (
+    id_rango_edad INT IDENTITY(1,1) NOT NULL,
+    rango_edad    NVARCHAR(30)      NOT NULL,
+    es_menor_18   BIT               NOT NULL,
+    orden_edad    TINYINT           NOT NULL,
+    CONSTRAINT PK_dim_rango_edad PRIMARY KEY CLUSTERED (id_rango_edad),
+    CONSTRAINT UQ_dim_rango_edad_rango UNIQUE NONCLUSTERED (rango_edad)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT UQ_dim_rango_edad_orden UNIQUE NONCLUSTERED (orden_edad)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT CK_dim_rango_edad_orden CHECK (orden_edad BETWEEN 1 AND 7)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.9 dw.dim_nacionalidad (60 filas)
+CREATE TABLE dw.dim_nacionalidad (
+    id_nacionalidad INT IDENTITY(1,1) NOT NULL,
+    nacionalidad    NVARCHAR(60)      NOT NULL,
+    CONSTRAINT PK_dim_nacionalidad PRIMARY KEY CLUSTERED (id_nacionalidad),
+    CONSTRAINT UQ_dim_nacionalidad_nacionalidad UNIQUE NONCLUSTERED (nacionalidad)
+        WITH (FILLFACTOR = 90)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.10 dw.dim_variable (18 filas en 9 unidades de medida)
+CREATE TABLE dw.dim_variable (
+    id_variable        INT IDENTITY(1,1) NOT NULL,
+    variable           NVARCHAR(100)     NOT NULL,
+    unidad_medida      NVARCHAR(30)      NOT NULL,
+    categoria_variable NVARCHAR(40)      NOT NULL,
+    CONSTRAINT PK_dim_variable PRIMARY KEY CLUSTERED (id_variable),
+    CONSTRAINT UQ_dim_variable_variable UNIQUE NONCLUSTERED (variable)
+        WITH (FILLFACTOR = 90)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE NONCLUSTERED INDEX IX_dim_variable_unidad
+    ON dw.dim_variable (unidad_medida)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.11 dw.dim_dependencia (53 filas)
+CREATE TABLE dw.dim_dependencia (
+    id_dependencia INT IDENTITY(1,1) NOT NULL,
+    dependencia    NVARCHAR(60)      NOT NULL,
+    dir_reg_fre    NVARCHAR(30)      NOT NULL,
+    CONSTRAINT PK_dim_dependencia PRIMARY KEY CLUSTERED (id_dependencia),
+    CONSTRAINT UQ_dim_dependencia_dependencia UNIQUE NONCLUSTERED (dependencia)
+        WITH (FILLFACTOR = 90)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE NONCLUSTERED INDEX IX_dim_dependencia_dir_reg_fre
+    ON dw.dim_dependencia (dir_reg_fre)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 3.12 dw.dim_indicador (5 filas)
+CREATE TABLE dw.dim_indicador (
+    id_indicador    INT IDENTITY(1,1) NOT NULL,
+    indicador       NVARCHAR(200)     NOT NULL,
+    indicador_corto NVARCHAR(60)      NOT NULL,
+    CONSTRAINT PK_dim_indicador PRIMARY KEY CLUSTERED (id_indicador),
+    CONSTRAINT UQ_dim_indicador_indicador UNIQUE NONCLUSTERED (indicador)
+        WITH (FILLFACTOR = 90),
+    CONSTRAINT UQ_dim_indicador_indicador_corto UNIQUE NONCLUSTERED (indicador_corto)
+        WITH (FILLFACTOR = 90)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+/* ============================================================================
+   4. TABLAS DE HECHOS (4 tablas dw.fact_*)
+   ============================================================================ */
+
+-- 4.1 dw.fact_denuncias (grano: id_tiempo, id_ubigeo, id_modalidad)
+CREATE TABLE dw.fact_denuncias (
+    id_fact_denuncia BIGINT IDENTITY(1,1) NOT NULL,
+    id_tiempo        INT                  NOT NULL,
+    id_fecha         INT                  NOT NULL,
+    id_ubigeo        INT                  NOT NULL,
+    id_modalidad     INT                  NOT NULL,
+    cantidad         INT                  NOT NULL,
+    es_anio_parcial  BIT                  NOT NULL,
+    fecha_carga      DATETIME2(0)         NOT NULL CONSTRAINT DF_fact_denuncias_fecha_carga DEFAULT (SYSDATETIME()),
+    CONSTRAINT PK_fact_denuncias PRIMARY KEY CLUSTERED (id_fact_denuncia),
+    CONSTRAINT FK_fact_denuncias_tiempo FOREIGN KEY (id_tiempo)
+        REFERENCES dw.dim_tiempo (id_tiempo),
+    CONSTRAINT FK_fact_denuncias_fecha FOREIGN KEY (id_fecha)
+        REFERENCES dw.dim_fecha (id_fecha),
+    CONSTRAINT FK_fact_denuncias_ubigeo FOREIGN KEY (id_ubigeo)
+        REFERENCES dw.dim_ubigeo (id_ubigeo),
+    CONSTRAINT FK_fact_denuncias_modalidad FOREIGN KEY (id_modalidad)
+        REFERENCES dw.dim_modalidad (id_modalidad),
+    CONSTRAINT CK_fact_denuncias_cantidad CHECK (cantidad >= 0)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX UX_fact_denuncias_grano
+    ON dw.fact_denuncias (id_tiempo, id_ubigeo, id_modalidad)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_denuncias_tiempo
+    ON dw.fact_denuncias (id_tiempo)
+    INCLUDE (cantidad, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_denuncias_fecha
+    ON dw.fact_denuncias (id_fecha)
+    INCLUDE (cantidad, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_denuncias_ubigeo
+    ON dw.fact_denuncias (id_ubigeo)
+    INCLUDE (cantidad, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_denuncias_modalidad
+    ON dw.fact_denuncias (id_modalidad)
+    INCLUDE (cantidad, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 4.2 dw.fact_desaparecidos (grano: id_tiempo, id_ubigeo, id_sexo, id_rango_edad, id_nacionalidad)
+CREATE TABLE dw.fact_desaparecidos (
+    id_fact_desaparecido BIGINT IDENTITY(1,1) NOT NULL,
+    id_tiempo            INT                  NOT NULL,
+    id_fecha             INT                  NOT NULL,
+    id_ubigeo            INT                  NOT NULL,
+    id_sexo              INT                  NOT NULL,
+    id_rango_edad        INT                  NOT NULL,
+    id_nacionalidad      INT                  NOT NULL,
+    cantidad             INT                  NOT NULL,
+    es_anio_parcial      BIT                  NOT NULL,
+    fecha_carga          DATETIME2(0)         NOT NULL CONSTRAINT DF_fact_desaparecidos_fecha_carga DEFAULT (SYSDATETIME()),
+    CONSTRAINT PK_fact_desaparecidos PRIMARY KEY CLUSTERED (id_fact_desaparecido),
+    CONSTRAINT FK_fact_desaparecidos_tiempo FOREIGN KEY (id_tiempo)
+        REFERENCES dw.dim_tiempo (id_tiempo),
+    CONSTRAINT FK_fact_desaparecidos_fecha FOREIGN KEY (id_fecha)
+        REFERENCES dw.dim_fecha (id_fecha),
+    CONSTRAINT FK_fact_desaparecidos_ubigeo FOREIGN KEY (id_ubigeo)
+        REFERENCES dw.dim_ubigeo (id_ubigeo),
+    CONSTRAINT FK_fact_desaparecidos_sexo FOREIGN KEY (id_sexo)
+        REFERENCES dw.dim_sexo (id_sexo),
+    CONSTRAINT FK_fact_desaparecidos_rango_edad FOREIGN KEY (id_rango_edad)
+        REFERENCES dw.dim_rango_edad (id_rango_edad),
+    CONSTRAINT FK_fact_desaparecidos_nacionalidad FOREIGN KEY (id_nacionalidad)
+        REFERENCES dw.dim_nacionalidad (id_nacionalidad),
+    CONSTRAINT CK_fact_desaparecidos_cantidad CHECK (cantidad >= 0)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX UX_fact_desaparecidos_grano
+    ON dw.fact_desaparecidos (id_tiempo, id_ubigeo, id_sexo, id_rango_edad, id_nacionalidad)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_desaparecidos_tiempo
+    ON dw.fact_desaparecidos (id_tiempo)
+    INCLUDE (cantidad, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_desaparecidos_fecha
+    ON dw.fact_desaparecidos (id_fecha)
+    INCLUDE (cantidad, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_desaparecidos_ubigeo
+    ON dw.fact_desaparecidos (id_ubigeo)
+    INCLUDE (cantidad, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_desaparecidos_sexo_edad
+    ON dw.fact_desaparecidos (id_sexo, id_rango_edad)
+    INCLUDE (cantidad)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_desaparecidos_nacionalidad
+    ON dw.fact_desaparecidos (id_nacionalidad)
+    INCLUDE (cantidad)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 4.3 dw.fact_produccion (grano: id_tiempo, id_variable, id_dependencia)
+CREATE TABLE dw.fact_produccion (
+    id_fact_produccion BIGINT IDENTITY(1,1) NOT NULL,
+    id_tiempo          INT                  NOT NULL,
+    id_fecha           INT                  NOT NULL,
+    id_variable        INT                  NOT NULL,
+    id_dependencia     INT                  NOT NULL,
+    valor              DECIMAL(18,6)        NOT NULL,
+    es_anio_parcial    BIT                  NOT NULL,
+    fecha_carga        DATETIME2(0)         NOT NULL CONSTRAINT DF_fact_produccion_fecha_carga DEFAULT (SYSDATETIME()),
+    CONSTRAINT PK_fact_produccion PRIMARY KEY CLUSTERED (id_fact_produccion),
+    CONSTRAINT FK_fact_produccion_tiempo FOREIGN KEY (id_tiempo)
+        REFERENCES dw.dim_tiempo (id_tiempo),
+    CONSTRAINT FK_fact_produccion_fecha FOREIGN KEY (id_fecha)
+        REFERENCES dw.dim_fecha (id_fecha),
+    CONSTRAINT FK_fact_produccion_variable FOREIGN KEY (id_variable)
+        REFERENCES dw.dim_variable (id_variable),
+    CONSTRAINT FK_fact_produccion_dependencia FOREIGN KEY (id_dependencia)
+        REFERENCES dw.dim_dependencia (id_dependencia),
+    CONSTRAINT CK_fact_produccion_valor CHECK (valor >= 0)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX UX_fact_produccion_grano
+    ON dw.fact_produccion (id_tiempo, id_variable, id_dependencia)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_produccion_tiempo
+    ON dw.fact_produccion (id_tiempo)
+    INCLUDE (valor, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_produccion_fecha
+    ON dw.fact_produccion (id_fecha)
+    INCLUDE (valor, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_produccion_variable
+    ON dw.fact_produccion (id_variable)
+    INCLUDE (valor, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_produccion_dependencia
+    ON dw.fact_produccion (id_dependencia)
+    INCLUDE (valor, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 4.4 dw.fact_victimizacion (grano: id_tiempo, id_departamento, id_indicador)
+CREATE TABLE dw.fact_victimizacion (
+    id_fact_victimizacion BIGINT IDENTITY(1,1) NOT NULL,
+    id_tiempo             INT                  NOT NULL,
+    id_departamento       INT                  NOT NULL,
+    id_indicador          INT                  NOT NULL,
+    ambito                NVARCHAR(15)         NOT NULL,
+    clasif                SMALLINT             NOT NULL,
+    valor                 DECIMAL(5,1)         NOT NULL,
+    es_anio_parcial       BIT                  NOT NULL,
+    fecha_carga           DATETIME2(0)         NOT NULL CONSTRAINT DF_fact_victimizacion_fecha_carga DEFAULT (SYSDATETIME()),
+    CONSTRAINT PK_fact_victimizacion PRIMARY KEY CLUSTERED (id_fact_victimizacion),
+    CONSTRAINT FK_fact_victimizacion_tiempo FOREIGN KEY (id_tiempo)
+        REFERENCES dw.dim_tiempo (id_tiempo),
+    CONSTRAINT FK_fact_victimizacion_departamento FOREIGN KEY (id_departamento)
+        REFERENCES dw.dim_departamento (id_departamento),
+    CONSTRAINT FK_fact_victimizacion_indicador FOREIGN KEY (id_indicador)
+        REFERENCES dw.dim_indicador (id_indicador),
+    CONSTRAINT CK_fact_victimizacion_ambito CHECK (ambito IN (N'NACIONAL', N'DEPARTAMENTO')),
+    CONSTRAINT CK_fact_victimizacion_clasif CHECK (clasif BETWEEN 0 AND 100),
+    CONSTRAINT CK_fact_victimizacion_valor CHECK (valor BETWEEN 0 AND 100)
+);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX UX_fact_victimizacion_grano
+    ON dw.fact_victimizacion (id_tiempo, id_departamento, id_indicador)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_victimizacion_tiempo
+    ON dw.fact_victimizacion (id_tiempo)
+    INCLUDE (ambito, valor, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_victimizacion_departamento
+    ON dw.fact_victimizacion (id_departamento)
+    INCLUDE (ambito, valor, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+CREATE NONCLUSTERED INDEX IX_fact_victimizacion_indicador
+    ON dw.fact_victimizacion (id_indicador)
+    INCLUDE (ambito, valor, es_anio_parcial)
+    WITH (FILLFACTOR = 90, SORT_IN_TEMPDB = ON);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+/* ============================================================================
+   5. VISTAS DE STAGING PARA DIMENSIONES (12 vistas stg.vw_dim_*)
+   ============================================================================ */
+
+-- 5.1 stg.vw_dim_departamento
+CREATE VIEW stg.vw_dim_departamento
+AS
+WITH dept_origen AS (
+    SELECT DISTINCT
+        CASE
+            WHEN LEFT(ubigeo, 4) = '1501' THEN 1501
+            WHEN LEFT(ubigeo, 2) = '15'   THEN 1599
+            ELSE CAST(LEFT(ubigeo, 2) AS INT)
+        END AS cod_ubicacion,
+        departamento
     FROM DBDenunciasPoliciales.dm.DenunciasPoliciales
     UNION
-    SELECT CONVERT(INT, LEFT(ubigeo, 4)), provincia
+    SELECT DISTINCT
+        CASE
+            WHEN LEFT(ubigeo, 4) = '1501' THEN 1501
+            WHEN LEFT(ubigeo, 2) = '15'   THEN 1599
+            ELSE CAST(LEFT(ubigeo, 2) AS INT)
+        END AS cod_ubicacion,
+        departamento
     FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas
-), r AS (
-    SELECT id_provincia, provincia,
-           ROW_NUMBER() OVER (PARTITION BY id_provincia ORDER BY provincia) AS rn
-    FROM u
+    UNION
+    SELECT DISTINCT
+        cod_ubicacion,
+        departamento
+    FROM DBVictimizacionConfianzaPNP.dm.VictimizacionConfianzaPNP
+    WHERE ambito = N'DEPARTAMENTO'
 )
 SELECT
-    id_provincia,
-    provincia,
-    CASE
-        WHEN id_provincia / 100 = 15 THEN
-            CASE WHEN id_provincia = 1501 THEN 1501 ELSE 1599 END
-        ELSE id_provincia / 100
-    END AS id_departamento
-FROM r
-WHERE rn = 1
+    CAST(0 AS INT) AS cod_ubicacion,
+    CAST(N'NACIONAL' AS NVARCHAR(60)) AS departamento,
+    CAST(N'NACIONAL' AS NVARCHAR(15)) AS ambito,
+    CAST(1 AS BIT) AS es_nacional,
+    CAST(N'NACIONAL' AS NVARCHAR(20)) AS macroregion
 UNION ALL
-SELECT 0, N'NO ESPECIFICADO', 0;
+SELECT
+    CAST(cod_ubicacion AS INT) AS cod_ubicacion,
+    CAST(departamento AS NVARCHAR(60)) AS departamento,
+    CAST(N'DEPARTAMENTO' AS NVARCHAR(15)) AS ambito,
+    CAST(0 AS BIT) AS es_nacional,
+    CAST(CASE
+        WHEN cod_ubicacion IN (4, 7, 11, 13, 14, 18, 20, 23, 24, 1501, 1599) THEN N'COSTA'
+        WHEN cod_ubicacion IN (2, 3, 5, 6, 8, 9, 10, 12, 19, 21) THEN N'SIERRA'
+        WHEN cod_ubicacion IN (1, 16, 17, 22, 25) THEN N'SELVA'
+        ELSE N'SIERRA'
+    END AS NVARCHAR(20)) AS macroregion
+FROM dept_origen;
 GO
 
-CREATE OR ALTER VIEW stg.vw_dim_ubigeo AS
-WITH u AS (
-    SELECT ubigeo, provincia, distrito, 1 AS prioridad
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.2 stg.vw_dim_provincia (depende de dw.dim_departamento; 1608 -> PUTUMAYO)
+CREATE VIEW stg.vw_dim_provincia
+AS
+WITH fuente AS (
+    SELECT DISTINCT
+        CAST(LEFT(ubigeo, 4) AS CHAR(4)) AS cod_provincia,
+        CASE
+            WHEN LEFT(ubigeo, 4) = '1501' THEN 1501
+            WHEN LEFT(ubigeo, 2) = '15'   THEN 1599
+            ELSE CAST(LEFT(ubigeo, 2) AS INT)
+        END AS cod_ubicacion,
+        provincia,
+        1 AS prioridad
     FROM DBDenunciasPoliciales.dm.DenunciasPoliciales
     UNION ALL
-    SELECT ubigeo, provincia, distrito, 2
+    SELECT DISTINCT
+        CAST(LEFT(ubigeo, 4) AS CHAR(4)) AS cod_provincia,
+        CASE
+            WHEN LEFT(ubigeo, 4) = '1501' THEN 1501
+            WHEN LEFT(ubigeo, 2) = '15'   THEN 1599
+            ELSE CAST(LEFT(ubigeo, 2) AS INT)
+        END AS cod_ubicacion,
+        provincia,
+        2 AS prioridad
     FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas
-), r AS (
-    SELECT ubigeo, provincia, distrito,
-           ROW_NUMBER() OVER (PARTITION BY ubigeo ORDER BY prioridad, distrito) AS rn
-    FROM u
+),
+dedup AS (
+    SELECT
+        cod_provincia,
+        cod_ubicacion,
+        provincia,
+        ROW_NUMBER() OVER (
+            PARTITION BY cod_provincia
+            ORDER BY
+                prioridad ASC,
+                CASE WHEN cod_provincia = '1608' AND provincia = N'PUTUMAYO' THEN 0 ELSE 1 END ASC,
+                provincia ASC
+        ) AS rn
+    FROM fuente
 )
 SELECT
-    CONVERT(INT, ubigeo) AS id_ubigeo,
-    ubigeo,
-    distrito,
-    provincia,
-    CONVERT(INT, LEFT(ubigeo, 4)) AS id_provincia,
-    CASE
-        WHEN LEFT(ubigeo, 2) = '15' THEN
-            CASE WHEN LEFT(ubigeo, 4) = '1501' THEN 1501 ELSE 1599 END
-        ELSE CONVERT(INT, LEFT(ubigeo, 2))
-    END AS id_departamento
-FROM r
-WHERE rn = 1
-UNION ALL
-SELECT 0, '000000', N'NO ESPECIFICADO', N'NO ESPECIFICADO', 0, 0;
+    CAST(d.id_departamento AS INT) AS id_departamento,
+    CAST(p.cod_provincia AS CHAR(4)) AS cod_provincia,
+    CAST(p.provincia AS NVARCHAR(100)) AS provincia
+FROM dedup AS p
+INNER JOIN dw.dim_departamento AS d
+    ON d.cod_ubicacion = p.cod_ubicacion
+WHERE p.rn = 1;
 GO
 
-/* ---------------------------------------------------------------------------
-   VISTAS stg: dimensiones pequenas
-   --------------------------------------------------------------------------- */
-
-CREATE OR ALTER VIEW stg.vw_dim_modalidad AS
-SELECT 0 AS id_modalidad, N'NO ESPECIFICADO' AS modalidad
-UNION ALL
-SELECT ROW_NUMBER() OVER (ORDER BY modalidad), modalidad
-FROM (SELECT DISTINCT modalidad FROM DBDenunciasPoliciales.dm.DenunciasPoliciales) x;
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
 GO
 
-CREATE OR ALTER VIEW stg.vw_dim_sexo AS
-SELECT * FROM (VALUES
-    (0, N'',            N'NO ESPECIFICADO'),
-    (1, N'M',           N'MASCULINO'),
-    (2, N'F',           N'FEMENINO')
-) AS v(id_sexo, sexo, descripcion);
-GO
-
-CREATE OR ALTER VIEW stg.vw_dim_rango_edad AS
-SELECT 0 AS id_rango_edad, N'NO ESPECIFICADO' AS rango_edad
-UNION ALL
-SELECT ROW_NUMBER() OVER (ORDER BY rango_edad), rango_edad
-FROM (
-    SELECT DISTINCT rango_edad
-    FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas
-    WHERE rango_edad IS NOT NULL AND LTRIM(RTRIM(rango_edad)) <> N''
-) x;
-GO
-
-CREATE OR ALTER VIEW stg.vw_dim_nacionalidad AS
-SELECT 0 AS id_nacionalidad, N'NO ESPECIFICADO' AS nacionalidad
-UNION ALL
-SELECT ROW_NUMBER() OVER (ORDER BY nacionalidad), nacionalidad
-FROM (
-    SELECT DISTINCT nacionalidad
-    FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas
-    WHERE nacionalidad IS NOT NULL AND LTRIM(RTRIM(nacionalidad)) <> N''
-) x;
-GO
-
-CREATE OR ALTER VIEW stg.vw_dim_variable AS
-SELECT 0 AS id_variable, N'NO ESPECIFICADO' AS variable, N'NO ESPECIFICADO' AS unidad_medida
-UNION ALL
-SELECT ROW_NUMBER() OVER (ORDER BY variable), variable, unidad_medida
-FROM (
-    SELECT DISTINCT variable, unidad_medida
-    FROM DBProduccionPolicial.dm.ProduccionPolicial
-) x;
-GO
-
-CREATE OR ALTER VIEW stg.vw_dim_dependencia AS
-SELECT 0 AS id_dependencia, N'NO ESPECIFICADO' AS dependencia, N'NO ESPECIFICADO' AS dir_reg_fre
-UNION ALL
-SELECT ROW_NUMBER() OVER (ORDER BY dependencia, dir_reg_fre), dependencia, dir_reg_fre
-FROM (
-    SELECT DISTINCT dependencia, dir_reg_fre
-    FROM DBProduccionPolicial.dm.ProduccionPolicial
-) x;
-GO
-
-CREATE OR ALTER VIEW stg.vw_dim_indicador AS
-SELECT 0 AS id_indicador, N'NO ESPECIFICADO' AS indicador, N'%' AS unidad
-UNION ALL
-SELECT ROW_NUMBER() OVER (ORDER BY indicador), indicador, N'%'
-FROM (
-    SELECT DISTINCT indicador
-    FROM DBVictimizacionConfianzaPNP.dm.VictimizacionConfianzaPNP
-) x;
-GO
-
-/* ---------------------------------------------------------------------------
-   VISTAS stg: hechos (ya con las claves resueltas)
-   --------------------------------------------------------------------------- */
-
-CREATE OR ALTER VIEW stg.vw_fact_denuncias AS
-SELECT
-    a.anio_registro * 100 + a.mes_registro AS id_tiempo,
-    YEAR(a.fecha_hecho) * 10000 + MONTH(a.fecha_hecho) * 100 + DAY(a.fecha_hecho) AS id_fecha_hecho,
-    CONVERT(INT, a.ubigeo) AS id_ubigeo,
-    ISNULL(m.id_modalidad, 0) AS id_modalidad,
-    a.cantidad,
-    a.es_anio_parcial
-FROM DBDenunciasPoliciales.dm.DenunciasPoliciales a
-LEFT JOIN dw.dim_modalidad m ON m.modalidad = a.modalidad;
-GO
-
-CREATE OR ALTER VIEW stg.vw_fact_desaparecidos AS
-SELECT
-    a.anio_registro * 100 + a.mes_registro AS id_tiempo,
-    YEAR(a.fecha_hecho) * 10000 + MONTH(a.fecha_hecho) * 100 + DAY(a.fecha_hecho) AS id_fecha_hecho,
-    CONVERT(INT, a.ubigeo) AS id_ubigeo,
-    ISNULL(s.id_sexo, 0) AS id_sexo,
-    ISNULL(e.id_rango_edad, 0) AS id_rango_edad,
-    ISNULL(n.id_nacionalidad, 0) AS id_nacionalidad,
-    a.cantidad,
-    a.es_anio_parcial
-FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas a
-LEFT JOIN dw.dim_sexo s ON s.sexo = LTRIM(RTRIM(a.sexo))
-LEFT JOIN dw.dim_rango_edad e ON e.rango_edad = a.rango_edad
-LEFT JOIN dw.dim_nacionalidad n ON n.nacionalidad = a.nacionalidad;
-GO
-
-CREATE OR ALTER VIEW stg.vw_fact_produccion AS
-SELECT
-    a.anio_registro * 100 + a.mes_registro AS id_tiempo,
-    YEAR(a.fecha_hecho) * 10000 + MONTH(a.fecha_hecho) * 100 + DAY(a.fecha_hecho) AS id_fecha_hecho,
-    ISNULL(v.id_variable, 0) AS id_variable,
-    ISNULL(d.id_dependencia, 0) AS id_dependencia,
-    a.valor,
-    a.es_anio_parcial
-FROM DBProduccionPolicial.dm.ProduccionPolicial a
-LEFT JOIN dw.dim_variable v ON v.variable = a.variable AND v.unidad_medida = a.unidad_medida
-LEFT JOIN dw.dim_dependencia d ON d.dependencia = a.dependencia AND d.dir_reg_fre = a.dir_reg_fre;
-GO
-
-CREATE OR ALTER VIEW stg.vw_fact_victimizacion AS
-SELECT
-    a.anio_registro * 100 AS id_tiempo,
-    a.cod_ubicacion AS id_departamento,
-    ISNULL(i.id_indicador, 0) AS id_indicador,
-    a.valor,
-    a.clasif,
-    a.es_anio_parcial
-FROM DBVictimizacionConfianzaPNP.dm.VictimizacionConfianzaPNP a
-LEFT JOIN dw.dim_indicador i ON i.indicador = a.indicador;
-GO
-
-DECLARE @vistas INT = (SELECT COUNT(*) FROM sys.views WHERE schema_id = SCHEMA_ID(N'stg'));
-PRINT N'Vistas creadas: ' + CONVERT(NVARCHAR(10), @vistas) + N'.';
-GO
-
-/* ---------------------------------------------------------------------------
-   PROCEDIMIENTO USADO POR EL ORQUESTADOR SSIS (00_Orquestador.dtsx)
-
-   Ejecuta dtexec mediante xp_cmdshell, captura toda la salida y lanza un error
-   si el paquete NO termina con DTSER_SUCCESS. Sin esta comprobacion,
-   xp_cmdshell devuelve exito aunque el proceso hijo haya fallado y el
-   orquestador SSIS terminaria "verde" sin cargar datos.
-
-   Requisito de entorno: la cuenta de servicio de SQL Server
-   (NT SERVICE\MSSQLSERVER) debe tener permisos de lectura sobre la carpeta
-   Source\Proyecto_EF_SSIS y de traversal sobre sus carpetas padre.
-   --------------------------------------------------------------------------- */
-CREATE OR ALTER PROCEDURE etl.sp_EjecutarPaqueteSSIS
-    @RutaPaquete NVARCHAR(4000),
-    @RutaDtexec  NVARCHAR(4000) = N'C:\Program Files\Microsoft SQL Server\170\DTS\Binn\DTExec.exe'
+-- 5.3 stg.vw_dim_ubigeo (depende de dw.dim_provincia; union D1+D2; D1 gana 010201/010206)
+CREATE VIEW stg.vw_dim_ubigeo
 AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @cmd    NVARCHAR(4000);
-    DECLARE @salida TABLE (linea NVARCHAR(4000));
-
-    EXEC sp_configure 'show advanced options', 1; RECONFIGURE;
-    EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;
-
-    -- Doble comilla inicial/final para que cmd.exe respete los espacios en la ruta.
-    SET @cmd = N'""' + @RutaDtexec + N'" /f "' + @RutaPaquete + N'""';
-
-    INSERT INTO @salida (linea)
-    EXEC master.dbo.xp_cmdshell @cmd;
-
-    IF NOT EXISTS (SELECT 1 FROM @salida WHERE linea LIKE N'%DTSER_SUCCESS (0)%')
-    BEGIN
-        DECLARE @detalle NVARCHAR(1000);
-        SELECT TOP 1 @detalle = linea
-        FROM @salida
-        WHERE linea LIKE N'%Error:%'
-           OR linea LIKE N'%denegado%'
-           OR linea LIKE N'%not recognized%'
-           OR linea LIKE N'%no se reconoce%'
-           OR linea LIKE N'%failed%'
-           OR linea LIKE N'%fallo%'
-        ORDER BY linea;
-
-        DECLARE @motivo NVARCHAR(1000) = ISNULL(@detalle, N'la salida de dtexec no contiene DTSER_SUCCESS');
-
-        RAISERROR(N'Fallo al ejecutar el paquete SSIS "%s". Detalle: %s', 16, 1,
-                  @RutaPaquete, @motivo);
-    END
-END
+WITH fuente AS (
+    SELECT DISTINCT
+        CAST(ubigeo AS CHAR(6)) AS ubigeo,
+        distrito,
+        1 AS prioridad
+    FROM DBDenunciasPoliciales.dm.DenunciasPoliciales
+    UNION ALL
+    SELECT DISTINCT
+        CAST(ubigeo AS CHAR(6)) AS ubigeo,
+        distrito,
+        2 AS prioridad
+    FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas
+),
+dedup AS (
+    SELECT
+        ubigeo,
+        distrito,
+        ROW_NUMBER() OVER (
+            PARTITION BY ubigeo
+            ORDER BY prioridad ASC, distrito ASC
+        ) AS rn
+    FROM fuente
+)
+SELECT
+    CAST(p.id_provincia AS INT) AS id_provincia,
+    CAST(p.id_departamento AS INT) AS id_departamento,
+    CAST(u.ubigeo AS CHAR(6)) AS ubigeo,
+    CAST(u.distrito AS NVARCHAR(120)) AS distrito
+FROM dedup AS u
+INNER JOIN dw.dim_provincia AS p
+    ON p.cod_provincia = LEFT(u.ubigeo, 4)
+WHERE u.rn = 1;
 GO
 
-PRINT N'Procedimiento etl.sp_EjecutarPaqueteSSIS creado.';
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.4 stg.vw_dim_tiempo (182 filas: 2013..2026 x mes 0..12)
+CREATE VIEW stg.vw_dim_tiempo
+AS
+SELECT
+    CAST(a.anio AS SMALLINT) AS anio,
+    CAST(m.mes_numero AS TINYINT) AS mes_numero,
+    CAST(CASE m.mes_numero
+        WHEN 0  THEN N'ANUAL'
+        WHEN 1  THEN N'ENERO'
+        WHEN 2  THEN N'FEBRERO'
+        WHEN 3  THEN N'MARZO'
+        WHEN 4  THEN N'ABRIL'
+        WHEN 5  THEN N'MAYO'
+        WHEN 6  THEN N'JUNIO'
+        WHEN 7  THEN N'JULIO'
+        WHEN 8  THEN N'AGOSTO'
+        WHEN 9  THEN N'SETIEMBRE'
+        WHEN 10 THEN N'OCTUBRE'
+        WHEN 11 THEN N'NOVIEMBRE'
+        WHEN 12 THEN N'DICIEMBRE'
+    END AS NVARCHAR(20)) AS mes_nombre,
+    CAST(CASE m.mes_numero
+        WHEN 0  THEN N'ANUAL'
+        WHEN 1  THEN N'ENE'
+        WHEN 2  THEN N'FEB'
+        WHEN 3  THEN N'MAR'
+        WHEN 4  THEN N'ABR'
+        WHEN 5  THEN N'MAY'
+        WHEN 6  THEN N'JUN'
+        WHEN 7  THEN N'JUL'
+        WHEN 8  THEN N'AGO'
+        WHEN 9  THEN N'SET'
+        WHEN 10 THEN N'OCT'
+        WHEN 11 THEN N'NOV'
+        WHEN 12 THEN N'DIC'
+    END AS NVARCHAR(10)) AS mes_corto,
+    CAST(CASE WHEN m.mes_numero = 0 THEN 0 ELSE ((m.mes_numero - 1) / 3) + 1 END AS TINYINT) AS trimestre,
+    CAST(CASE WHEN m.mes_numero = 0 THEN N'ANUAL' ELSE N'T' + CAST(((m.mes_numero - 1) / 3) + 1 AS NVARCHAR(1)) END AS NVARCHAR(10)) AS trimestre_nombre,
+    CAST(CASE WHEN m.mes_numero = 0 THEN 1 ELSE 0 END AS BIT) AS es_anual,
+    CAST(
+        CAST(a.anio AS NVARCHAR(4))
+        + N'-'
+        + CASE WHEN m.mes_numero = 0 THEN N'ANUAL' ELSE RIGHT(N'0' + CAST(m.mes_numero AS NVARCHAR(2)), 2) END
+        AS NVARCHAR(15)
+    ) AS periodo_label
+FROM (VALUES
+    (2013),(2014),(2015),(2016),(2017),(2018),(2019),
+    (2020),(2021),(2022),(2023),(2024),(2025),(2026)
+) AS a(anio)
+CROSS JOIN (VALUES
+    (0),(1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11),(12)
+) AS m(mes_numero);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.5 stg.vw_dim_fecha (5,113 filas diarias continuas 2013-01-01..2026-12-31 con tally E1/E2/E4)
+CREATE VIEW stg.vw_dim_fecha
+AS
+WITH
+E1(n) AS (
+    SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1
+    UNION ALL SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1
+),
+E2(n) AS (SELECT 1 FROM E1 AS a CROSS JOIN E1 AS b),
+E4(n) AS (SELECT 1 FROM E2 AS a CROSS JOIN E2 AS b),
+Nums(n) AS (
+    SELECT TOP (DATEDIFF(DAY, '20130101', '20261231') + 1)
+           ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1
+    FROM E4
+),
+Fechas AS (
+    SELECT DATEADD(DAY, n, CAST('20130101' AS DATE)) AS fecha
+    FROM Nums
+)
+SELECT
+    CAST(fecha AS DATE) AS fecha,
+    CAST(YEAR(fecha) AS SMALLINT) AS anio,
+    CAST(MONTH(fecha) AS TINYINT) AS mes,
+    CAST(DAY(fecha) AS TINYINT) AS dia,
+    CAST(CASE MONTH(fecha)
+        WHEN 1  THEN N'ENERO'
+        WHEN 2  THEN N'FEBRERO'
+        WHEN 3  THEN N'MARZO'
+        WHEN 4  THEN N'ABRIL'
+        WHEN 5  THEN N'MAYO'
+        WHEN 6  THEN N'JUNIO'
+        WHEN 7  THEN N'JULIO'
+        WHEN 8  THEN N'AGOSTO'
+        WHEN 9  THEN N'SETIEMBRE'
+        WHEN 10 THEN N'OCTUBRE'
+        WHEN 11 THEN N'NOVIEMBRE'
+        WHEN 12 THEN N'DICIEMBRE'
+    END AS NVARCHAR(20)) AS mes_nombre,
+    CAST(((MONTH(fecha) - 1) / 3) + 1 AS TINYINT) AS trimestre,
+    CAST(N'T' + CAST(((MONTH(fecha) - 1) / 3) + 1 AS NVARCHAR(1)) AS NVARCHAR(10)) AS trimestre_nombre,
+    CAST(CASE WHEN DAY(fecha) = 1 THEN 1 ELSE 0 END AS BIT) AS es_primer_dia_mes
+FROM Fechas;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.6 stg.vw_dim_modalidad
+CREATE VIEW stg.vw_dim_modalidad
+AS
+SELECT DISTINCT
+    CAST(modalidad AS NVARCHAR(100)) AS modalidad
+FROM DBDenunciasPoliciales.dm.DenunciasPoliciales;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.7 stg.vw_dim_sexo
+CREATE VIEW stg.vw_dim_sexo
+AS
+SELECT
+    CAST(v.codigo_sexo AS NVARCHAR(15)) AS codigo_sexo,
+    CAST(v.sexo_descripcion AS NVARCHAR(30)) AS sexo_descripcion
+FROM (VALUES
+    (N'F',            N'Femenino'),
+    (N'M',            N'Masculino'),
+    (N'NO INFORMADO', N'No informado')
+) AS v(codigo_sexo, sexo_descripcion);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.8 stg.vw_dim_rango_edad
+CREATE VIEW stg.vw_dim_rango_edad
+AS
+SELECT
+    CAST(v.rango_edad AS NVARCHAR(30)) AS rango_edad,
+    CAST(v.es_menor_18 AS BIT) AS es_menor_18,
+    CAST(v.orden_edad AS TINYINT) AS orden_edad
+FROM (VALUES
+    (N'0-5 AÑOS',      1, 1),
+    (N'6-11 AÑOS',     1, 2),
+    (N'12-17 AÑOS',    1, 3),
+    (N'18-29 AÑOS',    0, 4),
+    (N'30-59 AÑOS',    0, 5),
+    (N'60 A MAS AÑOS', 0, 6),
+    (N'NO INFORMADO',  0, 7)
+) AS v(rango_edad, es_menor_18, orden_edad);
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.9 stg.vw_dim_nacionalidad
+CREATE VIEW stg.vw_dim_nacionalidad
+AS
+SELECT DISTINCT
+    CAST(nacionalidad AS NVARCHAR(60)) AS nacionalidad
+FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.10 stg.vw_dim_variable
+CREATE VIEW stg.vw_dim_variable
+AS
+SELECT DISTINCT
+    CAST(variable AS NVARCHAR(100)) AS variable,
+    CAST(unidad_medida AS NVARCHAR(30)) AS unidad_medida,
+    CAST(CASE
+        WHEN variable = N'OPERATIVOS' THEN N'OPERATIVOS'
+        WHEN variable IN (N'ARMAS BLANCAS', N'ARMAS DE FUEGO') THEN N'ARMAS INCAUTADAS'
+        WHEN variable IN (N'BANDAS CRIMINALES DESARTICULADAS', N'ORGANIZACIONES CRIMINALES DESARTICULADAS') THEN N'ESTRUCTURAS CRIMINALES'
+        WHEN variable IN (
+            N'CC (ENVOLTORIOS)', N'PBC (ENVOLTORIOS)', N'MARIHUANA (ENVOLTORIO)',
+            N'CC (KILOS)', N'MARIHUANA (KILOS)', N'PBC (KILOS)'
+        ) THEN N'DROGAS DECOMISADAS'
+        WHEN variable IN (N'DINERO INCAUTADO (SOLES)', N'CONTRABANDO (VALORIZACION)') THEN N'INCAUTACION MONETARIA'
+        WHEN variable IN (
+            N'DETENIDOS DIVERSOS DELITOS (EXTRANJEROS)',
+            N'DETENIDOS DIVERSOS DELITOS (PERUANOS)',
+            N'DETENIDOS POR REQUISITORIADO',
+            N'INTERVENCION EXTRAJEROS (LEY MIGRATORIA)'
+        ) THEN N'PERSONAS INTERVENIDAS'
+        WHEN variable = N'PAPELETAS INFRACCION RNT' THEN N'TRANSITO'
+        ELSE N'OTRAS VARIABLES'
+    END AS NVARCHAR(40)) AS categoria_variable
+FROM DBProduccionPolicial.dm.ProduccionPolicial;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.11 stg.vw_dim_dependencia
+CREATE VIEW stg.vw_dim_dependencia
+AS
+SELECT DISTINCT
+    CAST(dependencia AS NVARCHAR(60)) AS dependencia,
+    CAST(dir_reg_fre AS NVARCHAR(30)) AS dir_reg_fre
+FROM DBProduccionPolicial.dm.ProduccionPolicial;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 5.12 stg.vw_dim_indicador
+CREATE VIEW stg.vw_dim_indicador
+AS
+SELECT DISTINCT
+    CAST(indicador AS NVARCHAR(200)) AS indicador,
+    CAST(CASE indicador
+        WHEN N'PORCENTAJE DE CONFIANZA EN LA PNP'
+            THEN N'Confianza en la PNP'
+        WHEN N'PORCENTAJE DE PERCEPCIÓN DE INSEGURIDAD AL CAMINAR SOLO(A) DE NOCHE EN SU ZONA O BARRIO'
+            THEN N'Percepción de inseguridad'
+        WHEN N'PORCENTAJE DE VICTIMIZACIÓN'
+            THEN N'Victimización total'
+        WHEN N'PORCENTAJE DE VICTIMIZACIÓN POR EL DELITO DE ROBO E INTENTO DE ROBO DE DINERO, CARTERA Y CELULAR'
+            THEN N'Victimización por robo'
+        WHEN N'PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA'
+            THEN N'Victimización por estafa'
+        ELSE LEFT(indicador, 60)
+    END AS NVARCHAR(60)) AS indicador_corto
+FROM DBVictimizacionConfianzaPNP.dm.VictimizacionConfianzaPNP;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+/* ============================================================================
+   6. VISTAS DE STAGING PARA TABLAS DE HECHOS (4 vistas stg.vw_fact_*)
+   ============================================================================ */
+
+-- 6.1 stg.vw_fact_denuncias
+CREATE VIEW stg.vw_fact_denuncias
+AS
+SELECT
+    CAST(t.id_tiempo AS INT) AS id_tiempo,
+    CAST(f.id_fecha AS INT) AS id_fecha,
+    CAST(u.id_ubigeo AS INT) AS id_ubigeo,
+    CAST(m.id_modalidad AS INT) AS id_modalidad,
+    CAST(src.cantidad AS INT) AS cantidad,
+    CAST(src.es_anio_parcial AS BIT) AS es_anio_parcial
+FROM DBDenunciasPoliciales.dm.DenunciasPoliciales AS src
+INNER JOIN dw.dim_tiempo AS t
+    ON t.anio = src.anio_registro
+   AND t.mes_numero = src.mes_registro
+INNER JOIN dw.dim_fecha AS f
+    ON f.fecha = src.fecha_hecho
+INNER JOIN dw.dim_ubigeo AS u
+    ON u.ubigeo = src.ubigeo
+INNER JOIN dw.dim_modalidad AS m
+    ON m.modalidad = src.modalidad;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 6.2 stg.vw_fact_desaparecidos
+CREATE VIEW stg.vw_fact_desaparecidos
+AS
+SELECT
+    CAST(t.id_tiempo AS INT) AS id_tiempo,
+    CAST(f.id_fecha AS INT) AS id_fecha,
+    CAST(u.id_ubigeo AS INT) AS id_ubigeo,
+    CAST(s.id_sexo AS INT) AS id_sexo,
+    CAST(re.id_rango_edad AS INT) AS id_rango_edad,
+    CAST(n.id_nacionalidad AS INT) AS id_nacionalidad,
+    CAST(src.cantidad AS INT) AS cantidad,
+    CAST(src.es_anio_parcial AS BIT) AS es_anio_parcial
+FROM DBPersonasDesaparecidas.dm.PersonasDesaparecidas AS src
+INNER JOIN dw.dim_tiempo AS t
+    ON t.anio = src.anio_registro
+   AND t.mes_numero = src.mes_registro
+INNER JOIN dw.dim_fecha AS f
+    ON f.fecha = src.fecha_hecho
+INNER JOIN dw.dim_ubigeo AS u
+    ON u.ubigeo = src.ubigeo
+INNER JOIN dw.dim_sexo AS s
+    ON s.codigo_sexo = ISNULL(NULLIF(LTRIM(RTRIM(CAST(src.sexo AS NVARCHAR(15)))), N''), N'NO INFORMADO')
+INNER JOIN dw.dim_rango_edad AS re
+    ON re.rango_edad = ISNULL(NULLIF(LTRIM(RTRIM(src.rango_edad)), N''), N'NO INFORMADO')
+INNER JOIN dw.dim_nacionalidad AS n
+    ON n.nacionalidad = src.nacionalidad;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 6.3 stg.vw_fact_produccion
+CREATE VIEW stg.vw_fact_produccion
+AS
+SELECT
+    CAST(t.id_tiempo AS INT) AS id_tiempo,
+    CAST(f.id_fecha AS INT) AS id_fecha,
+    CAST(v.id_variable AS INT) AS id_variable,
+    CAST(d.id_dependencia AS INT) AS id_dependencia,
+    CAST(src.valor AS DECIMAL(18,6)) AS valor,
+    CAST(src.es_anio_parcial AS BIT) AS es_anio_parcial
+FROM DBProduccionPolicial.dm.ProduccionPolicial AS src
+INNER JOIN dw.dim_tiempo AS t
+    ON t.anio = src.anio_registro
+   AND t.mes_numero = src.mes_registro
+INNER JOIN dw.dim_fecha AS f
+    ON f.fecha = src.fecha_hecho
+INNER JOIN dw.dim_variable AS v
+    ON v.variable = src.variable
+INNER JOIN dw.dim_dependencia AS d
+    ON d.dependencia = src.dependencia;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+-- 6.4 stg.vw_fact_victimizacion
+CREATE VIEW stg.vw_fact_victimizacion
+AS
+SELECT
+    CAST(t.id_tiempo AS INT) AS id_tiempo,
+    CAST(dep.id_departamento AS INT) AS id_departamento,
+    CAST(ind.id_indicador AS INT) AS id_indicador,
+    CAST(src.ambito AS NVARCHAR(15)) AS ambito,
+    CAST(src.clasif AS SMALLINT) AS clasif,
+    CAST(src.valor AS DECIMAL(5,1)) AS valor,
+    CAST(src.es_anio_parcial AS BIT) AS es_anio_parcial
+FROM DBVictimizacionConfianzaPNP.dm.VictimizacionConfianzaPNP AS src
+INNER JOIN dw.dim_tiempo AS t
+    ON t.anio = src.anio_registro
+   AND t.mes_numero = 0
+INNER JOIN dw.dim_departamento AS dep
+    ON dep.cod_ubicacion = src.cod_ubicacion
+INNER JOIN dw.dim_indicador AS ind
+    ON ind.indicador = src.indicador;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET DATEFORMAT ymd;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
+PRINT N'Estructura DW_ProyectoEF creada correctamente (3 esquemas, 1 tabla etl, 12 dimensiones, 4 hechos, 16 vistas stg).';
 GO
