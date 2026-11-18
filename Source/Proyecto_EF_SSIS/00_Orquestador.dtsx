@@ -60,4 +60,74 @@
     <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 3]" DTS:CreationName="" DTS:DTSID="{F6517429-BAB6-40F9-8EE4-51B161C1141A}" DTS:From="Package\ETL 30_FactDesaparecidos" DTS:LogicalAnd="True" DTS:ObjectName="Paso 3" DTS:To="Package\ETL 40_FactProduccion" />
     <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 4]" DTS:CreationName="" DTS:DTSID="{F1C7FDE1-376C-4D3C-B7A6-AB00520C5876}" DTS:From="Package\ETL 40_FactProduccion" DTS:LogicalAnd="True" DTS:ObjectName="Paso 4" DTS:To="Package\ETL 50_FactVictimizacion" />
   </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<Objects Version="8">
+  <Package design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="180,42" Id="Package\ETL 10_Dimensiones" TopLeft="40,60" />
+        <NodeLayout Size="180,42" Id="Package\ETL 20_FactDenuncias" TopLeft="40,150" />
+        <NodeLayout Size="180,42" Id="Package\ETL 30_FactDesaparecidos" TopLeft="40,240" />
+        <NodeLayout Size="180,42" Id="Package\ETL 40_FactProduccion" TopLeft="40,330" />
+        <NodeLayout Size="180,42" Id="Package\ETL 50_FactVictimizacion" TopLeft="40,420" />
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 1]" TopLeft="220,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 2]" TopLeft="220,185">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 3]" TopLeft="220,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 4]" TopLeft="220,365">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>

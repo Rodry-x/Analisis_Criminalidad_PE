@@ -132,4 +132,50 @@
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<Objects Version="8">
+  <Package design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="180,42" Id="Package\DFT Fact Denuncias" TopLeft="40,60" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost design-time-name="Package\DFT Fact Denuncias">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Fact Denuncias\SRC stg vw_fact_denuncias" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Fact Denuncias\DST dw fact_denuncias" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Fact Denuncias.Paths[Flujo DFT Fact Denuncias]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Fact Denuncias\SRC stg vw_fact_denuncias">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Fact Denuncias\DST dw fact_denuncias">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>

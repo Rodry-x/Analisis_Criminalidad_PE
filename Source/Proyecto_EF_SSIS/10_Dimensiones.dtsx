@@ -1218,4 +1218,611 @@
     <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 10]" DTS:CreationName="" DTS:DTSID="{8663D7BF-E628-4CB6-A38D-FA4708E4897F}" DTS:From="Package\DFT Dim Variable" DTS:LogicalAnd="True" DTS:ObjectName="Paso 10" DTS:To="Package\DFT Dim Dependencia" />
     <DTS:PrecedenceConstraint DTS:refId="Package.PrecedenceConstraints[Paso 11]" DTS:CreationName="" DTS:DTSID="{B018EC13-D4D7-42E2-8EFA-8D1BD7E601DD}" DTS:From="Package\DFT Dim Dependencia" DTS:LogicalAnd="True" DTS:ObjectName="Paso 11" DTS:To="Package\DFT Dim Indicador" />
   </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<Objects Version="8">
+  <Package design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Fecha" TopLeft="40,60" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Tiempo" TopLeft="40,150" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Departamento" TopLeft="40,240" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Provincia" TopLeft="40,330" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Ubigeo" TopLeft="40,420" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Modalidad" TopLeft="40,510" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Sexo" TopLeft="40,600" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Rango Edad" TopLeft="40,690" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Nacionalidad" TopLeft="40,780" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Variable" TopLeft="40,870" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Dependencia" TopLeft="40,960" />
+        <NodeLayout Size="180,42" Id="Package\DFT Dim Indicador" TopLeft="40,1050" />
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 1]" TopLeft="220,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 2]" TopLeft="220,185">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 3]" TopLeft="220,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 4]" TopLeft="220,365">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 5]" TopLeft="220,455">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 6]" TopLeft="220,545">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 7]" TopLeft="220,635">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 8]" TopLeft="220,725">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 9]" TopLeft="220,815">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 10]" TopLeft="220,905">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout Id="Package.PrecedenceConstraints[Paso 11]" TopLeft="220,995">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost design-time-name="Package\DFT Dim Fecha">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Fecha\SRC stg vw_dim_fecha" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Fecha\DST dw dim_fecha" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Fecha.Paths[Flujo DFT Dim Fecha]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Fecha\SRC stg vw_dim_fecha">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Fecha\DST dw dim_fecha">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Tiempo">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Tiempo\DST dw dim_tiempo" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Tiempo.Paths[Flujo DFT Dim Tiempo]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Tiempo\SRC stg vw_dim_tiempo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Tiempo\DST dw dim_tiempo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Departamento">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Departamento\SRC stg vw_dim_departamento" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Departamento\DST dw dim_departamento" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Departamento.Paths[Flujo DFT Dim Departamento]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Departamento\SRC stg vw_dim_departamento">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Departamento\DST dw dim_departamento">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Provincia">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Provincia\SRC stg vw_dim_provincia" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Provincia\DST dw dim_provincia" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Provincia.Paths[Flujo DFT Dim Provincia]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Provincia\SRC stg vw_dim_provincia">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Provincia\DST dw dim_provincia">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Ubigeo">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Ubigeo\DST dw dim_ubigeo" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Ubigeo.Paths[Flujo DFT Dim Ubigeo]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Ubigeo\SRC stg vw_dim_ubigeo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Ubigeo\DST dw dim_ubigeo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Modalidad">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Modalidad\DST dw dim_modalidad" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Modalidad.Paths[Flujo DFT Dim Modalidad]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Modalidad\SRC stg vw_dim_modalidad">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Modalidad\DST dw dim_modalidad">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Sexo">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Sexo\SRC stg vw_dim_sexo" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Sexo\DST dw dim_sexo" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Sexo.Paths[Flujo DFT Dim Sexo]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Sexo\SRC stg vw_dim_sexo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Sexo\DST dw dim_sexo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Rango Edad">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Rango Edad\DST dw dim_rango_edad" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Rango Edad.Paths[Flujo DFT Dim Rango Edad]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Rango Edad\SRC stg vw_dim_rango_edad">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Rango Edad\DST dw dim_rango_edad">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Nacionalidad">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Nacionalidad.Paths[Flujo DFT Dim Nacionalidad]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Nacionalidad\SRC stg vw_dim_nacionalidad">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Nacionalidad\DST dw dim_nacionalidad">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Variable">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Variable\SRC stg vw_dim_variable" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Variable\DST dw dim_variable" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Variable.Paths[Flujo DFT Dim Variable]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Variable\SRC stg vw_dim_variable">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Variable\DST dw dim_variable">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Dependencia">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Dependencia\DST dw dim_dependencia" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Dependencia.Paths[Flujo DFT Dim Dependencia]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Dependencia\SRC stg vw_dim_dependencia">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Dependencia\DST dw dim_dependencia">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost design-time-name="Package\DFT Dim Indicador">
+    <LayoutInfo>
+      <GraphLayout Capacity="20" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Indicador\SRC stg vw_dim_indicador" TopLeft="60,60" />
+        <NodeLayout Size="200,42" Id="Package\DFT Dim Indicador\DST dw dim_indicador" TopLeft="320,60" />
+        <EdgeLayout Id="Package\DFT Dim Indicador.Paths[Flujo DFT Dim Indicador]" TopLeft="250,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve StartConnector="{assembly:Null}" EndConnector="0,40" Start="0,0" End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection Capacity="1">
+                  <mssgle:LineSegment End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Indicador\SRC stg vw_dim_indicador">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata design-time-name="Package\DFT Dim Indicador\DST dw dim_indicador">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>
