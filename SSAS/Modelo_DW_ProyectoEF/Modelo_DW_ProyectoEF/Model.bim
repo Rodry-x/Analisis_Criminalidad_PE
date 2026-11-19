@@ -18,8 +18,6 @@
         },
         "credential": {
           "AuthenticationKind": "ServiceAccount",
-          "kind": "SQL",
-          "path": "(localdb)\\mssqllocaldb;DW_ProyectoEF",
           "EncryptConnection": false
         }
       }
