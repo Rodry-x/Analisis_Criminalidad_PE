@@ -1,0 +1,1581 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1700,
+  "model": {
+    "culture": "es-PE",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "(localdb)\\MSSQLLocalDB",
+            "database": "DW_ProyectoEF"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "ServiceAccount",
+          "kind": "SQL",
+          "path": "(localdb)\\mssqllocaldb;DW_ProyectoEF",
+          "EncryptConnection": false
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "dim_departamento",
+        "columns": [
+          {
+            "name": "id_departamento",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_departamento"
+          },
+          {
+            "name": "cod_ubicacion",
+            "dataType": "int64",
+            "sourceColumn": "cod_ubicacion"
+          },
+          {
+            "name": "departamento",
+            "dataType": "string",
+            "sourceColumn": "departamento"
+          },
+          {
+            "name": "ambito",
+            "dataType": "string",
+            "sourceColumn": "ambito"
+          },
+          {
+            "name": "es_nacional",
+            "dataType": "boolean",
+            "sourceColumn": "es_nacional"
+          },
+          {
+            "name": "macroregion",
+            "dataType": "string",
+            "sourceColumn": "macroregion"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_departamento = Source{[Schema=\"dw\",Item=\"dim_departamento\"]}[Data]",
+                "in",
+                "    dw_dim_departamento"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_dependencia",
+        "columns": [
+          {
+            "name": "id_dependencia",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_dependencia"
+          },
+          {
+            "name": "dependencia",
+            "dataType": "string",
+            "sourceColumn": "dependencia"
+          },
+          {
+            "name": "dir_reg_fre",
+            "dataType": "string",
+            "sourceColumn": "dir_reg_fre"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_dependencia = Source{[Schema=\"dw\",Item=\"dim_dependencia\"]}[Data]",
+                "in",
+                "    dw_dim_dependencia"
+              ]
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Jerarquia_Produccion",
+            "levels": [
+              {
+                "name": "dir_reg_fre",
+                "ordinal": 0,
+                "column": "dir_reg_fre"
+              },
+              {
+                "name": "dependencia",
+                "ordinal": 1,
+                "column": "dependencia"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "dim_fecha",
+        "columns": [
+          {
+            "name": "id_fecha",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fecha"
+          },
+          {
+            "name": "fecha",
+            "dataType": "dateTime",
+            "sourceColumn": "fecha"
+          },
+          {
+            "name": "anio",
+            "dataType": "int64",
+            "sourceColumn": "anio"
+          },
+          {
+            "name": "mes",
+            "dataType": "int64",
+            "sourceColumn": "mes"
+          },
+          {
+            "name": "dia",
+            "dataType": "int64",
+            "sourceColumn": "dia"
+          },
+          {
+            "name": "mes_nombre",
+            "dataType": "string",
+            "sourceColumn": "mes_nombre",
+            "sortByColumn": "mes"
+          },
+          {
+            "name": "trimestre",
+            "dataType": "int64",
+            "sourceColumn": "trimestre"
+          },
+          {
+            "name": "trimestre_nombre",
+            "dataType": "string",
+            "sourceColumn": "trimestre_nombre",
+            "sortByColumn": "trimestre"
+          },
+          {
+            "name": "es_primer_dia_mes",
+            "dataType": "boolean",
+            "sourceColumn": "es_primer_dia_mes"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_fecha = Source{[Schema=\"dw\",Item=\"dim_fecha\"]}[Data]",
+                "in",
+                "    dw_dim_fecha"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_indicador",
+        "columns": [
+          {
+            "name": "id_indicador",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_indicador"
+          },
+          {
+            "name": "indicador",
+            "dataType": "string",
+            "sourceColumn": "indicador"
+          },
+          {
+            "name": "indicador_corto",
+            "dataType": "string",
+            "sourceColumn": "indicador_corto"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_indicador = Source{[Schema=\"dw\",Item=\"dim_indicador\"]}[Data]",
+                "in",
+                "    dw_dim_indicador"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_modalidad",
+        "columns": [
+          {
+            "name": "id_modalidad",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_modalidad"
+          },
+          {
+            "name": "modalidad",
+            "dataType": "string",
+            "sourceColumn": "modalidad"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_modalidad = Source{[Schema=\"dw\",Item=\"dim_modalidad\"]}[Data]",
+                "in",
+                "    dw_dim_modalidad"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_nacionalidad",
+        "columns": [
+          {
+            "name": "id_nacionalidad",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_nacionalidad"
+          },
+          {
+            "name": "nacionalidad",
+            "dataType": "string",
+            "sourceColumn": "nacionalidad"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_nacionalidad = Source{[Schema=\"dw\",Item=\"dim_nacionalidad\"]}[Data]",
+                "in",
+                "    dw_dim_nacionalidad"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_provincia",
+        "columns": [
+          {
+            "name": "id_provincia",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_provincia"
+          },
+          {
+            "name": "id_departamento",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_departamento"
+          },
+          {
+            "name": "cod_provincia",
+            "dataType": "string",
+            "sourceColumn": "cod_provincia"
+          },
+          {
+            "name": "provincia",
+            "dataType": "string",
+            "sourceColumn": "provincia"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_provincia = Source{[Schema=\"dw\",Item=\"dim_provincia\"]}[Data]",
+                "in",
+                "    dw_dim_provincia"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_rango_edad",
+        "columns": [
+          {
+            "name": "id_rango_edad",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_rango_edad"
+          },
+          {
+            "name": "rango_edad",
+            "dataType": "string",
+            "sourceColumn": "rango_edad",
+            "sortByColumn": "orden_edad"
+          },
+          {
+            "name": "es_menor_18",
+            "dataType": "boolean",
+            "sourceColumn": "es_menor_18"
+          },
+          {
+            "name": "orden_edad",
+            "dataType": "int64",
+            "sourceColumn": "orden_edad"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_rango_edad = Source{[Schema=\"dw\",Item=\"dim_rango_edad\"]}[Data]",
+                "in",
+                "    dw_dim_rango_edad"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_sexo",
+        "columns": [
+          {
+            "name": "id_sexo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_sexo"
+          },
+          {
+            "name": "codigo_sexo",
+            "dataType": "string",
+            "sourceColumn": "codigo_sexo"
+          },
+          {
+            "name": "sexo_descripcion",
+            "dataType": "string",
+            "sourceColumn": "sexo_descripcion"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_sexo = Source{[Schema=\"dw\",Item=\"dim_sexo\"]}[Data]",
+                "in",
+                "    dw_dim_sexo"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_tiempo",
+        "columns": [
+          {
+            "name": "id_tiempo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_tiempo"
+          },
+          {
+            "name": "anio",
+            "dataType": "int64",
+            "sourceColumn": "anio"
+          },
+          {
+            "name": "mes_numero",
+            "dataType": "int64",
+            "sourceColumn": "mes_numero"
+          },
+          {
+            "name": "mes_nombre",
+            "dataType": "string",
+            "sourceColumn": "mes_nombre",
+            "sortByColumn": "mes_numero"
+          },
+          {
+            "name": "mes_corto",
+            "dataType": "string",
+            "sourceColumn": "mes_corto",
+            "sortByColumn": "mes_numero"
+          },
+          {
+            "name": "trimestre",
+            "dataType": "int64",
+            "sourceColumn": "trimestre"
+          },
+          {
+            "name": "trimestre_nombre",
+            "dataType": "string",
+            "sourceColumn": "trimestre_nombre",
+            "sortByColumn": "trimestre"
+          },
+          {
+            "name": "es_anual",
+            "dataType": "boolean",
+            "sourceColumn": "es_anual"
+          },
+          {
+            "name": "periodo_label",
+            "dataType": "string",
+            "sourceColumn": "periodo_label"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_tiempo = Source{[Schema=\"dw\",Item=\"dim_tiempo\"]}[Data]",
+                "in",
+                "    dw_dim_tiempo"
+              ]
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Jerarquia_Tiempo",
+            "levels": [
+              {
+                "name": "anio",
+                "ordinal": 0,
+                "column": "anio"
+              },
+              {
+                "name": "trimestre_nombre",
+                "ordinal": 1,
+                "column": "trimestre_nombre"
+              },
+              {
+                "name": "mes_nombre",
+                "ordinal": 2,
+                "column": "mes_nombre"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "dim_ubigeo",
+        "columns": [
+          {
+            "name": "id_ubigeo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_ubigeo"
+          },
+          {
+            "name": "id_provincia",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_provincia"
+          },
+          {
+            "name": "id_departamento",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_departamento"
+          },
+          {
+            "name": "ubigeo",
+            "dataType": "string",
+            "sourceColumn": "ubigeo"
+          },
+          {
+            "name": "distrito",
+            "dataType": "string",
+            "sourceColumn": "distrito"
+          },
+          {
+            "type": "calculated",
+            "name": "departamento_geo",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": " RELATED ( dim_departamento[departamento] )"
+          },
+          {
+            "type": "calculated",
+            "name": "provincia_geo",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": " RELATED ( dim_provincia[provincia] )"
+          },
+          {
+            "type": "calculated",
+            "name": "macroregion_geo",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": " RELATED ( dim_departamento[macroregion] )"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_ubigeo = Source{[Schema=\"dw\",Item=\"dim_ubigeo\"]}[Data]",
+                "in",
+                "    dw_dim_ubigeo"
+              ]
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Jerarquia_Geografica",
+            "levels": [
+              {
+                "name": "macroregion_geo",
+                "ordinal": 0,
+                "column": "macroregion_geo"
+              },
+              {
+                "name": "departamento_geo",
+                "ordinal": 1,
+                "column": "departamento_geo"
+              },
+              {
+                "name": "provincia_geo",
+                "ordinal": 2,
+                "column": "provincia_geo"
+              },
+              {
+                "name": "distrito",
+                "ordinal": 3,
+                "column": "distrito"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "dim_variable",
+        "columns": [
+          {
+            "name": "id_variable",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_variable"
+          },
+          {
+            "name": "variable",
+            "dataType": "string",
+            "sourceColumn": "variable"
+          },
+          {
+            "name": "unidad_medida",
+            "dataType": "string",
+            "sourceColumn": "unidad_medida"
+          },
+          {
+            "name": "categoria_variable",
+            "dataType": "string",
+            "sourceColumn": "categoria_variable"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_dim_variable = Source{[Schema=\"dw\",Item=\"dim_variable\"]}[Data]",
+                "in",
+                "    dw_dim_variable"
+              ]
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Jerarquia_Variable",
+            "levels": [
+              {
+                "name": "unidad_medida",
+                "ordinal": 0,
+                "column": "unidad_medida"
+              },
+              {
+                "name": "categoria_variable",
+                "ordinal": 1,
+                "column": "categoria_variable"
+              },
+              {
+                "name": "variable",
+                "ordinal": 2,
+                "column": "variable"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "fact_denuncias",
+        "columns": [
+          {
+            "name": "id_fact_denuncia",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fact_denuncia"
+          },
+          {
+            "name": "id_tiempo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_tiempo"
+          },
+          {
+            "name": "id_fecha",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fecha"
+          },
+          {
+            "name": "id_ubigeo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_ubigeo"
+          },
+          {
+            "name": "id_modalidad",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_modalidad"
+          },
+          {
+            "name": "cantidad",
+            "dataType": "int64",
+            "sourceColumn": "cantidad"
+          },
+          {
+            "name": "es_anio_parcial",
+            "dataType": "boolean",
+            "sourceColumn": "es_anio_parcial"
+          },
+          {
+            "name": "fecha_carga",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "fecha_carga"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_fact_denuncias = Source{[Schema=\"dw\",Item=\"fact_denuncias\"]}[Data]",
+                "in",
+                "    dw_fact_denuncias"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Denuncias",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_denuncias[cantidad] ),",
+              "    fact_denuncias[es_anio_parcial] = FALSE ()",
+              ")"
+            ]
+          },
+          {
+            "name": "Ranking Modalidad",
+            "expression": [
+              "",
+              "IF (",
+              "    ISINSCOPE ( dim_modalidad[modalidad] ) && NOT ISBLANK ( [Total Denuncias] ),",
+              "    RANKX (",
+              "        ALL ( dim_modalidad ),",
+              "        [Total Denuncias],",
+              "        ,",
+              "        DESC,",
+              "        SKIP",
+              "    )",
+              ")"
+            ]
+          },
+          {
+            "name": "% Participacion Modalidad",
+            "expression": [
+              "",
+              "DIVIDE (",
+              "    [Total Denuncias],",
+              "    CALCULATE (",
+              "        [Total Denuncias],",
+              "        ALL ( dim_modalidad )",
+              "    )",
+              ")"
+            ]
+          },
+          {
+            "name": "Denuncias Anio Anterior",
+            "expression": [
+              "",
+              "VAR AnioActual =",
+              "    SELECTEDVALUE ( dim_tiempo[anio] )",
+              "VAR MesesActuales =",
+              "    VALUES ( dim_tiempo[mes_numero] )",
+              "VAR ValorActual =",
+              "    [Total Denuncias]",
+              "RETURN",
+              "    IF (",
+              "        NOT ISBLANK ( AnioActual ) && NOT ISBLANK ( ValorActual ),",
+              "        CALCULATE (",
+              "            [Total Denuncias],",
+              "            ALL ( dim_tiempo ),",
+              "            dim_tiempo[anio] = AnioActual - 1,",
+              "            TREATAS ( MesesActuales, dim_tiempo[mes_numero] )",
+              "        )",
+              "    )"
+            ]
+          },
+          {
+            "name": "Variacion YoY Denuncias %",
+            "expression": [
+              "",
+              "VAR Actual =",
+              "    [Total Denuncias]",
+              "VAR Anterior =",
+              "    [Denuncias Anio Anterior]",
+              "RETURN",
+              "    IF (",
+              "        NOT ISBLANK ( Actual ) && NOT ISBLANK ( Anterior ),",
+              "        DIVIDE ( Actual - Anterior, Anterior )",
+              "    )"
+            ]
+          },
+          {
+            "name": "Promedio Mensual Denuncias",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    AVERAGEX (",
+              "        VALUES ( dim_tiempo[periodo_label] ),",
+              "        [Total Denuncias]",
+              "    ),",
+              "    KEEPFILTERS ( dim_tiempo[es_anual] = FALSE () )",
+              ")"
+            ]
+          },
+          {
+            "name": "% Estacionalidad Mensual",
+            "expression": [
+              "",
+              "DIVIDE (",
+              "    CALCULATE (",
+              "        [Total Denuncias],",
+              "        KEEPFILTERS ( dim_tiempo[es_anual] = FALSE () )",
+              "    ),",
+              "    CALCULATE (",
+              "        [Total Denuncias],",
+              "        REMOVEFILTERS (",
+              "            dim_tiempo[mes_numero],",
+              "            dim_tiempo[mes_nombre],",
+              "            dim_tiempo[mes_corto],",
+              "            dim_tiempo[trimestre],",
+              "            dim_tiempo[trimestre_nombre],",
+              "            dim_tiempo[periodo_label]",
+              "        ),",
+              "        KEEPFILTERS ( dim_tiempo[es_anual] = FALSE () )",
+              "    )",
+              ")"
+            ]
+          },
+          {
+            "name": "Total Denuncias (2019-2025)",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_denuncias[cantidad] ),",
+              "    KEEPFILTERS ( fact_denuncias[es_anio_parcial] = FALSE () ),",
+              "    KEEPFILTERS ( dim_tiempo[anio] >= 2019 && dim_tiempo[anio] <= 2025 )",
+              ")"
+            ]
+          },
+          {
+            "name": "Denuncias vs Desaparecidos Ratio",
+            "expression": [
+              "",
+              "DIVIDE (",
+              "    [Total Denuncias (2019-2025)],",
+              "    [Total Desaparecidos]",
+              ")"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "fact_desaparecidos",
+        "columns": [
+          {
+            "name": "id_fact_desaparecido",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fact_desaparecido"
+          },
+          {
+            "name": "id_tiempo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_tiempo"
+          },
+          {
+            "name": "id_fecha",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fecha"
+          },
+          {
+            "name": "id_ubigeo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_ubigeo"
+          },
+          {
+            "name": "id_sexo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_sexo"
+          },
+          {
+            "name": "id_rango_edad",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_rango_edad"
+          },
+          {
+            "name": "id_nacionalidad",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_nacionalidad"
+          },
+          {
+            "name": "cantidad",
+            "dataType": "int64",
+            "sourceColumn": "cantidad"
+          },
+          {
+            "name": "es_anio_parcial",
+            "dataType": "boolean",
+            "sourceColumn": "es_anio_parcial"
+          },
+          {
+            "name": "fecha_carga",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "fecha_carga"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_fact_desaparecidos = Source{[Schema=\"dw\",Item=\"fact_desaparecidos\"]}[Data]",
+                "in",
+                "    dw_fact_desaparecidos"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Desaparecidos",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_desaparecidos[cantidad] ),",
+              "    fact_desaparecidos[es_anio_parcial] = FALSE ()",
+              ")"
+            ]
+          },
+          {
+            "name": "Total Desaparecidos Menores 18",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    [Total Desaparecidos],",
+              "    KEEPFILTERS ( dim_rango_edad[es_menor_18] = TRUE () )",
+              ")"
+            ]
+          },
+          {
+            "name": "% Desaparecidos Menores 18",
+            "expression": [
+              "",
+              "DIVIDE (",
+              "    [Total Desaparecidos Menores 18],",
+              "    [Total Desaparecidos]",
+              ")"
+            ]
+          },
+          {
+            "name": "Desaparecidos Sexo No Informado",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    [Total Desaparecidos],",
+              "    KEEPFILTERS ( dim_sexo[codigo_sexo] = \"NO INFORMADO\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Desaparecidos Edad No Informada",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    [Total Desaparecidos],",
+              "    KEEPFILTERS ( dim_rango_edad[rango_edad] = \"NO INFORMADO\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Desaparecidos No Informado",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    [Total Desaparecidos],",
+              "    FILTER (",
+              "        fact_desaparecidos,",
+              "        RELATED ( dim_sexo[codigo_sexo] ) = \"NO INFORMADO\"",
+              "            || RELATED ( dim_rango_edad[rango_edad] ) = \"NO INFORMADO\"",
+              "    )",
+              ")"
+            ]
+          },
+          {
+            "name": "% Participacion Perfil Desaparecidos",
+            "expression": [
+              "",
+              "DIVIDE (",
+              "    [Total Desaparecidos],",
+              "    CALCULATE (",
+              "        [Total Desaparecidos],",
+              "        ALL ( dim_sexo ),",
+              "        ALL ( dim_rango_edad )",
+              "    )",
+              ")"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "fact_produccion",
+        "columns": [
+          {
+            "name": "id_fact_produccion",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fact_produccion"
+          },
+          {
+            "name": "id_tiempo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_tiempo"
+          },
+          {
+            "name": "id_fecha",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fecha"
+          },
+          {
+            "name": "id_variable",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_variable"
+          },
+          {
+            "name": "id_dependencia",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_dependencia"
+          },
+          {
+            "name": "valor",
+            "dataType": "double",
+            "sourceColumn": "valor",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "es_anio_parcial",
+            "dataType": "boolean",
+            "sourceColumn": "es_anio_parcial"
+          },
+          {
+            "name": "fecha_carga",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "fecha_carga"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_fact_produccion = Source{[Schema=\"dw\",Item=\"fact_produccion\"]}[Data]",
+                "in",
+                "    dw_fact_produccion"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Operativos Policiales",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS ( dim_variable[variable] = \"OPERATIVOS\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Total Detenidos",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS (",
+              "        dim_variable[variable] IN {",
+              "            \"DETENIDOS DIVERSOS DELITOS (EXTRANJEROS)\",",
+              "            \"DETENIDOS DIVERSOS DELITOS (PERUANOS)\",",
+              "            \"DETENIDOS POR REQUISITORIADO\"",
+              "        }",
+              "    )",
+              ")"
+            ]
+          },
+          {
+            "name": "Intervenciones Extranjeros",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS ( dim_variable[variable] = \"INTERVENCION EXTRAJEROS (LEY MIGRATORIA)\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Bandas Desarticuladas",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS ( dim_variable[variable] = \"BANDAS CRIMINALES DESARTICULADAS\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Organizaciones Criminales Desarticuladas",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS ( dim_variable[variable] = \"ORGANIZACIONES CRIMINALES DESARTICULADAS\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Kilos de Droga Incautada",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS ( dim_variable[unidad_medida] = \"KILOS\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Dinero Incautado Soles",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS ( dim_variable[variable] = \"DINERO INCAUTADO (SOLES)\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Contrabando Valorizacion Soles",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    SUM ( fact_produccion[valor] ),",
+              "    fact_produccion[es_anio_parcial] = FALSE (),",
+              "    KEEPFILTERS ( dim_variable[variable] = \"CONTRABANDO (VALORIZACION)\" )",
+              ")"
+            ]
+          },
+          {
+            "name": "Valor Produccion Unitario",
+            "expression": [
+              "",
+              "IF (",
+              "    HASONEVALUE ( dim_variable[unidad_medida] ),",
+              "    CALCULATE (",
+              "        SUM ( fact_produccion[valor] ),",
+              "        fact_produccion[es_anio_parcial] = FALSE ()",
+              "    ),",
+              "    BLANK ()",
+              ")"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "fact_victimizacion",
+        "columns": [
+          {
+            "name": "id_fact_victimizacion",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_fact_victimizacion"
+          },
+          {
+            "name": "id_tiempo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_tiempo"
+          },
+          {
+            "name": "id_departamento",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_departamento"
+          },
+          {
+            "name": "id_indicador",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "id_indicador"
+          },
+          {
+            "name": "ambito",
+            "dataType": "string",
+            "sourceColumn": "ambito"
+          },
+          {
+            "name": "clasif",
+            "dataType": "int64",
+            "sourceColumn": "clasif"
+          },
+          {
+            "name": "valor",
+            "dataType": "double",
+            "sourceColumn": "valor",
+            "formatString": "0.0"
+          },
+          {
+            "name": "es_anio_parcial",
+            "dataType": "boolean",
+            "sourceColumn": "es_anio_parcial"
+          },
+          {
+            "name": "fecha_carga",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "fecha_carga"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/(localdb)\\MSSQLLocalDB;DW_ProyectoEF\",",
+                "    dw_fact_victimizacion = Source{[Schema=\"dw\",Item=\"fact_victimizacion\"]}[Data]",
+                "in",
+                "    dw_fact_victimizacion"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Percepcion Inseguridad Promedio %",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    AVERAGE ( fact_victimizacion[valor] ),",
+              "    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),",
+              "    KEEPFILTERS ( dim_departamento[ambito] = \"DEPARTAMENTO\" ),",
+              "    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),",
+              "    dim_indicador[indicador] = \"PORCENTAJE DE PERCEPCIÓN DE INSEGURIDAD AL CAMINAR SOLO(A) DE NOCHE EN SU ZONA O BARRIO\"",
+              ")"
+            ]
+          },
+          {
+            "name": "Confianza PNP Promedio %",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    AVERAGE ( fact_victimizacion[valor] ),",
+              "    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),",
+              "    KEEPFILTERS ( dim_departamento[ambito] = \"DEPARTAMENTO\" ),",
+              "    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),",
+              "    dim_indicador[indicador] = \"PORCENTAJE DE CONFIANZA EN LA PNP\"",
+              ")"
+            ]
+          },
+          {
+            "name": "Victimizacion General Promedio %",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    AVERAGE ( fact_victimizacion[valor] ),",
+              "    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),",
+              "    KEEPFILTERS ( dim_departamento[ambito] = \"DEPARTAMENTO\" ),",
+              "    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),",
+              "    dim_indicador[indicador] = \"PORCENTAJE DE VICTIMIZACIÓN\"",
+              ")"
+            ]
+          },
+          {
+            "name": "Victimizacion Robo Promedio %",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    AVERAGE ( fact_victimizacion[valor] ),",
+              "    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),",
+              "    KEEPFILTERS ( dim_departamento[ambito] = \"DEPARTAMENTO\" ),",
+              "    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),",
+              "    dim_indicador[indicador] = \"PORCENTAJE DE VICTIMIZACIÓN POR EL DELITO DE ROBO E INTENTO DE ROBO DE DINERO, CARTERA Y CELULAR\"",
+              ")"
+            ]
+          },
+          {
+            "name": "Victimizacion Estafa Promedio %",
+            "expression": [
+              "",
+              "CALCULATE (",
+              "    AVERAGE ( fact_victimizacion[valor] ),",
+              "    KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),",
+              "    KEEPFILTERS ( dim_departamento[ambito] = \"DEPARTAMENTO\" ),",
+              "    KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () ),",
+              "    dim_indicador[indicador] = \"PORCENTAJE DE VICTIMIZACIÓN POR ESTAFA\"",
+              ")"
+            ]
+          },
+          {
+            "name": "Indicador % Promedio",
+            "expression": [
+              "",
+              "IF (",
+              "    HASONEVALUE ( dim_indicador[indicador] ),",
+              "    CALCULATE (",
+              "        AVERAGE ( fact_victimizacion[valor] ),",
+              "        KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () ),",
+              "        KEEPFILTERS ( dim_departamento[ambito] = \"DEPARTAMENTO\" ),",
+              "        KEEPFILTERS ( dim_departamento[es_nacional] = FALSE () )",
+              "    ),",
+              "    BLANK ()",
+              ")"
+            ]
+          },
+          {
+            "name": "Ranking Inseguridad Dept",
+            "expression": [
+              "",
+              "IF (",
+              "    ISINSCOPE ( dim_departamento[departamento] )",
+              "        && NOT ISBLANK ( [Percepcion Inseguridad Promedio %] ),",
+              "    RANKX (",
+              "        FILTER (",
+              "            ALL ( dim_departamento ),",
+              "            dim_departamento[ambito] = \"DEPARTAMENTO\"",
+              "                && dim_departamento[es_nacional] = FALSE ()",
+              "        ),",
+              "        [Percepcion Inseguridad Promedio %],",
+              "        ,",
+              "        DESC,",
+              "        SKIP",
+              "    )",
+              ")"
+            ]
+          },
+          {
+            "name": "Ranking Menor Confianza Dept",
+            "expression": [
+              "",
+              "IF (",
+              "    ISINSCOPE ( dim_departamento[departamento] )",
+              "        && NOT ISBLANK ( [Confianza PNP Promedio %] ),",
+              "    RANKX (",
+              "        FILTER (",
+              "            ALL ( dim_departamento ),",
+              "            dim_departamento[ambito] = \"DEPARTAMENTO\"",
+              "                && dim_departamento[es_nacional] = FALSE ()",
+              "        ),",
+              "        [Confianza PNP Promedio %],",
+              "        ,",
+              "        ASC,",
+              "        SKIP",
+              "    )",
+              ")"
+            ]
+          },
+          {
+            "name": "Valor Nacional Referencia %",
+            "expression": [
+              "",
+              "IF (",
+              "    HASONEVALUE ( dim_indicador[indicador] ),",
+              "    CALCULATE (",
+              "        AVERAGE ( fact_victimizacion[valor] ),",
+              "        REMOVEFILTERS ( dim_departamento ),",
+              "        dim_departamento[ambito] = \"NACIONAL\",",
+              "        dim_departamento[es_nacional] = TRUE (),",
+              "        KEEPFILTERS ( fact_victimizacion[es_anio_parcial] = FALSE () )",
+              "    ),",
+              "    BLANK ()",
+              ")"
+            ]
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "9b56543e-54da-474e-963b-f74c68a3ee05",
+        "fromTable": "fact_desaparecidos",
+        "fromColumn": "id_fecha",
+        "toTable": "dim_fecha",
+        "toColumn": "id_fecha"
+      },
+      {
+        "name": "ffd572da-b144-43a9-b9a5-3134289f6e3d",
+        "fromTable": "fact_produccion",
+        "fromColumn": "id_fecha",
+        "toTable": "dim_fecha",
+        "toColumn": "id_fecha"
+      },
+      {
+        "name": "1c413336-8d60-4094-a596-12847a13751b",
+        "fromTable": "fact_denuncias",
+        "fromColumn": "id_tiempo",
+        "toTable": "dim_tiempo",
+        "toColumn": "id_tiempo"
+      },
+      {
+        "name": "3df5e7db-89a7-459c-947c-0ff9e26ff935",
+        "fromTable": "fact_desaparecidos",
+        "fromColumn": "id_tiempo",
+        "toTable": "dim_tiempo",
+        "toColumn": "id_tiempo"
+      },
+      {
+        "name": "b40b56e7-5665-40e9-8b04-1b2bb7157e3c",
+        "fromTable": "fact_produccion",
+        "fromColumn": "id_tiempo",
+        "toTable": "dim_tiempo",
+        "toColumn": "id_tiempo"
+      },
+      {
+        "name": "9e55bbea-615e-4ec1-82cb-86462230c2b6",
+        "fromTable": "fact_victimizacion",
+        "fromColumn": "id_tiempo",
+        "toTable": "dim_tiempo",
+        "toColumn": "id_tiempo"
+      },
+      {
+        "name": "1da2bd93-7816-44e5-b71e-a05454d0b30f",
+        "fromTable": "fact_denuncias",
+        "fromColumn": "id_ubigeo",
+        "toTable": "dim_ubigeo",
+        "toColumn": "id_ubigeo"
+      },
+      {
+        "name": "1fb55532-4756-44e0-8b9f-a1f15fef1aa1",
+        "fromTable": "fact_desaparecidos",
+        "fromColumn": "id_ubigeo",
+        "toTable": "dim_ubigeo",
+        "toColumn": "id_ubigeo"
+      },
+      {
+        "name": "085a7a5a-6fb0-4cd2-96e1-0b171c06b9c5",
+        "fromTable": "dim_provincia",
+        "fromColumn": "id_departamento",
+        "toTable": "dim_departamento",
+        "toColumn": "id_departamento"
+      },
+      {
+        "name": "8c94ab15-4f80-4829-a2bc-d7cc25b03ac7",
+        "fromTable": "fact_victimizacion",
+        "fromColumn": "id_departamento",
+        "toTable": "dim_departamento",
+        "toColumn": "id_departamento"
+      },
+      {
+        "name": "07e5d887-0ce8-4eb3-a551-a4fd41aee21b",
+        "fromTable": "fact_produccion",
+        "fromColumn": "id_dependencia",
+        "toTable": "dim_dependencia",
+        "toColumn": "id_dependencia"
+      },
+      {
+        "name": "235247e6-dd48-4047-9c2e-0655b08ebdd8",
+        "fromTable": "fact_denuncias",
+        "fromColumn": "id_fecha",
+        "toTable": "dim_fecha",
+        "toColumn": "id_fecha"
+      },
+      {
+        "name": "93486a1b-1f15-4df9-8c1a-fe241e29b035",
+        "fromTable": "fact_victimizacion",
+        "fromColumn": "id_indicador",
+        "toTable": "dim_indicador",
+        "toColumn": "id_indicador"
+      },
+      {
+        "name": "cdaec32f-9ee8-4840-bf7f-10eb1fb460e0",
+        "fromTable": "fact_denuncias",
+        "fromColumn": "id_modalidad",
+        "toTable": "dim_modalidad",
+        "toColumn": "id_modalidad"
+      },
+      {
+        "name": "9e9a1fbc-1065-46f7-b938-231a7fe5cfc8",
+        "fromTable": "fact_desaparecidos",
+        "fromColumn": "id_nacionalidad",
+        "toTable": "dim_nacionalidad",
+        "toColumn": "id_nacionalidad"
+      },
+      {
+        "name": "1a52a009-e9dd-4cac-9ec7-65af422e49c0",
+        "fromTable": "fact_desaparecidos",
+        "fromColumn": "id_rango_edad",
+        "toTable": "dim_rango_edad",
+        "toColumn": "id_rango_edad"
+      },
+      {
+        "name": "664be43b-7047-42db-ad61-5ac405ab17c6",
+        "fromTable": "fact_desaparecidos",
+        "fromColumn": "id_sexo",
+        "toTable": "dim_sexo",
+        "toColumn": "id_sexo"
+      },
+      {
+        "name": "67d7dbac-1a4f-441f-a40f-8133c07ecf89",
+        "fromTable": "fact_produccion",
+        "fromColumn": "id_variable",
+        "toTable": "dim_variable",
+        "toColumn": "id_variable"
+      },
+      {
+        "name": "13fa43b2-7756-4218-88f1-9e4bb83eaefb",
+        "fromTable": "dim_ubigeo",
+        "fromColumn": "id_provincia",
+        "toTable": "dim_provincia",
+        "toColumn": "id_provincia"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "800"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
