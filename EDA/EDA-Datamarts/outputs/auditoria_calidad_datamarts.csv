@@ -1,0 +1,14 @@
+﻿verificacion,incidencias,estado
+D1: Ubigeos con longitud != 6,0,OK
+D1: Duplicados por grano,0,OK
+D1: Conflicto provincia en ubigeo 160801 (>1 nombre),0,OK
+D2: Ubigeos con longitud != 6,0,OK
+D2: Departamentos con tildes o CALLAO sin canonizar,0,OK
+D2: Conflicto distrito en ubigeo 150121 (>1 nombre),0,OK
+D2: Duplicados por grano,0,OK
+D3: Meses fuera de rango numérico 1–12,0,OK
+D3: Filas sin unidad_medida o con Región con tilde,0,OK
+D3: Duplicados por grano,0,OK
+D4: Incoherencia ambito=NACIONAL vs departamento/cod_ubicacion,0,OK
+D4: Departamentos con múltiples cod_ubicacion (desalineados),0,OK
+Cruce D1–D2–D4: Departamentos no coincidentes entre DataMarts,0,OK

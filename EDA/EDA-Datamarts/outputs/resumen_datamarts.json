@@ -1,0 +1,118 @@
+{
+  "etapa": "DataMarts Procesados (Post-ETL)",
+  "sql_server": "(localdb)\\MSSQLLocalDB",
+  "motor": "PySpark SQL 4.2.0",
+  "total_filas_datamarts": 496206,
+  "validaciones_totales": 13,
+  "validaciones_ok": 13,
+  "validaciones_fallidas": 0,
+  "datasets": {
+    "denuncias": {
+      "filas": 378187,
+      "total_denuncias_2018_2025": 6866606,
+      "modalidad_lider": "Otros",
+      "modalidad_lider_pct": 36.16,
+      "ubigeos_invalidos": 0,
+      "duplicados_grano": 0,
+      "es_anio_parcial_marcado": true
+    },
+    "desaparecidos": {
+      "filas": 77331,
+      "total_casos": 142374,
+      "menores_18": 81262,
+      "pct_menores_18": 57.08,
+      "dptos_no_canonicos": 0,
+      "duplicados_grano": 0,
+      "codificacion": "UTF-8 (SQL NVARCHAR)"
+    },
+    "produccion": {
+      "filas": 39096,
+      "kilos_droga_2023_2025": 518794.55,
+      "dinero_incautado_soles_2023_2025": 53874929.72,
+      "detenidos_2023_2025": 1061639,
+      "bandas_desarticuladas_2023_2025": 38152,
+      "operativos_2023_2025": 3503958,
+      "unidades_medida_separadas": 9,
+      "meses_numericos": true,
+      "duplicados_grano": 0
+    },
+    "victimizacion": {
+      "filas": 1592,
+      "dpto_mayor_inseguridad": "PUNO",
+      "mayor_inseguridad_pct": 66.6,
+      "dpto_menor_confianza": "PUNO",
+      "menor_confianza_pct": 6.69,
+      "codigos_desalineados": 0,
+      "ambito_separado": true,
+      "es_anio_parcial_marcado": true
+    }
+  },
+  "cruce_departamentos_coincidentes": 26,
+  "auditoria": [
+    {
+      "verificacion": "D1: Ubigeos con longitud != 6",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D1: Duplicados por grano",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D1: Conflicto provincia en ubigeo 160801 (>1 nombre)",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D2: Ubigeos con longitud != 6",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D2: Departamentos con tildes o CALLAO sin canonizar",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D2: Conflicto distrito en ubigeo 150121 (>1 nombre)",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D2: Duplicados por grano",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D3: Meses fuera de rango numérico 1–12",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D3: Filas sin unidad_medida o con Región con tilde",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D3: Duplicados por grano",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D4: Incoherencia ambito=NACIONAL vs departamento/cod_ubicacion",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "D4: Departamentos con múltiples cod_ubicacion (desalineados)",
+      "incidencias": 0,
+      "estado": "OK"
+    },
+    {
+      "verificacion": "Cruce D1–D2–D4: Departamentos no coincidentes entre DataMarts",
+      "incidencias": 0,
+      "estado": "OK"
+    }
+  ]
+}

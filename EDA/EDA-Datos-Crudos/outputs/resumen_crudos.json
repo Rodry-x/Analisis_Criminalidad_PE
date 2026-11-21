@@ -1,0 +1,146 @@
+{
+  "etapa": "Datos Crudos (Pre-ETL)",
+  "motor": "PySpark SQL 4.2.0",
+  "total_archivos_csv": 15,
+  "archivos_cp1252": 2,
+  "total_filas_crudas": 496206,
+  "total_hallazgos": 13,
+  "datasets": {
+    "denuncias": {
+      "filas": 378187,
+      "total_denuncias": 7614774,
+      "ubigeos_5_digitos": 146690,
+      "conflicto_160801_filas": 107,
+      "duplicados_grano": 0,
+      "anio_parcial": 2026,
+      "meses_2026": 10,
+      "codificacion": "UTF-8"
+    },
+    "desaparecidos": {
+      "filas": 77331,
+      "total_casos": 142374,
+      "sexo_vacio": 83,
+      "rango_edad_vacio": 1197,
+      "dptos_no_canonicos": 17147,
+      "conflicto_150121_filas": 70,
+      "ubigeos_sin_cero_izq": 0,
+      "duplicados_grano": 0,
+      "codificacion": "CP1252"
+    },
+    "produccion": {
+      "filas": 39096,
+      "filas_valor_cero": 15458,
+      "filas_region_tilde": 19836,
+      "filas_dir_inconsistente": 792,
+      "variables_mezcladas": 18,
+      "mes_en_texto": true,
+      "anio_parcial": 2026,
+      "meses_2026": 10,
+      "duplicados_grano": 0,
+      "codificacion": "UTF-8 BOM"
+    },
+    "victimizacion": {
+      "filas": 1592,
+      "codigos_desalineados_2013": 6,
+      "dptos_con_tilde": 354,
+      "filas_nacionales_en_dpto": 58,
+      "periodo_constante": true,
+      "anio_parcial": 2013,
+      "filas_2013": 107,
+      "codificacion": "CP1252"
+    }
+  },
+  "hallazgos": [
+    {
+      "dataset": "1. Denuncias Policiales",
+      "problema": "Ubigeos con cero inicial perdido (< 6 dígitos)",
+      "severidad": "Alta",
+      "filas_afectadas": 146690,
+      "accion_etl": "Normalizar UBIGEO_HECHO con LPAD a 6 dígitos (CHAR(6))."
+    },
+    {
+      "dataset": "1. Denuncias Policiales",
+      "problema": "Conflicto de provincia en ubigeo 160801 (MAYNAS vs PUTUMAYO)",
+      "severidad": "Media",
+      "filas_afectadas": 107,
+      "accion_etl": "Homologar 160801 a LORETO / PUTUMAYO / PUTUMAYO."
+    },
+    {
+      "dataset": "1. Denuncias Policiales",
+      "problema": "Año 2026 incompleto (solo enero–octubre, 10 meses)",
+      "severidad": "Alta",
+      "filas_afectadas": 37683,
+      "accion_etl": "Etiquetar es_anio_parcial = 1 para excluir de comparativas anuales."
+    },
+    {
+      "dataset": "2. Personas Desaparecidas",
+      "problema": "Codificación CP1252 (corrompe tildes y Ñ si se lee como UTF-8)",
+      "severidad": "Alta",
+      "filas_afectadas": 77331,
+      "accion_etl": "Convertir copia fiel a UTF-8 con BOM y cargar con N'...' y sqlcmd -f 65001."
+    },
+    {
+      "dataset": "2. Personas Desaparecidas",
+      "problema": "Departamentos con tildes o CALLAO distinto al canónico",
+      "severidad": "Alta",
+      "filas_afectadas": 17147,
+      "accion_etl": "Homologar 6 nombres al estilo canónico sin tildes y PROV. CONST. DEL CALLAO."
+    },
+    {
+      "dataset": "2. Personas Desaparecidas",
+      "problema": "Valores vacíos en SEXO (83) y RANGO_EDAD (1,197)",
+      "severidad": "Media",
+      "filas_afectadas": 1280,
+      "accion_etl": "Preservar como NULL en DataMart y mapear a NO INFORMADO en DW."
+    },
+    {
+      "dataset": "2. Personas Desaparecidas",
+      "problema": "Conflicto de distrito en ubigeo 150121 (PUEBLO LIBRE vs MAGDALENA VIEJA)",
+      "severidad": "Baja",
+      "filas_afectadas": 70,
+      "accion_etl": "Homologar 150121 a LIMA METROPOLITANA / LIMA / PUEBLO LIBRE."
+    },
+    {
+      "dataset": "3. Producción Policial",
+      "problema": "Meses como texto abreviado (ENE..SET..DIC) y 2026 parcial (10 meses)",
+      "severidad": "Alta",
+      "filas_afectadas": 39096,
+      "accion_etl": "Convertir abreviaturas a mes_registro (1–12) y marcar 2026 es_anio_parcial = 1."
+    },
+    {
+      "dataset": "3. Producción Policial",
+      "problema": "18 variables con magnitudes incompatibles mezcladas en VALOR",
+      "severidad": "Alta",
+      "filas_afectadas": 39096,
+      "accion_etl": "Derivar columna unidad_medida (KILOS, SOLES, PERSONAS, etc.)."
+    },
+    {
+      "dataset": "3. Producción Policial",
+      "problema": "DIR_REG_FRE con 'Región' (tilde) y valores 'RP ICA'/'RP TUMBES'",
+      "severidad": "Media",
+      "filas_afectadas": 20628,
+      "accion_etl": "Homologar Región -> REGION y documentar inconsistencia RP ICA / RP TUMBES."
+    },
+    {
+      "dataset": "4. Victimización y Confianza",
+      "problema": "Codificación CP1252, columna PERIODO constante y grano anual sin mes",
+      "severidad": "Media",
+      "filas_afectadas": 1592,
+      "accion_etl": "Convertir a UTF-8, eliminar PERIODO, renombrar VALOR PERIODO -> anio_registro."
+    },
+    {
+      "dataset": "4. Victimización y Confianza",
+      "problema": "6 filas de 2013 con COD_UBICACION desalineado respecto al departamento",
+      "severidad": "Alta",
+      "filas_afectadas": 6,
+      "accion_etl": "Re-derivar cod_ubicacion canónico desde DEPARTAMENTO."
+    },
+    {
+      "dataset": "4. Victimización y Confianza",
+      "problema": "Año 2013 parcial (107 vs 135 filas) y mezcla NACIONAL en DEPARTAMENTO (58 filas)",
+      "severidad": "Alta",
+      "filas_afectadas": 165,
+      "accion_etl": "Marcar 2013 es_anio_parcial = 1 y separar ambito='NACIONAL' con departamento = NULL."
+    }
+  ]
+}

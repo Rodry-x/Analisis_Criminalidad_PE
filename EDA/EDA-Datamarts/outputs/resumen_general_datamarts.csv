@@ -1,0 +1,5 @@
+﻿datamart,filas,anio_min,anio_max,filas_anio_parcial
+1. DBDenunciasPoliciales,378187,2018,2026,37683
+2. DBPersonasDesaparecidas,77331,2019,2025,0
+3. DBProduccionPolicial,39096,2023,2026,8640
+4. DBVictimizacionConfianzaPNP,1592,2013,2024,107

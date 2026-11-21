@@ -1,0 +1,16 @@
+﻿archivo,carpeta,bytes,kb,codificacion_detectada,utf8_valido
+Denuncias_Policiales_2018.csv,Denuncias-Policiales_2018-2026,1948361,1902.7,utf-8,True
+Denuncias_Policiales_2019.csv,Denuncias-Policiales_2018-2026,2259214,2206.3,utf-8,True
+Denuncias_Policiales_2020.csv,Denuncias-Policiales_2018-2026,2270232,2217.0,utf-8,True
+Denuncias_Policiales_2021.csv,Denuncias-Policiales_2018-2026,2590508,2529.8,utf-8,True
+Denuncias_Policiales_2022.csv,Denuncias-Policiales_2018-2026,2744349,2680.0,utf-8,True
+Denuncias_Policiales_2023.csv,Denuncias-Policiales_2018-2026,2837944,2771.4,utf-8,True
+Denuncias_Policiales_2024.csv,Denuncias-Policiales_2018-2026,2837929,2771.4,utf-8,True
+Denuncias_Policiales_2025.csv,Denuncias-Policiales_2018-2026,2731098,2667.1,utf-8,True
+Denuncias_Policiales_2026.csv,Denuncias-Policiales_2018-2026,2218639,2166.6,utf-8,True
+Victimización-Percepción-de-Inseguridad-y-Confianza-en-la-PNP_2013-2024.csv,Indicadores-de-Victimizacion-y-confianza-PNP_2013-2024,159784,156.0,cp1252,False
+Personas_Desaparecidas_2019_2025.csv,Personas-Desaparecidas_2019-2025,5068176,4949.4,cp1252,False
+Produccion Policial_2023.csv,Produccion-Policial_2023-2026,549899,537.0,utf-8-sig,True
+Produccion Policial_2024.csv,Produccion-Policial_2023-2026,551181,538.3,utf-8-sig,True
+Produccion Policial_2025.csv,Produccion-Policial_2023-2026,587024,573.3,utf-8-sig,True
+Produccion Policial_2026.csv,Produccion-Policial_2023-2026,478656,467.4,utf-8-sig,True

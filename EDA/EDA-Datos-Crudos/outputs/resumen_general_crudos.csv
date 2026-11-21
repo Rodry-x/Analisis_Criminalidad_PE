@@ -1,0 +1,5 @@
+﻿dataset,filas_crudas,anio_min,anio_max,codificacion,grano_crudo
+1. Denuncias Policiales,378187,2018,2026,UTF-8,Mensual / Distrito / Modalidad
+2. Personas Desaparecidas,77331,2019,2025,CP1252 (requiere UTF-8),Mensual / Distrito / Sexo / Edad / Nac.
+3. Producción Policial,39096,2023,2026,UTF-8 BOM,Mensual (texto) / Dependencia / Variable
+4. Victimización y Confianza PNP,1592,2013,2024,CP1252 (requiere UTF-8),Anual / Ámbito / Indicador

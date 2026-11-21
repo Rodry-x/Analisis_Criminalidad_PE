@@ -1,0 +1,14 @@
+﻿dataset,problema,severidad,filas_afectadas,accion_etl
+1. Denuncias Policiales,Ubigeos con cero inicial perdido (< 6 dígitos),Alta,146690,Normalizar UBIGEO_HECHO con LPAD a 6 dígitos (CHAR(6)).
+1. Denuncias Policiales,Conflicto de provincia en ubigeo 160801 (MAYNAS vs PUTUMAYO),Media,107,Homologar 160801 a LORETO / PUTUMAYO / PUTUMAYO.
+1. Denuncias Policiales,"Año 2026 incompleto (solo enero–octubre, 10 meses)",Alta,37683,Etiquetar es_anio_parcial = 1 para excluir de comparativas anuales.
+2. Personas Desaparecidas,Codificación CP1252 (corrompe tildes y Ñ si se lee como UTF-8),Alta,77331,Convertir copia fiel a UTF-8 con BOM y cargar con N'...' y sqlcmd -f 65001.
+2. Personas Desaparecidas,Departamentos con tildes o CALLAO distinto al canónico,Alta,17147,Homologar 6 nombres al estilo canónico sin tildes y PROV. CONST. DEL CALLAO.
+2. Personas Desaparecidas,"Valores vacíos en SEXO (83) y RANGO_EDAD (1,197)",Media,1280,Preservar como NULL en DataMart y mapear a NO INFORMADO en DW.
+2. Personas Desaparecidas,Conflicto de distrito en ubigeo 150121 (PUEBLO LIBRE vs MAGDALENA VIEJA),Baja,70,Homologar 150121 a LIMA METROPOLITANA / LIMA / PUEBLO LIBRE.
+3. Producción Policial,Meses como texto abreviado (ENE..SET..DIC) y 2026 parcial (10 meses),Alta,39096,Convertir abreviaturas a mes_registro (1–12) y marcar 2026 es_anio_parcial = 1.
+3. Producción Policial,18 variables con magnitudes incompatibles mezcladas en VALOR,Alta,39096,"Derivar columna unidad_medida (KILOS, SOLES, PERSONAS, etc.)."
+3. Producción Policial,DIR_REG_FRE con 'Región' (tilde) y valores 'RP ICA'/'RP TUMBES',Media,20628,Homologar Región -> REGION y documentar inconsistencia RP ICA / RP TUMBES.
+4. Victimización y Confianza,"Codificación CP1252, columna PERIODO constante y grano anual sin mes",Media,1592,"Convertir a UTF-8, eliminar PERIODO, renombrar VALOR PERIODO -> anio_registro."
+4. Victimización y Confianza,6 filas de 2013 con COD_UBICACION desalineado respecto al departamento,Alta,6,Re-derivar cod_ubicacion canónico desde DEPARTAMENTO.
+4. Victimización y Confianza,Año 2013 parcial (107 vs 135 filas) y mezcla NACIONAL en DEPARTAMENTO (58 filas),Alta,165,Marcar 2013 es_anio_parcial = 1 y separar ambito='NACIONAL' con departamento = NULL.
